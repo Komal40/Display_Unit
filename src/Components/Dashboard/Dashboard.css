@@ -1,0 +1,15 @@
+.dashboard_container{
+    height: 4rem;  
+    width: 100vw;
+    background-color:#ECECEC;
+}
+
+.dashboard_navbar{
+    display: flex;
+}
+
+.dashboard_content{
+    display: flex;
+    flex-direction: row;
+    /* border:2px solid red; */
+}
