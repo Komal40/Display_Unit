@@ -6,10 +6,10 @@ import './Navbar.css';
 
 export default function Navbar() {
 
-    const [closeMenu, setCloseMenu]=useState(true);
+    const [closeMenu, setCloseMenu]=useState(false);
 
     const handleClick=()=>{
-        setCloseMenu(!closeMenu);
+        setCloseMenu(closeMenu);
     }
 
 
@@ -18,7 +18,9 @@ export default function Navbar() {
     <div>
       <nav className={closeMenu?'nav_active':'navbar'}>
       <div className={closeMenu?'nav_arrow_active':'nav_arrow'} >
-      <h2>INTERFACE <span><FaArrowLeft onClick={()=>handleClick()}/></span></h2>
+      <h2>INTERFACE
+        {/* <span><FaArrowLeft onClick={()=>handleClick()}/></span> */}
+        </h2>
       </div>
      <div><FaArrowRight onClick={()=>handleClick()} className={closeMenu?'right_arrow_active':'right_arrow'} /></div>
         <div className={closeMenu?'content_container_active':'content_container'}>
