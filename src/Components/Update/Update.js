@@ -1,6 +1,8 @@
 import React from 'react'
 import './Update.css'
 import Navbar from '../Navbar/Navbar'
+import Dashboard from '../Dashboard/Dashboard'
+import DashboardR from '../DashboardR/DashboardR'
 
 export default function Update() {
   return (
@@ -8,9 +10,12 @@ export default function Update() {
     <div>
         <Navbar/>
     </div>
-    <div className='update_main'>
-        <h2>update floor</h2>
+    <div >
+       <DashboardR/>
     </div>
     </>
   )
 }
+
+
+
