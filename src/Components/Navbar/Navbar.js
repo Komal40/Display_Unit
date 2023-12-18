@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaArrowLeft } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa";
+import {HashLink} from 'react-router-hash-link'
 import './Navbar.css';
 
 
@@ -26,13 +27,15 @@ export default function Navbar() {
       </div>
      <div><FaArrowRight onClick={()=>handleClick()} className={closeMenu?'right_arrow_active':'right_arrow'} /></div>
         <div className={closeMenu?'content_container_active':'content_container'}>
-        <ul>
-            <li style={{color:'#FF9209'}}>DASHBOARD</li>
-            <li>UPDATE FLOOR</li>
-            <li>GENERATE CHART</li>
-            <li>ACCOUNT</li>
+        <ul >
+            <li><HashLink to='/' className='dashboard_items'>DASHBOARD</HashLink></li>
+            <li><HashLink to='/update' className='dashboard_items'>UPDATE FLOOR</HashLink></li>
+            <li><HashLink to='/assign' className='dashboard_items'> ASSIGN PARTS</HashLink></li>
+            <li><HashLink to='/timing' className='dashboard_items'>TIMINGS</HashLink></li>
+            <li><HashLink className='dashboard_items' to='/chart'>GENERATE CHART</HashLink></li>
+            <li><HashLink className='dashboard_items'>ACCOUNT</HashLink></li>
             <hr style={{width:'100%'}}/>
-            <li>LOG OUT</li>
+            <li><HashLink className='dashboard_items'>LOG OUT</HashLink></li>
         </ul>
         </div>
       </nav>
