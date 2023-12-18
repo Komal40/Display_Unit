@@ -4,6 +4,7 @@ import './App.css';
 import Login from './Components/Login/Login';
 import Navbar from './Components/Navbar/Navbar';
 import Dashboard from './Components/Dashboard/Dashboard';
+import Operator from './Components/Operator/Operator';
 
 
 function App({openMenu}) {
@@ -15,7 +16,9 @@ function App({openMenu}) {
      <div className='app_container'>
      <Navbar isOpen={openMenu}/>
       <Dashboard isNavbarClose={openMenu} />
+ 
     </div>
+
     </>
   );
 }

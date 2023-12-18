@@ -1,6 +1,8 @@
 import React from "react";
 import "./Dashboard.css";
 import { IoNotificationsOutline } from "react-icons/io5";
+import Line from "../Line/Line";
+import Operator from "../Operator/Operator";
 
 export default function Dashboard({ isNavbarClose }) {
   // const dashboardStyle = {
@@ -11,7 +13,6 @@ export default function Dashboard({ isNavbarClose }) {
   //   transition: 'width 0.3s ease, margin-left 0.3s ease',
   // };
 
-  
   return (
     <div>
       {/* <div className={`${isNavbarClose ? 'dashboard_container':'shifted'}`}> */}
@@ -44,136 +45,71 @@ export default function Dashboard({ isNavbarClose }) {
 
       <div className="dashboard__container">
         <div className="dashboard_container_leftside">
-       <div>
-       <div>
-          <p className="dashboard_content">
-            Total Lines: <h4>7</h4>
-          </p>
-        </div>
-        <div className="dashboard_content_leftline">          
-        </div>
-       </div>
-        
-    <div>
-    <div>
-          <p className="dashboard_content">
-            Total Stations: <h4> 40</h4>
-          </p>
-        </div>
-        <div className="dashboard_content_leftline">          
-        </div>
-    </div>
+          <div>
+            <div>
+              <p className="dashboard_content">
+                Total Lines: <h4>7</h4>
+              </p>
+            </div>
+            <div className="dashboard_content_leftline"></div>
+          </div>
 
+          <div>
+            <div>
+              <p className="dashboard_content">
+                Total Stations: <h4> 40</h4>
+              </p>
+            </div>
+            <div className="dashboard_content_leftline"></div>
+          </div>
 
-     <div>
-     <div>
-          <p className="dashboard_content">
-            Active Stations: <h4> 8</h4>
-          </p>
+          <div>
+            <div>
+              <p className="dashboard_content">
+                Active Stations: <h4> 8</h4>
+              </p>
+            </div>
+            <div className="dashboard_content_leftline"></div>
+          </div>
         </div>
-        <div className="dashboard_content_leftline">          
-        </div>
-     </div>
-        </div>
-
 
         <div className="dasboard_container_rightside">
-        <div>
-        <div >
-          <p className="dashboard_content">
-            PARTS: <h4> 899/67</h4>
-          </p>
-        </div>
-        <div className="dashboard_content_rightline">          
-        </div>
-        </div>
-        <div>
-          <p className="dashboard_content">
-            <h4>140 passed</h4>
-          </p>
-        </div>
-        <div>
-          <p className="dashboard_content">
-            <h4>5 failed</h4>
-          </p>
-        </div>
-        <div>
-          <p className="dashboard_content">
-            <h4>15 filled</h4>
-          </p>
-        </div>
+          <div>
+            <div>
+              <p className="dashboard_content">
+                PARTS: <h4> 899/67</h4>
+              </p>
+            </div>
+            <div className="dashboard_content_rightline"></div>
+          </div>
+          <div>
+            <p className="dashboard_content">
+              <h4>140 passed</h4>
+            </p>
+          </div>
+          <div>
+            <p className="dashboard_content">
+              <h4>5 failed</h4>
+            </p>
+          </div>
+          <div>
+            <p className="dashboard_content">
+              <h4>15 filled</h4>
+            </p>
+          </div>
         </div>
       </div>
 
       <div className="dashboard_line"></div>
 
+      <Line />
+      <Operator />
 
+      <Line/>
+      <Operator/>
 
-{/* 2nd part */}
-
-      <div className="dashboard__below_container">
-        <div className="dashboard_container_leftbelowside">
-       <div>
-       <div>
-          <p className="dashboard_content">
-             <h4>Line 1</h4>
-          </p>
-        </div>
-        <div className="dashboard_content_leftbelowline">          
-        </div>
-       </div>
-        
-    <div>
-    <div>
-          <p className="dashboard_content">
-            <h4> 7 Stations</h4>
-          </p>
-        </div>
-        <div className="dashboard_content_leftbelowline">          
-        </div>
-    </div>
-
-
-     <div>
-     <div>
-          <p className="dashboard_content">
-           <h4> Part Number: Air9067</h4>
-          </p>
-        </div>
-        <div className="dashboard_content_leftbelowline">          
-        </div>
-     </div>
-        </div>
-
-
-        <div className="dasboard_container_rightside">
-        <div>
-        <div >
-          <p className="dashboard_content">
-            PARTS: <h4> 899/67</h4>
-          </p>
-        </div>
-        <div className="dashboard_content_rightline">          
-        </div>
-        </div>
-        <div>
-          <p className="dashboard_content">
-            <h4>140 passed</h4>
-          </p>
-        </div>
-        <div>
-          <p className="dashboard_content">
-            <h4>5 failed</h4>
-          </p>
-        </div>
-        <div>
-          <p className="dashboard_content">
-            <h4>15 filled</h4>
-          </p>
-        </div>
-        </div>
-      </div>
-      
+      <Line/>
+      <Operator/>
     </div>
   );
 }

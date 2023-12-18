@@ -11,8 +11,10 @@ nav{
     top:0;
     background-color: #2B3499;
     color:white;
-    height: 100vh;
+    height: 125%;
     width: 14rem;
+
+    position: fixed;
     position: absolute;
     padding: 3rem 2rem;
     font-family: 'Poppins', sans-serif;
