@@ -15,8 +15,7 @@ function App({openMenu}) {
      {/* <Login/> */}
      <div className='app_container'>
      <Navbar isOpen={openMenu}/>
-      <Dashboard isNavbarClose={openMenu} />
- 
+      <Dashboard isNavbarClose={openMenu} /> 
     </div>
 
     </>

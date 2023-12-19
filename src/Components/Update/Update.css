@@ -1,4 +1,138 @@
 .update_main{
-    margin-left: 15rem;
+    margin-left: 16rem;
+    margin-top: 1rem;
 }
 
+.update_linecontainer{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.update_add_btn{
+    background-color: var(--color-orange);
+    width: 12rem;
+    height: 2rem;
+    margin-left: 2rem;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;
+
+    /* margin-top: 1rem; */
+}
+
+.update_dropdown select{
+    width: 9rem;
+    height: 2rem;
+    border-radius: 10px;
+    padding-left: 1rem;
+    font-size:15px;
+    font-weight: 700;
+    border: 2px solid #ECECEC;
+    color:#4f4d4d
+}
+
+.update_add_btn button{
+    border:none;
+    background-color: var(--color-orange);
+    font-size: 15px;
+    font-weight: 500;
+    color: white;
+    padding: 5px;
+    font-family: var(--font-family);
+    cursor: pointer;
+
+}
+
+.update_plus{
+    background-color: white;
+    border-radius: 50%;
+    border: none;
+    padding: 4px;
+    font-size: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    color: var(--color-orange);
+    cursor: pointer;
+}
+
+.update_error{
+    margin-left: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.update_linecontainer2{
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.update_dropdown2 select{
+    width: 14rem;
+    height: 2rem;
+    border-radius: 10px;
+    padding-left: 1rem;
+    font-size:15px;
+    font-weight: 700;
+    border: 2px solid #ECECEC;
+    color:#4f4d4d;
+    margin-left: 2rem;
+}
+
+.update_regsave{
+    border: none;
+    padding: 4px;
+    font-size: 27px;
+    margin-left: 10px;
+    color: white;
+    cursor: pointer;
+}
+
+
+
+.update__btn{
+    background-color: var(--color-orange);
+    width: 10rem;
+    height: 2rem;
+    margin-left: 2rem;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;
+
+    /* margin-top: 1rem; */
+}
+
+
+.update__btn button{
+    border:none;
+    background-color: var(--color-orange);
+    font-size: 15px;
+    font-weight: 500;
+    color: white;
+    padding: 5px;
+    font-family: var(--font-family);
+    cursor: pointer;
+
+}
+
+.update_linecontainer3{
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.update__components{
+    margin-top: 2rem;
+    border: 2px solid blue;
+    width: 20vw;
+    height: 20vh;
+}
