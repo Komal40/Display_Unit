@@ -18,7 +18,10 @@ body {
 
 :root{
   --color-orange:#FF6C22;
-  --font-family: 'Poppins', sans-serif !important;
+  --color-skin:#FFD099;
+  --color-red:#F62828;
+  --color-green:#50BA4E;
+   --font-family: 'Poppins', sans-serif !important;
 }
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
