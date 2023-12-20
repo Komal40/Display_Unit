@@ -14,6 +14,7 @@ body {
   box-sizing: border-box;
   outline: 0;
   overflow-x: hidden;
+  font-family: var(--font-family);
 }
 
 :root{
@@ -21,6 +22,8 @@ body {
   --color-skin:#FFD099;
   --color-red:#F62828;
   --color-green:#50BA4E;
+  --color-blue:#2B3499;
+  --color-grey:#ECECEC;
    --font-family: 'Poppins', sans-serif !important;
 }
 code {

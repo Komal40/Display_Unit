@@ -135,7 +135,7 @@
     background-color: var(--color-skin);
     border-radius: 20px;
     width: 20vw;
-    height: 20vh;
+    height: 25vh;
     padding: 15px;
     overflow: hidden;
     margin-right: 2rem;
@@ -217,7 +217,7 @@
 
 .update_addSection{
     width: 6vw;
-    height: 20vh;
+    height: 25vh;
     background-color: var(--color-green);
     margin-top: 2rem;
     border-radius: 20px;
@@ -225,7 +225,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
 }
 
 
@@ -244,6 +243,7 @@
     color: white;
     font-size: 1.2rem;
 }
+
 
 
 

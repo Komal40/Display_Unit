@@ -4,6 +4,7 @@ import Line from "../Line/Line";
 import Operator from "../Operator/Operator";
 import DashboardR from "../DashboardR/DashboardR";
 
+
 export default function Dashboard({ isNavbarClose }) {
   // const dashboardStyle = {
   //   height: '4rem',

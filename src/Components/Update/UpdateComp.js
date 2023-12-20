@@ -12,10 +12,16 @@ export default function UpdateComp() {
             Operator&nbsp;&nbsp; <h4>Aman Verma</h4>
           </p>
           <p className="operator_content">
+            Operator Skill&nbsp;&nbsp; <h4>10</h4>
+          </p>
+          <p className="operator_content">
             Station&nbsp;&nbsp; <h4>145A</h4>
           </p>
           <p className="operator_content">
             Process &nbsp;&nbsp;<h4>Coating</h4>
+          </p>
+          <p className="operator_content">
+            Process Skill&nbsp;&nbsp; <h4>11</h4>
           </p>
         </div>
         <div className="update_below1_content">

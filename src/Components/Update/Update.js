@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Update.css";
 import Navbar from "../Navbar/Navbar";
 import Dashboard from "../Dashboard/Dashboard";
@@ -7,8 +7,26 @@ import { FaPlus } from "react-icons/fa6";
 import { FaRegSave } from "react-icons/fa";
 import UpdateComp from "./UpdateComp";
 import { PiPlusBold } from "react-icons/pi";
+import AddStation from "../AddStation/AddStation";
+
 
 export default function Update() {
+
+  const [showModel, setShowModel]=useState(false);
+
+  const openModal = ()=>{
+    setShowModel(true)
+  }
+
+  const closeModel=()=>{
+    setShowModel(false)
+  }
+
+  const addStation = () => {
+    openModal()
+    // alert('click')
+  };
+
   return (
     <>
       <div>
@@ -67,14 +85,14 @@ export default function Update() {
           <UpdateComp />
           <UpdateComp />
           <UpdateComp />
-
           <div className="update_addSection">
-            <PiPlusBold className="addstation" />
+            <PiPlusBold className="addstation" onClick={addStation} />
             <p className="addStation_text">Add</p>
             <p className="addStation_text">Station</p>
-
           </div>
         </div>
+
+        <AddStation showModel={showModel} closeModel={closeModel}/>
       </div>
     </>
   );
