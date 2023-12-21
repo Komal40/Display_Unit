@@ -3,6 +3,7 @@ import "./AddStation.css";
 import React, { useState } from "react";
 import { FaPlus } from "react-icons/fa6";
 import { RiSubtractLine } from "react-icons/ri";
+import { FaRegSave } from "react-icons/fa";
 
 
 const AddStationModal = ({ showModal, closeModal }) => {
@@ -63,6 +64,31 @@ const AddStationModal = ({ showModal, closeModal }) => {
             <input className="addstation_inputlabel" placeholder="Password"/>
           </div>
         </div>
+
+        <div className="addStations">
+          <div className="addstation_component">
+            <p className="addStaionName">Station Name&nbsp;&nbsp;<h4>1VF</h4></p>
+            <input className="addstation_inputlabel" placeholder="Operator Name"/>
+            <input className="addstation_inputlabel" placeholder="Operator Skill"/>
+            <div className="dropdown_addStation">
+              <select>
+                <option>Select Process</option>
+              </select>
+            </div>
+            <p>Required Skill</p>
+            <input className="addstation_inputlabel" placeholder="Password"/>
+          </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
     </div>
         
         <div>
@@ -72,11 +98,16 @@ const AddStationModal = ({ showModal, closeModal }) => {
       </div>
 
       <div className="addStationsBtn">
-        <button>
+        <button className="addstationcancelbtn">
             Cancel
         </button>
-        <button>Update</button>
+        <div className="update__btn">
+            <FaRegSave className="update_regsave" />
+            <span>
+              <button>Update</button>
+            </span>
       </div>
+    </div>
     </div>
   );
 };

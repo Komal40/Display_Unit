@@ -1,5 +1,5 @@
 .modal {
-    /* display: none; */
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -11,7 +11,6 @@
   .modal-content {
     background-color: #fefefe;
     border-radius: 20px;
-
 /* background-color: red; */
     margin: 15% auto;
     padding: 20px;
@@ -85,6 +84,7 @@
     display: flex;
     flex-wrap: wrap;
 }
+
 .dropdown_addStation select{
     margin-top: 1rem;
     width: 10rem;
@@ -107,9 +107,45 @@
 }
 
 
-.addStationsBtn{
-    
+.addStationsBtn {
+  position: absolute;
+  bottom: 5%;
+  right: 15%;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+
+
+  /* display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin-top: auto;
+  padding: 20px; */
 }
 
+
+
+
+.addStationsBtn button {
+  padding: 10px;
+  /* Add other styles as needed */
+}
+
+.addstationcancelbtn{
+  width: 8rem;
+  height: 2.3rem;
+  border-radius: 20px; 
+  background-color: white;
+  color: var(--color-orange);
+  border: 2px solid var(--color-orange);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: var(--font-family);
+}
 
 

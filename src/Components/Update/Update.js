@@ -23,7 +23,9 @@ export default function Update() {
   }
 
   const addStation = () => {
-    openModal()
+    // openModal()
+
+    setShowModel(true)
     // alert('click')
   };
 
@@ -92,7 +94,7 @@ export default function Update() {
           </div>
         </div>
 
-        <AddStation showModel={showModel} closeModel={closeModel}/>
+        <AddStation showModal={showModel} closeModal={closeModel}/>
       </div>
     </>
   );
