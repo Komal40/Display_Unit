@@ -8,6 +8,7 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Assign from './Components/Assign/Assign';
 import Timings from './Components/Timings/Timings';
 import Charts from './Components/Charts/Charts';
+import Login from './Components/Login/Login';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -20,6 +21,7 @@ root.render(
         <Route path='/assign' element={<Assign/>}/>
         <Route path='/timing' element={<Timings/>}/>
         <Route path='/chart' element={<Charts/>}/>
+        <Route path='/login' element={<Login/>}/>
         <Route path='/logout'/>
       </Routes>
     </Router>

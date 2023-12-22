@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import "./Login.css";
 import bg from "../../Images/bg.png";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [name, setName] = useState("");
   const [pass, setPass] = useState("");
   const [error, setError] = useState("");
   const [msg, setMsg] = useState("");
+
+  const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -21,6 +24,66 @@ export default function Login() {
       setPass("");
     } else {
       setError("Invalid Username and Password");
+    }
+  };
+
+  const clickLogin = async (e) => {
+    e.preventDefault();
+
+    try {
+      const params = new URLSearchParams();
+      params.append("username", name);
+      params.append("password", pass);
+      params.append("location", "gurugram");
+      
+      const response = await fetch("http://18.212.243.182:3000/floorincharge/login", {
+        method: "POST",
+        body: params,
+        headers: {
+          "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log(response, "respo");
+        navigate('/')
+      } else {
+        const errorData = await response.json();
+        setError(`Error: ${errorData.message}`);
+      }
+
+      // const response2 = await fetch(
+      //   "http://18.212.243.182:3000/floorincharge/login",
+      //   {
+      //     method: "POST",
+      //     body: JSON.stringify({
+      //       username: "amitkumar2",
+      //       password: "amitkumar",
+      //       location: "gurugram",
+      //     }),
+      //     headers: {
+      //       "Content-type": "application/json; charset=UTF-8",
+      //     },
+      //   }
+      // );
+
+      console.log(response);
+      if (response.ok) {
+        const data = await response.json();
+        console.log(response, "respo");
+        // navigate('/')
+        setError("");
+        setMsg("Login Successfully");
+        setName("");
+        setPass("");
+        // You can perform additional actions after a successful login
+      } else {
+        const errorData = await response.json();
+        setError(`Error: ${errorData.message}`);
+      }
+    } catch (error) {
+      console.error("Error galt id:");
+      setError("An unexpected error occurred");
     }
   };
 
@@ -53,14 +116,14 @@ export default function Login() {
             <div className="login_below_section">
               <h3>Enter Your Username and Password</h3>
               <div className="user_pass">
-                <form className="login_form" onSubmit={handleLogin}>
+                <form className="login_form" onSubmit={clickLogin}>
                   <div className="form_details">
                     <label htmlFor="name" className="user_label">
                       Username
                     </label>
                     <input
                       type="text"
-                      required
+                      // required
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                     />
@@ -70,7 +133,7 @@ export default function Login() {
                     </label>
                     <input
                       type="password"
-                      required
+                      // required
                       value={pass}
                       onChange={(e) => setPass(e.target.value)}
                     />
