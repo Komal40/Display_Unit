@@ -1,22 +1,23 @@
-// AddStationModal.js
-import "./AddStation.css";
-import React, { useState } from "react";
+import React, { useState } from 'react'
+import './AddLine.css'
 import { FaPlus } from "react-icons/fa6";
-import { RiSubtractLine } from "react-icons/ri";
 import { FaRegSave } from "react-icons/fa";
+import { PiPlusBold } from "react-icons/pi";
+import { RiSubtractLine } from "react-icons/ri";
 
+export default function AddLine({showModal, closeModal}) {
 
-const AddStationModal = ({ showModal, closeModal }) => {
-  const [count, setCount] = useState(0);
+    const [count, setCount] = useState(0);
 
-  const subCount = () => {
-    if (count == 0) return;
-    setCount((prevCount) => prevCount - 1);
-  };
+    const subCount = () => {
+      if (count == 0) return;
+      setCount((prevCount) => prevCount - 1);
+    };
+  
+    const addCount = () => {
+      setCount((prevCount) => prevCount + 1);
+    };
 
-  const addCount = () => {
-    setCount((prevCount) => prevCount + 1);
-  };
 
   return (
     <div className={`modal ${showModal ? "show" : ""}`}>
@@ -28,12 +29,18 @@ const AddStationModal = ({ showModal, closeModal }) => {
         <div>
           <div>
             <p>
-              <h4>Add New Station</h4>
+              <h4>Add New Line</h4>
             </p>
           </div>
           <div className="dashboard_content_leftline"></div>
         </div>
 
+    <div className='newLine_dropdown'>
+   
+<div className='newLineinput'>
+<input placeholder='Part Number'/>
+</div>
+            
         <div className="addnostation">
           <p>Number of Stations </p>
           <div>
@@ -46,6 +53,7 @@ const AddStationModal = ({ showModal, closeModal }) => {
             <FaPlus className="subSign" onClick={() => addCount()} />
           </div>
         </div>
+    </div>
 
         {/* components */}
 
@@ -54,14 +62,13 @@ const AddStationModal = ({ showModal, closeModal }) => {
           <div className="addstation_component">
             <p className="addStaionName">Station Name&nbsp;&nbsp;<h4>1VF</h4></p>
             <input className="addstation_inputlabel" placeholder="Operator Name"/>
-            <input className="addstation_inputlabel" placeholder="Operator Skill"/>
+        
             <div className="dropdown_addStation">
               <select>
                 <option>Select Process</option>
               </select>
             </div>
-            <p>Required Skill</p>
-            <input className="addstation_inputlabel" placeholder="Password"/>
+            
           </div>
         </div>
 
@@ -69,28 +76,39 @@ const AddStationModal = ({ showModal, closeModal }) => {
           <div className="addstation_component">
             <p className="addStaionName">Station Name&nbsp;&nbsp;<h4>1VF</h4></p>
             <input className="addstation_inputlabel" placeholder="Operator Name"/>
-            <input className="addstation_inputlabel" placeholder="Operator Skill"/>
+        
             <div className="dropdown_addStation">
               <select>
                 <option>Select Process</option>
               </select>
             </div>
-            <p>Required Skill</p>
-            <input className="addstation_inputlabel" placeholder="Password"/>
+            
           </div>
         </div>
-
+        <div className="addStations">
+          <div className="addstation_component">
+            <p className="addStaionName">Station Name&nbsp;&nbsp;<h4>1VF</h4></p>
+            <input className="addstation_inputlabel" placeholder="Operator Name"/>
+        
+            <div className="dropdown_addStation">
+              <select>
+                <option>Select Process</option>
+              </select>
+            </div>
+            
+          </div>
+        </div>
         
     </div>
         
-        
-        <div>
+    <div>
             <p>Error Message</p>
         </div>
+       
 
       </div>
 
-      <div className="addStationsBtn">
+      <div className="addStationsBtnLine">
         <button className="addstationcancelbtn">
             Cancel
         </button>
@@ -102,7 +120,5 @@ const AddStationModal = ({ showModal, closeModal }) => {
       </div>
     </div>
     </div>
-  );
-};
-
-export default AddStationModal;
+  )
+}

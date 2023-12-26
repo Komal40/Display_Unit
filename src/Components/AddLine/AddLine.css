@@ -1,0 +1,28 @@
+.addStationsBtnLine {
+    position: absolute;
+    bottom: 5%;
+    right: 15%;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.newLine_dropdown{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.newLineinput{
+    padding-top: 2rem;
+    padding-left: 15px;
+}
+
+.newLineinput input{
+    width: 12rem;
+    height: 2rem;
+    margin-right: 5rem;
+    padding-left: 10px;
+    border: 2px solid var(--color-grey);
+    border-radius: 8px;
+}

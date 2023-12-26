@@ -123,6 +123,35 @@
 
 }
 
+
+.updates__cont{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+.updateparts__btn{
+    margin-right: 20rem;
+}
+
+
+.updateparts__btn button{
+    background-color: var(--color-orange);
+    width: 8rem;
+    height: 2.3rem;
+    margin-left: 2rem;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    color: white;
+    /* margin-top: 1rem; */
+}
+
 .update_linecontainer3{
     margin-top: 2rem;
     display: flex;

@@ -8,11 +8,13 @@ import { FaRegSave } from "react-icons/fa";
 import UpdateComp from "./UpdateComp";
 import { PiPlusBold } from "react-icons/pi";
 import AddStation from "../AddStation/AddStation";
+import AddLine from "../AddLine/AddLine";
 
 
 export default function Update() {
 
   const [showModel, setShowModel]=useState(false);
+  const [showLine, setShowLine]=useState(false)
 
   const openModal = ()=>{
     setShowModel(true)
@@ -29,6 +31,13 @@ export default function Update() {
     // alert('click')
   };
 
+  const addLine=()=>{
+    setShowLine(true)
+  }
+  const closeLine=()=>{
+    setShowLine(false)
+  }
+
   return (
     <>
       <div>
@@ -39,7 +48,8 @@ export default function Update() {
       </div>
 
       <div className="update_main">
-        <div className="update_linecontainer">
+<div className="updates__cont">
+<div className="update_linecontainer">
           <div className="update_dropdown">
             <select>
               <option>Line 1</option>
@@ -47,7 +57,7 @@ export default function Update() {
             </select>
           </div>
           <div className="update_add_btn">
-            <FaPlus className="update_plus" />
+            <FaPlus className="update_plus" onClick={addLine}/>
             <span>
               <button>Add New Line</button>
             </span>
@@ -56,7 +66,18 @@ export default function Update() {
           <div className="update_error">
             <h5>Error Message: </h5>
           </div>
+
+      </div>
+
+      <div className="updateparts__btn">            
+            <span>
+              <button >Update Parts</button>
+            </span>
         </div>
+</div>
+
+   
+
 
         <div className="update_linecontainer2">
           <div>
@@ -93,7 +114,7 @@ export default function Update() {
             <p className="addStation_text">Station</p>
           </div>
         </div>
-
+<AddLine showModal={showLine} closeModal={closeLine}/>
         <AddStation showModal={showModel} closeModal={closeModel}/>
       </div>
     </>

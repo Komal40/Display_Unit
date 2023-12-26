@@ -46,7 +46,7 @@ export default function Login() {
       if (response.ok) {
         const data = await response.json();
         console.log(response, "respo");
-        navigate('/')
+        // navigate('/')
       } else {
         const errorData = await response.json();
         setError(`Error: ${errorData.message}`);

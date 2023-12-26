@@ -29,8 +29,12 @@ export default function Navbar() {
         <div className={closeMenu?'content_container_active':'content_container'}>
         <ul >
             <li><HashLink to='/' className='dashboard_items'>DASHBOARD</HashLink></li>
-            <li><HashLink to='/update' className='dashboard_items'>UPDATE FLOOR</HashLink></li>
-            <li><HashLink to='/assign' className='dashboard_items'> ASSIGN PARTS</HashLink></li>
+            {/* <li><HashLink to='/update' className='dashboard_items'>UPDATE FLOOR</HashLink></li>
+            <li><HashLink to='/assign' className='dashboard_items'> ASSIGN PARTS</HashLink></li> */}
+            <li><HashLink to='/update' className='dashboard_items'>LINES</HashLink></li>
+            <li><HashLink className='dashboard_items'>TASK</HashLink></li>
+            <li><HashLink className='dashboard_items'>PART</HashLink></li>
+            <li><HashLink className='dashboard_items'>PROCESS</HashLink></li>
             <li><HashLink to='/timing' className='dashboard_items'>TIMINGS</HashLink></li>
             <li><HashLink className='dashboard_items' to='/chart'>GENERATE CHART</HashLink></li>
             <li><HashLink className='dashboard_items'>ACCOUNT</HashLink></li>
