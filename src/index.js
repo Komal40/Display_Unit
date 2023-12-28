@@ -9,22 +9,27 @@ import Assign from './Components/Assign/Assign';
 import Timings from './Components/Timings/Timings';
 import Charts from './Components/Charts/Charts';
 import Login from './Components/Login/Login';
+import { UserProvider } from './UserContext';
+import UpFloor from './Components/UpFloor/UpFloor';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    <UserProvider>
     <Router>
       <Routes>
-        <Route path='/' element={<App/>}/>
-        <Route path='/update' element={<Update/>}/>
+      <Route path='/' element={<Login/>}/>
+        <Route path='/app' element={<App/>}/>
+        <Route path='/update' element={<UpFloor/>}/>
+        <Route path='/upFloor' element={<Update/>}/>
         <Route path='/assign' element={<Assign/>}/>
         <Route path='/timing' element={<Timings/>}/>
         <Route path='/chart' element={<Charts/>}/>
-        <Route path='/login' element={<Login/>}/>
         <Route path='/logout'/>
       </Routes>
     </Router>
+    </UserProvider>
   </React.StrictMode>
 );
 

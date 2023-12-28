@@ -1,29 +1,102 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { IoNotificationsOutline } from "react-icons/io5";
+import { useLocation } from "react-router-dom";
+import { useUser } from "../../UserContext";
 
 
 export default function DashboardR() {
+  const location = useLocation();
+  const { responseData } = location.state || {};
+  const [apiData, setApiData] = useState(null);
+  const { userData } = useUser();
+  const codeData = userData.logindata;
+
+  const currentDate = new Date();
+
+  // Get the date components
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth() + 1; // Months are zero-indexed
+  const day = currentDate.getDate();
+  
+  // Get the time components
+  const hours = currentDate.getHours();
+  const minutes = currentDate.getMinutes();
+  const seconds = currentDate.getSeconds();
+  const monthName = currentDate.toLocaleString('en-US', { month: 'long' });
+  const formattedDateTime = `${day} ${monthName} : ${hours}:${minutes}:${seconds}`;
+  
+  // console.log('Current Date and Time:', formattedDateTime);
+
+  
+
+  useEffect(() => {
+    // console.log("userData", userData)
+
+    // console.log("codeData", codeData);
+
+    const fetchData = async () => {
+      const link = process.env.REACT_APP_BASE_URL;
+      console.log('Base URL:', link);
+      const endPoint = '/user/loginadmin';
+      const fullLink = link + endPoint;
+
+      try {
+        const params = new URLSearchParams();
+        // params.append("employee_code", responseData.employee_code);
+        // params.append("password", responseData.password);
+
+        const response = await fetch(fullLink, {
+          method: "POST",
+          body: params,
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+          },
+        });
+        // const rawData = await response.text(); // Log the raw data
+        // console.log('Raw API Response:', rawData);
+        // const { codeData } = userData.logindata;
+        // console.log("codeData", codeData);
+        if (response.ok) {
+          const data = await response.json();
+          setApiData(data); // Store the fetched data in state
+          console.log("API Response:", data);
+        } else {
+          const errorData = await response.json();
+          console.error("API Error:", errorData);
+        }
+      } catch (error) {
+        console.error("Error galt id:", error);
+      }
+    };
+
+    fetchData();
+
+  }, [userData]);
+
+
+
+
   return (
     <div>
       <div className="dashboard_container">
         <div className="dashboard_navbar">
           <div>
             <p className="dashboard_content">
-              Name: <h4>Arun Sharma</h4>
+              Name: <h4>{codeData.first_name+" "+codeData.last_name}</h4>
             </p>
           </div>
           <div>
             <p className="dashboard_content">
-              Device Id: <h4> 106677</h4>
+              Device Id: <h4>{}</h4>
             </p>
           </div>
           <div>
             <p className="dashboard_content">
-              User Id:<h4> 896557</h4>
+              User Id:<h4>{codeData.employee_code}</h4>
             </p>
           </div>
           <div>
-            <p className="dashboard_content">2nd october : 12:06:09</p>
+            <p className="dashboard_content">{formattedDateTime}</p>
           </div>
           <div className="dashboard_content">
             <IoNotificationsOutline className="bell" />

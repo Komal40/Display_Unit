@@ -2,76 +2,78 @@ import React, { useState } from "react";
 import "./Login.css";
 import bg from "../../Images/bg.png";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../../UserContext";
+
 
 export default function Login() {
   const [name, setName] = useState("");
   const [pass, setPass] = useState("");
   const [error, setError] = useState("");
   const [msg, setMsg] = useState("");
-
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
-    e.preventDefault();
 
-    // Check if the username and password are valid
-    if (name === "validUsername" && pass === "validPassword") {
-      // If valid, you can navigate or perform other actions
-      console.log("Login successful");
-      setError("");
-      setMsg("Login Successfully");
-      setName("");
-      setPass("");
-    } else {
-      setError("Invalid Username and Password");
-    }
-  };
+  const { setUserDataContext } = useUser();
+
+  // const handleLogin = (e) => {
+  //   e.preventDefault();
+
+  //   // Check if the username and password are valid
+  //   if (name == {name} && pass == {pass}) {
+  //     // If valid, you can navigate or perform other actions
+  //     console.log("Login successful");
+  //     setError("");
+  //     setMsg("Login Successfully");
+  //     setName("");
+  //     setPass("");
+  //   } else {
+  //     setError("Invalid Username and Password");
+  //   }
+  // };
 
   const clickLogin = async (e) => {
     e.preventDefault();
+  
+    const link=process.env.REACT_APP_BASE_URL
+    console.log('Base URL:', link);
+    const endPoint='/user/loginadmin'
+    const fullLink=link+endPoint
 
     try {
       const params = new URLSearchParams();
-      params.append("username", name);
+      params.append("employee_code", name);
       params.append("password", pass);
-      params.append("location", "gurugram");
+
+      // "building_id": "1",
+      //   "employee_code": "E01",
+      //   "first_name": "Rahul",
+      //   "floor_id": "1",
+      //   "last_name": "Dev",
+      //   "password": "amzi2"
       
-      const response = await fetch("http://18.212.243.182:3000/floorincharge/login", {
+      const response = await fetch(`${fullLink}`, {
         method: "POST",
         body: params,
         headers: {
           "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
         },
       });
+      
+      // if (response.ok) {
+      //   const data = await response.json();
+      //   console.log(response, "respo");
+      //   // navigate('/')
+      // } else {
+      //   const errorData = await response.json();
+      //   setError(`Error: ${errorData.message}`);
+      // }
+
+     
       if (response.ok) {
         const data = await response.json();
         console.log(response, "respo");
-        // navigate('/')
-      } else {
-        const errorData = await response.json();
-        setError(`Error: ${errorData.message}`);
-      }
-
-      // const response2 = await fetch(
-      //   "http://18.212.243.182:3000/floorincharge/login",
-      //   {
-      //     method: "POST",
-      //     body: JSON.stringify({
-      //       username: "amitkumar2",
-      //       password: "amitkumar",
-      //       location: "gurugram",
-      //     }),
-      //     headers: {
-      //       "Content-type": "application/json; charset=UTF-8",
-      //     },
-      //   }
-      // );
-
-      console.log(response);
-      if (response.ok) {
-        const data = await response.json();
-        console.log(response, "respo");
-        // navigate('/')
+        setUserDataContext(data); 
+        navigate('/app')
         setError("");
         setMsg("Login Successfully");
         setName("");
@@ -111,6 +113,7 @@ export default function Login() {
             <div className="dropdown">
               <select>
                 <option>Admin</option>
+                <option>Super Admin</option>
               </select>
             </div>
             <div className="login_below_section">
