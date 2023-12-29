@@ -28,7 +28,7 @@ export default function Navbar() {
      <div><FaArrowRight onClick={()=>handleClick()} className={closeMenu?'right_arrow_active':'right_arrow'} /></div>
         <div className={closeMenu?'content_container_active':'content_container'}>
         <ul >
-            <li><HashLink to='/' className='dashboard_items'>DASHBOARD</HashLink></li>
+            <li><HashLink to='/app' className='dashboard_items'>DASHBOARD</HashLink></li>
             {/* <li><HashLink to='/update' className='dashboard_items'>UPDATE FLOOR</HashLink></li>
             <li><HashLink to='/assign' className='dashboard_items'> ASSIGN PARTS</HashLink></li> */}
             <li><HashLink to='/update' className='dashboard_items'>LINES</HashLink></li>

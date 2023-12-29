@@ -10,33 +10,31 @@ import { PiPlusBold } from "react-icons/pi";
 import AddStation from "../AddStation/AddStation";
 import AddLine from "../AddLine/AddLine";
 
-
 export default function Update() {
+  const [showModel, setShowModel] = useState(false);
+  const [showLine, setShowLine] = useState(false);
 
-  const [showModel, setShowModel]=useState(false);
-  const [showLine, setShowLine]=useState(false)
+  const openModal = () => {
+    setShowModel(true);
+  };
 
-  const openModal = ()=>{
-    setShowModel(true)
-  }
-
-  const closeModel=()=>{
-    setShowModel(false)
-  }
+  const closeModel = () => {
+    setShowModel(false);
+  };
 
   const addStation = () => {
     // openModal()
 
-    setShowModel(true)
+    setShowModel(true);
     // alert('click')
   };
 
-  const addLine=()=>{
-    setShowLine(true)
-  }
-  const closeLine=()=>{
-    setShowLine(false)
-  }
+  const addLine = () => {
+    setShowLine(true);
+  };
+  const closeLine = () => {
+    setShowLine(false);
+  };
 
   return (
     <>
@@ -48,36 +46,32 @@ export default function Update() {
       </div>
 
       <div className="update_main">
-<div className="updates__cont">
-<div className="update_linecontainer">
-          <div className="update_dropdown">
-            <select>
-              <option>Line 1</option>
-              <option>Line 2</option>
-            </select>
+        <div className="updates__cont">
+          <div className="update_linecontainer">
+            <div className="update_dropdown">
+              <select>
+                <option>Line 1</option>
+                <option>Line 2</option>
+              </select>
+            </div>
+            <div className="update_add_btn">
+              <FaPlus className="update_plus" onClick={addLine} />
+              <span>
+                <button>Add New Line</button>
+              </span>
+            </div>
+
+            <div className="update_error">
+              <h5>Error Message: </h5>
+            </div>
           </div>
-          <div className="update_add_btn">
-            <FaPlus className="update_plus" onClick={addLine}/>
+
+          <div className="updateparts__btn">
             <span>
-              <button>Add New Line</button>
+              <button>Update Parts</button>
             </span>
           </div>
-
-          <div className="update_error">
-            <h5>Error Message: </h5>
-          </div>
-
-      </div>
-
-      <div className="updateparts__btn">            
-            <span>
-              <button >Update Parts</button>
-            </span>
         </div>
-</div>
-
-   
-
 
         <div className="update_linecontainer2">
           <div>
@@ -114,8 +108,8 @@ export default function Update() {
             <p className="addStation_text">Station</p>
           </div>
         </div>
-<AddLine showModal={showLine} closeModal={closeLine}/>
-        <AddStation showModal={showModel} closeModal={closeModel}/>
+        <AddLine showModal={showLine} closeModal={closeLine} />
+        <AddStation showModal={showModel} closeModal={closeModel} />
       </div>
     </>
   );

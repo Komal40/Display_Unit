@@ -58,7 +58,7 @@ export default function Login() {
           "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
         },
       });
-      
+
       // if (response.ok) {
       //   const data = await response.json();
       //   console.log(response, "respo");
@@ -82,10 +82,13 @@ export default function Login() {
       } else {
         const errorData = await response.json();
         setError(`Error: ${errorData.message}`);
+      navigate('/')
+
       }
     } catch (error) {
       console.error("Error galt id:");
       setError("An unexpected error occurred");
+      // navigate('/')
     }
   };
 
