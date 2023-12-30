@@ -42,8 +42,6 @@ export default function DashboardR() {
 
       try {
         const params = new URLSearchParams();
-        // params.append("employee_code", responseData.employee_code);
-        // params.append("password", responseData.password);
 
         const response = await fetch(fullLink, {
           method: "POST",
@@ -52,13 +50,10 @@ export default function DashboardR() {
             "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
           },
         });
-        // const rawData = await response.text(); // Log the raw data
-        // console.log('Raw API Response:', rawData);
-        // const { codeData } = userData.logindata;
-        // console.log("codeData", codeData);
+
         if (response.ok) {
           const data = await response.json();
-          setApiData(data); // Store the fetched data in state
+          setApiData(data);
           console.log("API Response:", data);
         } else {
           const errorData = await response.json();
@@ -72,6 +67,9 @@ export default function DashboardR() {
     fetchData();
 
   }, [userData]);
+
+
+
 
 
 

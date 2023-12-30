@@ -9,8 +9,8 @@ import { useUser } from '../../UserContext';
 
 export default function UpFloor() {
 
-  const {setNumberOfLines}=useUser()
-  const {lines}=useUser()
+  const { userData } = useUser();
+  const codeData = userData.logindata;
 
 
   useEffect(() => {
@@ -19,15 +19,14 @@ export default function UpFloor() {
     // console.log("codeData", codeData);
 
     const fetchData = async () => {
-      const link = process.env.REACT_APP_FLOOR_LINE;
+      const link = process.env.REACT_APP_BASE_URL;
       console.log('Base URL:', link);
       const endPoint = '/floor/getfloor';
       const fullLink = link + endPoint;
 
       try {
         const params = new URLSearchParams();
-        // params.append("employee_code", responseData.employee_code);
-        // params.append("password", responseData.password);
+        params.append("floor_id", codeData.floor_id);
 
         const response = await fetch(fullLink, {
           method: "POST",
@@ -37,9 +36,11 @@ export default function UpFloor() {
           },
         });
 
-        if (response.ok) {
+// console.log("floor_id", codeData.floor_id);
+
+        if (response) {
           const data = await response.json();
-          setNumberOfLines(data); // Store the fetched data in state
+          // setNumberOfLines(data); // Store the fetched data in state
           console.log("API Response:", data);
          
         } else {

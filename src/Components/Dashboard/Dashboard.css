@@ -5,6 +5,15 @@
     margin-left: 10.5rem;
 }
 
+.operator_cont{
+    display: flex;
+    margin-left: 15rem;
+}
+
+.dashboard_stations{
+    margin-left: 15rem;
+
+}
 .dashboard_navbar{
     display: flex;
     justify-content: space-evenly;

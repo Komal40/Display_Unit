@@ -14,7 +14,7 @@ nav{
     height: 125%;
     width: 14rem;
     position: fixed;
-    position: absolute;
+    /* position: absolute; */
     padding: 2rem 1rem;
     font-family: 'Poppins', sans-serif;
     font-family: 'Roboto', sans-serif;
