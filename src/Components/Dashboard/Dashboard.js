@@ -3,9 +3,14 @@ import "./Dashboard.css";
 import Line from "../Line/Line";
 import Operator from "../Operator/Operator";
 import DashboardR from "../DashboardR/DashboardR";
+import { useUser } from "../../UserContext";
+
 
 export default function Dashboard({ isNavbarClose }) {
   const [arr, setArr] = useState([]);
+  
+  const { userData } = useUser();
+  const codeData = userData.logindata;
 
   useEffect(() => {
     // console.log("userData", userData)
@@ -17,9 +22,14 @@ export default function Dashboard({ isNavbarClose }) {
       console.log("Base URL:", link);
       const endPoint = "/stations/getstations";
       const fullLink = link + endPoint;
+     
+
+      
 
       try {
         const params = new URLSearchParams();
+        params.append("floor_id", codeData.floor_id);
+      
 
         const response = await fetch(fullLink, {
           method: "POST",
@@ -90,3 +100,5 @@ export default function Dashboard({ isNavbarClose }) {
     </div>
   );
 }
+
+
