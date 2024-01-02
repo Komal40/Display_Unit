@@ -15,22 +15,6 @@ export default function Login() {
 
   const { setUserDataContext } = useUser();
 
-  // const handleLogin = (e) => {
-  //   e.preventDefault();
-
-  //   // Check if the username and password are valid
-  //   if (name == {name} && pass == {pass}) {
-  //     // If valid, you can navigate or perform other actions
-  //     console.log("Login successful");
-  //     setError("");
-  //     setMsg("Login Successfully");
-  //     setName("");
-  //     setPass("");
-  //   } else {
-  //     setError("Invalid Username and Password");
-  //   }
-  // };
-
   const clickLogin = async (e) => {
     e.preventDefault();
   

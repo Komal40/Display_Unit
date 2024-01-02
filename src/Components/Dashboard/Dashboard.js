@@ -12,25 +12,18 @@ export default function Dashboard({ isNavbarClose }) {
   const { userData } = useUser();
   const codeData = userData.logindata;
 
+  const {lines} = useState();
+
   useEffect(() => {
-    // console.log("userData", userData)
-
-    // console.log("codeData", codeData);
-
     const fetchData = async () => {
       const link = process.env.REACT_APP_BASE_URL;
-      console.log("Base URL:", link);
       const endPoint = "/stations/getstations";
       const fullLink = link + endPoint;
-     
-
-      
-
+  
       try {
         const params = new URLSearchParams();
         params.append("floor_id", codeData.floor_id);
-      
-
+  
         const response = await fetch(fullLink, {
           method: "POST",
           body: params,
@@ -38,10 +31,9 @@ export default function Dashboard({ isNavbarClose }) {
             "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
           },
         });
-
+  
         if (response.ok) {
           const data = await response.json();
-          // setApiData(data);
           console.log("StationData", data);
           setArr(data.stationdata);
         } else {
@@ -52,10 +44,19 @@ export default function Dashboard({ isNavbarClose }) {
         console.error("Error galt id:", error);
       }
     };
-
-    fetchData();
+  
+    // Introduce a delay of 3 seconds (3000 milliseconds)
+    const delay = 3000;
+    const timeoutId = setTimeout(() => {
+      fetchData();
+    }, delay);
+  
+    // Cleanup function to clear the timeout in case the component unmounts
+    return () => clearTimeout(timeoutId);
+  
+    // Dependency array is empty to run the effect only once
   }, []);
-
+  
   return (
     <div>
       {/* <div className={`${isNavbarClose ? 'dashboard_container':'shifted'}`}> */}
@@ -71,7 +72,7 @@ export default function Dashboard({ isNavbarClose }) {
           <div className="operator_container1">
             <div>
               <p className="operator_content">
-                Operator&nbsp;&nbsp; <h4>{item.e_one}</h4>
+                Operator&nbsp;&nbsp; <h4>{item.e_one_name}</h4>
               </p>
               <p className="operator_content">
                 Min Skill &nbsp;&nbsp;<h4>{item.e_two}</h4>

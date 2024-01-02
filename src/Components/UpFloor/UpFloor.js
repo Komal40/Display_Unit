@@ -1,27 +1,26 @@
-import React, { useEffect } from 'react'
-import './UpFloor.css'
+import React, { useEffect } from "react";
+import "./UpFloor.css";
 import { FaPlus } from "react-icons/fa6";
-import AddLine from '../AddLine/AddLine';
-import Navbar from '../Navbar/Navbar';
-import DashboardR from '../DashboardR/DashboardR';
-import { useUser } from '../../UserContext';
-
+import AddLine from "../AddLine/AddLine";
+import Navbar from "../Navbar/Navbar";
+import DashboardR from "../DashboardR/DashboardR";
+import { useUser } from "../../UserContext";
 
 export default function UpFloor() {
-
   const { userData } = useUser();
   const codeData = userData.logindata;
 
+  const { setNumberOfLines } = useUser();
 
   useEffect(() => {
     // console.log("lines", lines)
 
-    // console.log("codeData", codeData);
+    // console.log("codeData", );
 
     const fetchData = async () => {
       const link = process.env.REACT_APP_BASE_URL;
-      console.log('Base URL:', link);
-      const endPoint = '/floor/getfloor';
+      console.log("Base URL:", link);
+      const endPoint = "/floor/getfloor";
       const fullLink = link + endPoint;
 
       try {
@@ -36,13 +35,12 @@ export default function UpFloor() {
           },
         });
 
-// console.log("floor_id", codeData.floor_id);
+        // console.log("floor_id", codeData.floor_id);
 
         if (response) {
           const data = await response.json();
-          // setNumberOfLines(data); // Store the fetched data in state
+          setNumberOfLines(codeData.number_of_lines); // Store the fetched data in state
           console.log("API Response:", data);
-         
         } else {
           const errorData = await response.json();
           console.error("API Error:", errorData);
@@ -53,19 +51,18 @@ export default function UpFloor() {
     };
 
     fetchData();
-
   }, []);
 
   return (
     <div>
-        <div>
-            <Navbar/>
-        </div>
-        <div>
-            <DashboardR/>
-        </div>
+      <div>
+        <Navbar />
+      </div>
+      <div>
+        <DashboardR />
+      </div>
       <div className="updatesFloor__cont">
-<div className="update_linecontainer">
+        <div className="update_linecontainer">
           <div className="update_dropdown">
             <select>
               <option>Select Line</option>
@@ -82,14 +79,14 @@ export default function UpFloor() {
           <div className="update_error">
             <h5>Error Message: </h5>
           </div>
-      </div>
-
-      <div className="updateparts__btn">            
-            <span>
-              <button >Update Parts</button>
-            </span>
         </div>
-</div>
+
+        <div className="updateparts__btn">
+          <span>
+            <button>Update Parts</button>
+          </span>
+        </div>
+      </div>
     </div>
-  )
+  );
 }
