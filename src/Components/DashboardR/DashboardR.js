@@ -24,56 +24,7 @@ export default function DashboardR() {
   const seconds = currentDate.getSeconds();
   const monthName = currentDate.toLocaleString('en-US', { month: 'long' });
   const formattedDateTime = `${day} ${monthName} : ${hours}:${minutes}:${seconds}`;
-  
-  // console.log('Current Date and Time:', formattedDateTime);
-
-  
-
-  useEffect(() => {
-    // console.log("userData", userData)
-
-    // console.log("codeData", codeData);
-
-    const fetchData = async () => {
-      const link = process.env.REACT_APP_BASE_URL;
-      console.log('Base URL:', link);
-      const endPoint = '/user/loginadmin';
-      const fullLink = link + endPoint;
-
-      try {
-        const params = new URLSearchParams();
-
-        const response = await fetch(fullLink, {
-          method: "POST",
-          body: params,
-          headers: {
-            "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-          },
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          setApiData(data);
-          console.log("API Response:", data);
-        } else {
-          const errorData = await response.json();
-          console.error("API Error:", errorData);
-        }
-      } catch (error) {
-        console.error("Error galt id:", error);
-      }
-    };
-
-    fetchData();
-
-  }, [userData]);
-
-
-
-
-
-
-
+ 
   return (
     <div>
       <div className="dashboard_container">

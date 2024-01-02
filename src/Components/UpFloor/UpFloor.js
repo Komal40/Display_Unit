@@ -6,52 +6,10 @@ import Navbar from "../Navbar/Navbar";
 import DashboardR from "../DashboardR/DashboardR";
 import { useUser } from "../../UserContext";
 
+
 export default function UpFloor() {
   const { userData } = useUser();
   const codeData = userData.logindata;
-
-  const { setNumberOfLines } = useUser();
-
-  useEffect(() => {
-    // console.log("lines", lines)
-
-    // console.log("codeData", );
-
-    const fetchData = async () => {
-      const link = process.env.REACT_APP_BASE_URL;
-      console.log("Base URL:", link);
-      const endPoint = "/floor/getfloor";
-      const fullLink = link + endPoint;
-
-      try {
-        const params = new URLSearchParams();
-        params.append("floor_id", codeData.floor_id);
-
-        const response = await fetch(fullLink, {
-          method: "POST",
-          body: params,
-          headers: {
-            "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-          },
-        });
-
-        // console.log("floor_id", codeData.floor_id);
-
-        if (response) {
-          const data = await response.json();
-          setNumberOfLines(codeData.number_of_lines); // Store the fetched data in state
-          console.log("API Response:", data);
-        } else {
-          const errorData = await response.json();
-          console.error("API Error:", errorData);
-        }
-      } catch (error) {
-        console.error("Error galt id:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   return (
     <div>

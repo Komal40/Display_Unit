@@ -8,11 +8,10 @@ import { useUser } from "../../UserContext";
 
 export default function Dashboard({ isNavbarClose }) {
   const [arr, setArr] = useState([]);
+  const [line, setLine] = useState(0);
   
   const { userData } = useUser();
   const codeData = userData.logindata;
-
-  const {lines} = useState();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,7 +33,7 @@ export default function Dashboard({ isNavbarClose }) {
   
         if (response.ok) {
           const data = await response.json();
-          console.log("StationData", data);
+          console.log("StationData", data);     
           setArr(data.stationdata);
         } else {
           const errorData = await response.json();
@@ -46,25 +45,76 @@ export default function Dashboard({ isNavbarClose }) {
     };
   
     // Introduce a delay of 3 seconds (3000 milliseconds)
-    const delay = 3000;
-    const timeoutId = setTimeout(() => {
+  
       fetchData();
-    }, delay);
-  
-    // Cleanup function to clear the timeout in case the component unmounts
-    return () => clearTimeout(timeoutId);
-  
+
+
     // Dependency array is empty to run the effect only once
   }, []);
   
+
+  
+  useEffect(() => {
+    // console.log("lines", lines)
+
+    // console.log("codeData", );
+
+    const fetchData = async () => {
+      const link = process.env.REACT_APP_BASE_URL;
+      console.log("Base URL:", link);
+      const endPoint = "/floor/getfloor";
+      const fullLink = link + endPoint;
+
+      try {
+        const params = new URLSearchParams();
+        params.append("floor_id", codeData.floor_id);
+
+        const response = await fetch(fullLink, {
+          method: "POST",
+          body: params,
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+          },
+        });
+
+        console.log("floor-id", codeData.floor_id);
+
+        if (response) {
+          const data = await response.json();
+          // console.log("response", response)
+          const line_num=data.floordata.number_of_lines
+          // console.log(data)
+          console.log("number of lines ",line_num );
+          setLine(line_num)
+          console.log(line)
+        } else {
+          const errorData = await response.json();
+          console.error("API Error:", errorData);
+        }
+      } catch (error) {
+        console.error("Error galt id:", error);
+      }
+    };
+
+      fetchData();
+  
+  }, []);
+  
+
+
+
+
   return (
     <div>
       {/* <div className={`${isNavbarClose ? 'dashboard_container':'shifted'}`}> */}
       {/* <div style={dashboardStyle}> */}
 
       <DashboardR />
-      <Line />
-     
+       {[...Array(line)].map((_, index) => (
+        <Line/>
+      ))} 
+   
+
  <div className="dashboard_stations">
  {arr.map((item) => (
         
@@ -95,9 +145,7 @@ export default function Dashboard({ isNavbarClose }) {
       ))}
 
   </div>
-      <Line />
 
-      <Line />
     </div>
   );
 }

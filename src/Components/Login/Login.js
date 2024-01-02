@@ -55,7 +55,7 @@ export default function Login() {
      
       if (response.ok) {
         const data = await response.json();
-        console.log(response, "respo");
+        // console.log(response, "respo");
         setUserDataContext(data); 
         navigate('/app')
         setError("");
