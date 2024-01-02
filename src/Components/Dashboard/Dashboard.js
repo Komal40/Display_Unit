@@ -110,9 +110,11 @@ export default function Dashboard({ isNavbarClose }) {
       {/* <div style={dashboardStyle}> */}
 
       <DashboardR />
-       {[...Array(line)].map((_, index) => (
-        <Line/>
-      ))} 
+      <div>
+      {Array.from({ length: line }).map((_, index) => (
+        <Line key={index} />
+      ))}
+    </div> 
    
 
  <div className="dashboard_stations">
