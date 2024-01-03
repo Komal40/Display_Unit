@@ -1,6 +1,10 @@
 import React from 'react'
 import "./Line.css" 
+import { useUser } from '../../UserContext'
+
+
 function Line() {
+
   return (
     <div>
       <div className="dashboard__below_container">
@@ -8,7 +12,8 @@ function Line() {
        <div>
        <div>
           <p className="dashboard_content">
-             <h4>Line 1</h4>
+             <h4> Lines 1 </h4>
+
           </p>
         </div>
         <div className="dashboard_content_leftbelowline">          
@@ -18,7 +23,7 @@ function Line() {
     <div>
     <div>
           <p className="dashboard_content">
-            <h4> 7 Stations</h4>
+            <h4> 3 Stations</h4>
           </p>
         </div>
         <div className="dashboard_content_leftbelowline">          

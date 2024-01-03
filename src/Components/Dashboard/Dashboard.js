@@ -5,9 +5,16 @@ import Operator from "../Operator/Operator";
 import DashboardR from "../DashboardR/DashboardR";
 import { useUser } from "../../UserContext";
 
-export default function Dashboard({ isNavbarClose }) {
+
+export default function Dashboard() {
   const [arr, setArr] = useState([]);
   const [line, setLine] = useState(0);
+
+  const [stations, setStations] = useState(0);
+
+  const {setNumberLineStations}=useUser()
+
+  const { setNumberOfLines } = useUser();
 
   const { userData } = useUser();
   const codeData = userData.logindata;
@@ -20,7 +27,7 @@ export default function Dashboard({ isNavbarClose }) {
 
       try {
         const params = new URLSearchParams();
-        params.append("floor_id", codeData.floor_id);
+        params.append("floor_id", "1");
 
         const response = await fetch(fullLink, {
           method: "POST",
@@ -34,6 +41,10 @@ export default function Dashboard({ isNavbarClose }) {
           const data = await response.json();
           console.log("StationData", data);
           setArr(data.stationdata);
+          setNumberLineStations(data.stationdata)
+          // console.log("length station",data.stationdata.length)
+          setStations(data.stationdata.length);
+          // setNumberOfLines(data.stationdata.line_num)
         } else {
           const errorData = await response.json();
           console.error("API Error:", errorData);
@@ -50,10 +61,11 @@ export default function Dashboard({ isNavbarClose }) {
     // Dependency array is empty to run the effect only once
   }, []);
 
+
   useEffect(() => {
     // console.log("lines", lines)
 
-    // console.log("codeData", );
+    // console.log("codeData",codeData );
 
     const fetchData = async () => {
       const link = process.env.REACT_APP_BASE_URL;
@@ -63,7 +75,7 @@ export default function Dashboard({ isNavbarClose }) {
 
       try {
         const params = new URLSearchParams();
-        params.append("floor_id", codeData.floor_id);
+        params.append("floor_id", "1");
 
         const response = await fetch(fullLink, {
           method: "POST",
@@ -82,7 +94,7 @@ export default function Dashboard({ isNavbarClose }) {
           // console.log(data)
           console.log("number of lines ", line_num);
           setLine(line_num);
-          console.log(line);
+          setNumberOfLines(line_num);
         } else {
           const errorData = await response.json();
           console.error("API Error:", errorData);
@@ -95,6 +107,8 @@ export default function Dashboard({ isNavbarClose }) {
     fetchData();
   }, []);
 
+
+
   return (
     <div>
       {/* <div className={`${isNavbarClose ? 'dashboard_container':'shifted'}`}> */}
@@ -104,6 +118,8 @@ export default function Dashboard({ isNavbarClose }) {
       {Array.from({ length: line }).map((_, index) => (
         <div key={index}>
           <Line />
+
+          {/* stations */}
           <div className="dashboard_stations">
             {arr
               .filter((item) => item.line_num === index + 1)
@@ -115,9 +131,9 @@ export default function Dashboard({ isNavbarClose }) {
                       <p className="operator_content">
                         Operator&nbsp;:&nbsp; <h4>{item.e_one_name}</h4>
                       </p>
-                      
+
                       <p className="operator_content">
-                        Process Skill:&nbsp;&nbsp;<h4>{item.e_one_skill}</h4>
+                        Operator Skill:&nbsp;&nbsp;<h4>{item.e_one_skill}</h4>
                       </p>
                       <p className="operator_content">
                         Station :&nbsp;&nbsp; <h4>{item.station_num}</h4>
@@ -125,15 +141,17 @@ export default function Dashboard({ isNavbarClose }) {
                       <p className="operator_content">
                         Process :&nbsp;&nbsp;<h4>{item.process_name}</h4>
                       </p>
-                      <br/>
+                      <br />
                       <h3>Evening Shift</h3>
                       <p className="operator_content">
                         Operator :&nbsp;&nbsp; <h4>{item.e_two_name}</h4>
                       </p>
                       <p className="operator_content">
-                        Process Skill:&nbsp;&nbsp;<h4>{item.e_two_skill}</h4>
+                        Operator Skill:&nbsp;&nbsp;<h4>{item.e_two_skill}</h4>
                       </p>
-                      
+                      <p className="operator_content">
+                        Process Skill:&nbsp;&nbsp;<h4>{item.process_skill}</h4>
+                      </p>
                     </div>
                     <div className="operator_below_content">
                       19 Done&nbsp; 19 Pass &nbsp;4 Fail&nbsp; 9 Added

@@ -168,9 +168,13 @@
     padding: 15px;
     overflow: hidden;
     margin-right: 2rem;
+  
 }
 
-
+.updattee{
+    margin-left: 15rem;
+    display: flex;
+}
 
 .update_below_content{
     display: flex;

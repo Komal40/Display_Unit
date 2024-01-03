@@ -15,7 +15,7 @@ import UpFloor from './Components/UpFloor/UpFloor';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <UserProvider>
     <Router>
       <Routes>
@@ -26,11 +26,12 @@ root.render(
         <Route path='/assign' element={<Assign/>}/>
         <Route path='/timing' element={<Timings/>}/>
         <Route path='/chart' element={<Charts/>}/>
+       
         <Route path='/logout'/>
       </Routes>
     </Router>
     </UserProvider>
-  </React.StrictMode>
+
 );
 
 // If you want to start measuring performance in your app, pass a function

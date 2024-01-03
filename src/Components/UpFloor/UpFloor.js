@@ -1,15 +1,35 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./UpFloor.css";
 import { FaPlus } from "react-icons/fa6";
 import AddLine from "../AddLine/AddLine";
 import Navbar from "../Navbar/Navbar";
 import DashboardR from "../DashboardR/DashboardR";
 import { useUser } from "../../UserContext";
-
+import { useNavigate } from "react-router-dom";
 
 export default function UpFloor() {
-  const { userData } = useUser();
-  const codeData = userData.logindata;
+  const { lines } = useUser();
+  // const codeData = userData.logindata;
+const navigate = useNavigate()
+
+  const [selectedLine, setSelectedLine] = useState('');
+
+  const handleLineChange = (event) => {
+    const selectedLine = event.target.value;
+    setSelectedLine(selectedLine);
+    navigate('/upFloor')
+    // Redirect to the route for the selected line
+    // history.push(`/line/${selectedLine}`);
+  };
+// console.log(selectedLine)
+
+const linePage=()=>{
+  navigate('/upFloor')
+}
+
+  useEffect(() => {
+    console.log("capi line", lines);
+  }, [lines]);
 
   return (
     <div>
@@ -22,9 +42,13 @@ export default function UpFloor() {
       <div className="updatesFloor__cont">
         <div className="update_linecontainer">
           <div className="update_dropdown">
-            <select>
-              <option>Select Line</option>
-              <option>Line 2</option>
+            <select value={selectedLine} onChange={handleLineChange} >
+              {lines > 1 && <option value="">Select Line</option>}
+              {Array.from({ length: lines }, (_, index) => (
+                <option key={index + 1} value={`Line ${index + 1}`}>{`Line ${
+                  index + 1
+                }`}</option>
+              ))}
             </select>
           </div>
           <div className="update_add_btn">

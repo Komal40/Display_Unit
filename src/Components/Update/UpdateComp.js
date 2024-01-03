@@ -1,9 +1,13 @@
 import React from "react";
 import { TbReload } from "react-icons/tb";
 import { FiTrash } from "react-icons/fi";
-
+import { useUser } from "../../UserContext";
 
 export default function UpdateComp() {
+
+  const {lineStation} = useUser()
+
+  
   return (
     <div>
       <div className="update__components">

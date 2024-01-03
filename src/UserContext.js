@@ -4,7 +4,8 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [userData, setUserData] = useState(null);
-  const [lines, setLines] = useState(null);
+  const [lines, setLines] = useState(0);
+  const [lineStation, setLineStation]= useState([])
 
   const setUserDataContext = (data) => {
     setUserData(data);
@@ -14,8 +15,13 @@ export const UserProvider = ({ children }) => {
     setLines(data);
   };
 
+  const setNumberLineStations=(data)=>{
+    setLineStation(data)
+  }
+
+
   return (
-    <UserContext.Provider value={{ userData, setUserDataContext, lines, setNumberOfLines }}>
+    <UserContext.Provider value={{ userData, setUserDataContext, lines, setNumberOfLines, lineStation, setNumberLineStations }}>
       {children}
     </UserContext.Provider>
   );
