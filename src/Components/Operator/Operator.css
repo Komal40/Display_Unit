@@ -1,6 +1,6 @@
 .operator_container1
 {
-    height: 12rem;
+    height: max-content;
     width:max-content;
     margin-right: 20px;
     border-radius: 20px;
