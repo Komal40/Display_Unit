@@ -12,10 +12,13 @@ import AddLine from "../AddLine/AddLine";
 import { TbReload } from "react-icons/tb";
 import { FiTrash } from "react-icons/fi";
 import { useUser } from "../../UserContext";
+import { useEffect } from "react";
 
 export default function Update() {
   const [showModel, setShowModel] = useState(false);
   const [showLine, setShowLine] = useState(false);
+  const [arr, setArr]=useState([])
+  const [line, setLine] = useState(0)
 
   const {lineStation} = useUser()
 
@@ -42,6 +45,45 @@ export default function Update() {
   };
 
 console.log("line station",lineStation)
+
+
+useEffect(() => {
+  const fetchData = async () => {
+    const link = process.env.REACT_APP_BASE_URL;
+    const endPoint = "/floor/parts";
+    const fullLink = link + endPoint;
+
+    try {
+      const params = new URLSearchParams();
+      params.append("floor_id", "1");
+
+      const response = await fetch(fullLink, {
+        method: "POST",
+        body: params,
+        headers: {
+          "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("FloorData", data.floorpartsdata);
+        setArr(data.floorpartsdata)
+        setLine(data.floorpartsdata.length)
+      } else {
+        const errorData = await response.json();
+        console.error("API Error:", errorData);
+      }
+    } catch (error) {
+      console.error("Error galt id:", error);
+    }
+  };
+
+
+  fetchData();
+
+  // Dependency array is empty to run the effect only once
+}, []);
 
 
   return (
@@ -91,8 +133,11 @@ console.log("line station",lineStation)
           <div className="update_dropdown2">
             <select>
               <option>Change Port Number</option>
-              <option>Line 2</option>
+              {Array.from({ length:line }, (_, index) => (
+                <option key={index + 1} value={`Line ${index + 1}`}>{arr[index].part_name}</option>
+              ))}
             </select>
+
           </div>
           <div className="update__btn">
             <FaRegSave className="update_regsave" />

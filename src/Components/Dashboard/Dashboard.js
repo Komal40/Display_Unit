@@ -109,6 +109,7 @@ export default function Dashboard() {
 
 
 
+
   return (
     <div>
       {/* <div className={`${isNavbarClose ? 'dashboard_container':'shifted'}`}> */}
@@ -117,7 +118,7 @@ export default function Dashboard() {
       <DashboardR />
       {Array.from({ length: line }).map((_, index) => (
         <div key={index}>
-          <Line />
+          <Line no={index+1}/>
 
           {/* stations */}
           <div className="dashboard_stations">

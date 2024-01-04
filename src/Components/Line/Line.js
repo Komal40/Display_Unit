@@ -3,7 +3,7 @@ import "./Line.css"
 import { useUser } from '../../UserContext'
 
 
-function Line() {
+function Line({no}) {
 
   return (
     <div>
@@ -12,7 +12,7 @@ function Line() {
        <div>
        <div>
           <p className="dashboard_content">
-             <h4> Lines 1 </h4>
+             <h4> Lines {no} </h4>
 
           </p>
         </div>
@@ -80,3 +80,4 @@ function Line() {
 }
 
 export default Line
+
