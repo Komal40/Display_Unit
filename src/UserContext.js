@@ -6,6 +6,7 @@ export const UserProvider = ({ children }) => {
   const [userData, setUserData] = useState(null);
   const [lines, setLines] = useState(0);
   const [lineStation, setLineStation]= useState([])
+  const [lineNum, setLineNum]=useState(0)
 
   const setUserDataContext = (data) => {
     setUserData(data);
@@ -19,9 +20,14 @@ export const UserProvider = ({ children }) => {
     setLineStation(data)
   }
 
+  const setLineNumber=(data)=>{
+    setLineNum(data)
+  }
+
 
   return (
-    <UserContext.Provider value={{ userData, setUserDataContext, lines, setNumberOfLines, lineStation, setNumberLineStations }}>
+    <UserContext.Provider value={{ userData, setUserDataContext, lines, setNumberOfLines, lineStation, setNumberLineStations,
+    lineNum, setLineNumber }}>
       {children}
     </UserContext.Provider>
   );

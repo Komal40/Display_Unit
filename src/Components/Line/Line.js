@@ -12,7 +12,7 @@ function Line({no}) {
        <div>
        <div>
           <p className="dashboard_content">
-             <h4> Lines {no} </h4>
+             <h4> Line {no} </h4>
 
           </p>
         </div>

@@ -14,13 +14,16 @@ import { FiTrash } from "react-icons/fi";
 import { useUser } from "../../UserContext";
 import { useEffect } from "react";
 
+
 export default function Update() {
   const [showModel, setShowModel] = useState(false);
   const [showLine, setShowLine] = useState(false);
-  const [arr, setArr]=useState([])
-  const [line, setLine] = useState(0)
+  const [arr, setArr]=useState([]);
+  const [line, setLine] = useState(0);
 
+  const {lines}=useUser()
   const {lineStation} = useUser()
+  const {lineNum}=useUser()
 
   const openModal = () => {
     setShowModel(true);
@@ -86,6 +89,7 @@ useEffect(() => {
 }, []);
 
 
+
   return (
     <>
       <div>
@@ -100,8 +104,7 @@ useEffect(() => {
           <div className="update_linecontainer">
             <div className="update_dropdown">
               <select>
-                <option>Line 1</option>
-                
+                <option>Line {lineNum}</option>
               </select>
             </div>
             <div className="update_add_btn">
@@ -125,7 +128,7 @@ useEffect(() => {
 
         <div className="update_linecontainer2">
           <div>
-            <h4>Line 1</h4>
+            <h4>Line {lineNum}</h4>
           </div>
           <div style={{ marginLeft: "2rem" }}>
             <h4>Part: 1VF</h4>
@@ -170,7 +173,7 @@ useEffect(() => {
 
       <div className="updattee">
             {lineStation 
-              .filter((item) => item.line_num === 1)
+              .filter((item) => item.line_num === lineNum)
               .map((item) => (
                 <div className="update__components">
                 <div>
