@@ -10,6 +10,7 @@ export default function DashboardR() {
   const [apiData, setApiData] = useState(null);
   const { userData } = useUser();
   const codeData = userData.logindata;
+  const {lines}=useUser()
 
   const currentDate = new Date();
 
@@ -58,7 +59,7 @@ export default function DashboardR() {
           <div>
             <div>
               <p className="dashboard_content">
-                Total Lines: <h4>7</h4>
+                Total Lines: <h4>{lines}</h4>
               </p>
             </div>
             <div className="dashboard_content_leftline"></div>
@@ -67,7 +68,7 @@ export default function DashboardR() {
           <div>
             <div>
               <p className="dashboard_content">
-                Total Stations: <h4> 40</h4>
+                Total Stations: <h4> 6</h4>
               </p>
             </div>
             <div className="dashboard_content_leftline"></div>
@@ -76,7 +77,7 @@ export default function DashboardR() {
           <div>
             <div>
               <p className="dashboard_content">
-                Active Stations: <h4> 8</h4>
+                Active Stations: <h4> </h4>
               </p>
             </div>
             <div className="dashboard_content_leftline"></div>

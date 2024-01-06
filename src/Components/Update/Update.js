@@ -24,6 +24,10 @@ export default function Update() {
   const {lines}=useUser()
   const {lineStation} = useUser()
   const {lineNum}=useUser()
+  
+  const {setPortNumber}=useUser()
+  const {setPortNumLength} = useUser()
+
 
   const openModal = () => {
     setShowModel(true);
@@ -70,8 +74,10 @@ useEffect(() => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log("FloorData", data.floorpartsdata);
+        console.log("FloorPartsData", data.floorpartsdata);
         setArr(data.floorpartsdata)
+        setPortNumber(data.floorpartsdata)
+        setPortNumLength(data.floorpartsdata.length)
         setLine(data.floorpartsdata.length)
       } else {
         const errorData = await response.json();

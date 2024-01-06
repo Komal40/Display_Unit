@@ -5,21 +5,18 @@ import Operator from "../Operator/Operator";
 import DashboardR from "../DashboardR/DashboardR";
 import { useUser } from "../../UserContext";
 
-
 export default function Dashboard() {
-  
   //MY VARIABLES
 
   const [firstEffectCompleted, setFirstEffectCompleted] = useState(false);
 
   //MY VARIABLES
 
-
   const [arr, setArr] = useState([]);
   const [processData, setProcessData] = useState([]);
   const [line, setLine] = useState(0);
-  const [pass, setPass]=useState(0)
-  const [fail, setFail]=useState(0)
+  const [pass, setPass] = useState(0);
+  const [fail, setFail] = useState(0);
 
   const [stations, setStations] = useState(0);
 
@@ -37,8 +34,7 @@ export default function Dashboard() {
   const day = currentDate.getDate();
 
   useEffect(() => {
-
-    if(!firstEffectCompleted) return
+    if (!firstEffectCompleted) return;
 
     const fetchData = async () => {
       const link = process.env.REACT_APP_BASE_URL;
@@ -75,14 +71,12 @@ export default function Dashboard() {
     };
 
     // Introduce a delay of 3 seconds (3000 milliseconds)
-    
 
     fetchData();
 
     // Dependency array is empty to run the effect only once
   }, [firstEffectCompleted]);
 
-  
   useEffect(() => {
     // console.log("lines", lines)
 
@@ -109,8 +103,7 @@ export default function Dashboard() {
         console.log("floor-id", codeData.floor_id);
 
         if (response.ok) {
-
-          setFirstEffectCompleted(true)
+          setFirstEffectCompleted(true);
           const data = await response.json();
           // console.log("response", response)
           const line_num = data.floordata.number_of_lines;
@@ -130,8 +123,8 @@ export default function Dashboard() {
     fetchData();
   }, []);
 
-  useEffect(() => {
 
+  useEffect(() => {
     const fetchData = async () => {
       const link = process.env.REACT_APP_BASE_URL;
       console.log("Base URL:", link);
@@ -140,7 +133,7 @@ export default function Dashboard() {
 
       try {
         const params = new URLSearchParams();
-        params.append("date", day);
+        params.append("date", "5");
         params.append("month", month);
 
         const response = await fetch(fullLink, {
@@ -151,11 +144,11 @@ export default function Dashboard() {
           },
         });
 
-        if (response) {
+        if (response.ok) {
           const data = await response.json();
           // console.log(day,month)
           console.log("process data", data.processdata);
-          console.log("Process data is array",Array.isArray(data.processdata))
+          console.log("Process data is array", Array.isArray(data.processdata));
           setProcessData(data.processdata);
         } else {
           const errorData = await response.json();
@@ -184,50 +177,58 @@ export default function Dashboard() {
           <div className="dashboard_stations">
             {arr
               .filter((item) => item.line_num === index + 1)
-
               .map((item) => {
                 const stationNum = item.station_num;
-                const passes = processData.filter((data) =>data.status === "1" && data.station_num === stationNum).length;
-                const fails = processData.filter((data) => data.status === "0" && data.station_num === stationNum).length;
+                
+                const passes = processData.filter(
+                  (data) => data.status == "1" && data.station_num == stationNum
+                ).length;
+                const fails = processData.filter(
+                  (data) => data.status == "0" && data.station_num == stationNum
+                ).length;
+                // const stationId=processData.filter((e)=>e.station_num==stationNum)
 
-              return(
-                <div className="operator_line">
-                <div className="operator_container1">
-                  <div>
-                    <h3>Morning Shift</h3>
-                    <p className="operator_content">
-                      Operator&nbsp;:&nbsp; <h4>{item.e_one_name}</h4>
-                    </p>
-                    <p className="operator_content">
-                      Operator Skill:&nbsp;&nbsp;<h4>{item.e_one_skill}</h4>
-                    </p>
-                    <p className="operator_content">
-                      Station :&nbsp;&nbsp; <h4>{item.station_num}</h4>
-                    </p>
-                    <p className="operator_content">
-                      Process :&nbsp;&nbsp;<h4>{item.process_name}</h4>
-                    </p>
-                    <br />
-                    <h3>Evening Shift</h3>
-                    <p className="operator_content">
-                      Operator :&nbsp;&nbsp; <h4>{item.e_two_name}</h4>
-                    </p>
-                    <p className="operator_content">
-                      Operator Skill:&nbsp;&nbsp;<h4>{item.e_two_skill}</h4>
-                    </p>
-                    <p className="operator_content">
-                      Process Skill:&nbsp;&nbsp;<h4>{item.process_skill}</h4>
-                    </p>
+
+                return (
+                  <div className="operator_line">
+                    <div className="operator_container1">
+                      <div>
+                        
+                      
+                        <h3>Morning Shift</h3>
+                        <p className="operator_content">
+                          Operator&nbsp;:&nbsp; <h4>{item.e_one_name}</h4>
+                        </p>
+                        <p className="operator_content">
+                          Operator Skill:&nbsp;&nbsp;<h4>{item.e_one_skill}</h4>
+                        </p>
+                        <p className="operator_content">
+                          Station :&nbsp;&nbsp; <h4>{item.station_num}</h4>
+                        </p>
+                        <p className="operator_content">
+                          Process :&nbsp;&nbsp;<h4>{item.process_name}</h4>
+                        </p>
+                        <br />
+                        <h3>Evening Shift</h3>
+                        <p className="operator_content">
+                          Operator :&nbsp;&nbsp; <h4>{item.e_two_name}</h4>
+                        </p>
+                        <p className="operator_content">
+                          Operator Skill:&nbsp;&nbsp;<h4>{item.e_two_skill}</h4>
+                        </p>
+                        <p className="operator_content">
+                          Process Skill:&nbsp;&nbsp;
+                          <h4>{item.process_skill}</h4>
+                        </p>
+                      </div>
+                      <div className="operator_below_content">
+                        {passes+fails}Done&nbsp; {passes} Pass &nbsp;{fails}
+                        Fail&nbsp; 9 Added
+                      </div>
+                    </div>
                   </div>
-                  <div className="operator_below_content">
-                    &nbsp; {passes} Pass &nbsp;{fails}
-                    {console.log(passes, fails)}
-                    Fail&nbsp; 9 Added
-                  </div>
-                </div>
-              </div>
-              )
-})}
+                );
+              })}
           </div>
         </div>
       ))}

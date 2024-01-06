@@ -7,11 +7,13 @@ import DashboardR from "../DashboardR/DashboardR";
 import { useUser } from "../../UserContext";
 import { useNavigate } from "react-router-dom";
 
+
+
 export default function UpFloor() {
   const { lines } = useUser();
   const {setLineNumber}=useUser()
   // const codeData = userData.logindata;
-const navigate = useNavigate()
+  const navigate = useNavigate()
 
   const [selectedLine, setSelectedLine] = useState(0);
 
@@ -31,9 +33,9 @@ const linePage=()=>{
   navigate('/upFloor')
 }
 
-  useEffect(() => {
-    console.log("capi line", lines);
-  }, [lines]);
+  // useEffect(() => {
+  //   console.log("capi line", lines);
+  // }, [lines]);
 
   return (
     <div>

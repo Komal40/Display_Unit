@@ -55,26 +55,27 @@ export default function Login() {
      
       if (response.ok) {
         const data = await response.json();
-        // console.log(response, "respo");
+        console.log("loginData", data);
         setUserDataContext(data); 
-        navigate('/app')
         setError("");
         setMsg("Login Successfully");
         setName("");
         setPass("");
+        navigate('/app')
         // You can perform additional actions after a successful login
       } else {
         const errorData = await response.json();
         setError(`Error: ${errorData.message}`);
-      navigate('/')
-
+       navigate('/')
       }
     } catch (error) {
       console.error("Error galt id:");
       setError("An unexpected error occurred");
-      // navigate('/')
+      navigate('/')
     }
   };
+
+
 
   return (
     <>

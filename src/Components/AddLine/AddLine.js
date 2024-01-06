@@ -4,10 +4,13 @@ import { FaPlus } from "react-icons/fa6";
 import { FaRegSave } from "react-icons/fa";
 import { PiPlusBold } from "react-icons/pi";
 import { RiSubtractLine } from "react-icons/ri";
+import { useUser } from '../../UserContext';
 
 export default function AddLine({showModal, closeModal}) {
 
     const [count, setCount] = useState(0);
+    const {portNum}=useUser()
+    const {portLength} = useUser()
 
     const subCount = () => {
       if (count == 0) return;
@@ -35,7 +38,7 @@ export default function AddLine({showModal, closeModal}) {
           <div className="dashboard_content_leftline"></div>
         </div>
 
-    <div className='newLine_dropdown'>
+    {/* <div className='newLine_dropdown'>
    
 <div className='newLineinput'>
 <input placeholder='Part Number'/>
@@ -53,11 +56,11 @@ export default function AddLine({showModal, closeModal}) {
             <FaPlus className="subSign" onClick={() => addCount()} />
           </div>
         </div>
-    </div>
+    </div> */}
 
         {/* components */}
 
-    <div className="addStation_container">
+    {/* <div className="addStation_container">
     <div className="addStations">
           <div className="addstation_component">
             <p className="addStaionName">Station Name&nbsp;&nbsp;<h4>1VF</h4></p>
@@ -99,14 +102,47 @@ export default function AddLine({showModal, closeModal}) {
           </div>
         </div>
         
-    </div>
-        
+    </div> */}
+
+{/*         
     <div>
             <p>Error Message</p>
-        </div>
+        </div> */}
+
+
+
+
+       <div className='changeport__container'>
+
+       <div className="change_port_num">
+            <select>
+              <option>Port Number</option>
+              {Array.from({ length:portLength}, (_, index) => (
+                <option key={index + 1} value={`Line ${index + 1}`}>{portNum[index].part_name}</option>
+              ))}
+            </select>
+          </div>       
+       </div>
        
 
+
+
+
+
+
+
+
+
+
+
+
+
+
       </div>
+
+
+
+
 
       <div className="addStationsBtnLine">
         <button className="addstationcancelbtn">
