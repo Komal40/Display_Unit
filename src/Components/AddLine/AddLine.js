@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './AddLine.css'
 import { FaPlus } from "react-icons/fa6";
 import { FaRegSave } from "react-icons/fa";
 import { PiPlusBold } from "react-icons/pi";
 import { RiSubtractLine } from "react-icons/ri";
 import { useUser } from '../../UserContext';
+
 
 export default function AddLine({showModal, closeModal}) {
 
@@ -20,6 +21,49 @@ export default function AddLine({showModal, closeModal}) {
     const addCount = () => {
       setCount((prevCount) => prevCount + 1);
     };
+
+
+
+    useEffect(() => {
+      const fetchData = async () => {
+        const link = process.env.REACT_APP_BASE_URL;
+        const endPoint = "/line/addline";
+        const fullLink = link + endPoint;
+    
+        try {
+          const params = new URLSearchParams();
+          params.append("floor_id", "1");
+          params.append("part_id",portNum.part_id)
+          params.append("part_name", portNum.part_name)
+    
+          const response = await fetch(fullLink, {
+            method: "POST",
+            body: params,
+            headers: {
+              "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+            },
+          });
+    
+          if (response.ok) {
+            const data = await response.json();
+            console.log("Add Line", data);
+        
+          } else {
+            const errorData = await response.json();
+            console.error("API Error:", errorData);
+          }
+        } catch (error) {
+          console.error("Error galt id:", error);
+        }
+      };
+    
+    
+      fetchData();
+    
+      // Dependency array is empty to run the effect only once
+    }, []);
+
+
 
 
   return (
@@ -123,19 +167,6 @@ export default function AddLine({showModal, closeModal}) {
             </select>
           </div>       
        </div>
-       
-
-
-
-
-
-
-
-
-
-
-
-
 
 
       </div>
