@@ -4,19 +4,33 @@ import React, { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa6";
 import { RiSubtractLine } from "react-icons/ri";
 import { FaRegSave } from "react-icons/fa";
+import { useUser } from "../../UserContext";
+
 
 const AddStationModal = ({ showModal, closeModal }) => {
   
   const [count, setCount] = useState(1);
+  const [stationnum, setStationNum]=useState()
 
+  // stationLine is length of stations on particular line
+  const {stationLine}=useUser()
+  const {stationId}=useUser() 
+  // const [idLen, setIdLen]=useState(stationLine)
+
+
+  const getData=(e)=>{
+    setStationNum(stationnum)
+  }
+  
   const generateDivs = () => {
     const divs = [];
+
     for (let i = 0; i < count; i++) {
       divs.push(
         <div className="addStations" key={i}>
           <div className="addstation_component">
             <p className="addStaionName">
-              Station Name&nbsp;&nbsp;<h4>1VF</h4>
+              Station Name&nbsp;&nbsp;<h4><input className="INP"/></h4>
             </p>
             <input
               className="addstation_inputlabel"
@@ -53,9 +67,10 @@ const AddStationModal = ({ showModal, closeModal }) => {
   };
 
   useEffect(() => {
-    generateDivs();
+    generateDivs();    
   }, [count]);
-  
+
+
   const update = async (e) => {
         e.preventDefault();    
         const link = process.env.REACT_APP_BASE_URL;
@@ -64,18 +79,22 @@ const AddStationModal = ({ showModal, closeModal }) => {
         const fullLink = link + endPoint;
     
         try {
+          const baseStationId = stationId; // Define the base part of the station_id
+          const incrementValue = stationLine++; // Define the increment value
+          const dynamicStationId = `${baseStationId}${incrementValue}`; // Construct the dynamic station_id
+
           const data = [
             {
-              "station_id": "F1L2S11",
+              "station_id": dynamicStationId,
               "e_one": "E12",
-              "e_one_name": "Gaurav Sharma",
+              "e_one_name": "Sharma",
               "e_one_skill": "10",
               "e_two": "E15",
-              "e_two_name": "Amzad",
+              "e_two_name": "shxhsxv",
               "e_two_skil": "8",
               "process_id": "2",
               "process_skill": "coating",
-              "process_name": "komal",
+              "process_name": "kfokvlvlfkl",
             },
           ];
     
@@ -92,7 +111,7 @@ const AddStationModal = ({ showModal, closeModal }) => {
     
           if (response.ok) {
             const responseData = await response.json();
-            console.log("update api", responseData);
+            console.log("add api", responseData);
           } else {
             const errorData = await response.json();
             console.error("Error:", errorData);
@@ -160,7 +179,6 @@ const AddStationModal = ({ showModal, closeModal }) => {
 };
 
 export default AddStationModal;
-
 
 
 

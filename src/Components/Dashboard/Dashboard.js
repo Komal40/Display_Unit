@@ -25,6 +25,7 @@ export default function Dashboard() {
   const { setNumberOfLines } = useUser();
 
   const { userData } = useUser();
+  const {setProcessDataFun}=useUser();
   const codeData = userData.logindata;
 
   const currentDate = new Date();
@@ -149,6 +150,7 @@ export default function Dashboard() {
           // console.log(day,month)
           console.log("process data", data.processdata);
           console.log("Process data is array", Array.isArray(data.processdata));
+          setProcessDataFun(data.processdata);
           setProcessData(data.processdata);
         } else {
           const errorData = await response.json();

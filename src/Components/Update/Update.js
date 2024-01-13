@@ -14,20 +14,20 @@ import { FiTrash } from "react-icons/fi";
 import { useUser } from "../../UserContext";
 import { useEffect } from "react";
 
-
 export default function Update() {
   const [showModel, setShowModel] = useState(false);
   const [showLine, setShowLine] = useState(false);
-  const [arr, setArr]=useState([]);
+  const [arr, setArr] = useState([]);
   const [line, setLine] = useState(0);
 
-  const {lines}=useUser()
-  const {lineStation} = useUser()
-  const {lineNum}=useUser()
-  
-  const {setPortNumber}=useUser()
-  const {setPortNumLength} = useUser()
-
+  const { lines } = useUser();
+  const { lineStation } = useUser();
+  const { lineNum } = useUser();
+  const { processData } = useUser();
+  const { setPortNumber } = useUser();
+  const { setPortNumLength } = useUser();
+  const {stationOnLine}=useUser()
+  const {particularStationId}=useUser()
 
   const openModal = () => {
     setShowModel(true);
@@ -51,51 +51,71 @@ export default function Update() {
     setShowLine(false);
   };
 
-console.log("line station",lineStation)
+  console.log("line station", lineStation);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const link = process.env.REACT_APP_BASE_URL;
+      const endPoint = "/floor/parts";
+      const fullLink = link + endPoint;
 
-useEffect(() => {
-  const fetchData = async () => {
-    const link = process.env.REACT_APP_BASE_URL;
-    const endPoint = "/floor/parts";
-    const fullLink = link + endPoint;
+      try {
+        const params = new URLSearchParams();
+        params.append("floor_id", "1");
 
-    try {
-      const params = new URLSearchParams();
-      params.append("floor_id", "1");
+        const response = await fetch(fullLink, {
+          method: "POST",
+          body: params,
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+          },
+        });
 
-      const response = await fetch(fullLink, {
-        method: "POST",
-        body: params,
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log("FloorPartsData", data.floorpartsdata);
-        setArr(data.floorpartsdata)
-        setPortNumber(data.floorpartsdata)
-        setPortNumLength(data.floorpartsdata.length)
-        setLine(data.floorpartsdata.length)
-      } else {
-        const errorData = await response.json();
-        console.error("API Error:", errorData);
+        if (response.ok) {
+          const data = await response.json();
+          console.log("FloorPartsData", data.floorpartsdata);
+          setArr(data.floorpartsdata);
+          setPortNumber(data.floorpartsdata);
+          setPortNumLength(data.floorpartsdata.length);
+          setLine(data.floorpartsdata.length);
+        } else {
+          const errorData = await response.json();
+          console.error("API Error:", errorData);
+        }
+      } catch (error) {
+        console.error("Error galt id:", error);
       }
-    } catch (error) {
-      console.error("Error galt id:", error);
+    };
+
+    fetchData();
+
+    // Dependency array is empty to run the effect only once
+  }, []);
+
+
+  useEffect(() => {
+    const stations = lineStation.filter((item) => item.line_num === lineNum);
+  
+    // Update state with the length of the filtered stations
+    stationOnLine(stations.length);
+  
+    // Initialize an empty string for the station code
+    let stationCode = '';
+    // Check if there are stations before accessing them
+    if (stations.length > 0) {
+      // Extracting "F1 L2 S" part from the first station's "station_id"
+      const parts = stations[0].station_id.split(' ');
+      // Ensure the last part contains only alphabetical characters (excluding numeric values)
+      const lastPart = parts[2].replace(/\d/g, '');
+      stationCode = `${parts[0]} ${parts[1]} ${lastPart}`;
     }
-  };
-
-
-  fetchData();
-
-  // Dependency array is empty to run the effect only once
-}, []);
-
-
-
+  
+    console.log("Station Code", stationCode);
+    particularStationId(stationCode)
+    console.log("Stations Length", stations.length);
+  }, [lineNum, lineStation]);
+  
+  
   return (
     <>
       <div>
@@ -142,11 +162,12 @@ useEffect(() => {
           <div className="update_dropdown2">
             <select>
               <option>Change Port Number</option>
-              {Array.from({ length:line }, (_, index) => (
-                <option key={index + 1} value={`Line ${index + 1}`}>{arr[index].part_name}</option>
+              {Array.from({ length: line }, (_, index) => (
+                <option key={index + 1} value={`Line ${index + 1}`}>
+                  {arr[index].part_name}
+                </option>
               ))}
             </select>
-
           </div>
           <div className="update__btn">
             <FaRegSave className="update_regsave" />
@@ -171,60 +192,60 @@ useEffect(() => {
           </div>
         </div> */}
 
-
-
         <AddLine showModal={showLine} closeModal={closeLine} />
         <AddStation showModal={showModel} closeModal={closeModel} />
       </div>
 
       <div className="updattee">
-            {lineStation 
-              .filter((item) => item.line_num === lineNum)
-              .map((item) => (
-                <div className="update__components">
-                <div>
-                  <p className="operator_content">
-                    Operator&nbsp;&nbsp; <h4>{item.e_one_name}</h4>
-                  </p>
-                  <p className="operator_content">
-                    Operator Skill&nbsp;&nbsp; <h4>10</h4>
-                  </p>
-                  <p className="operator_content">
-                    Station&nbsp;&nbsp; <h4>145A</h4>
-                  </p>
-                  <p className="operator_content">
-                    Process &nbsp;&nbsp;<h4>{item.process_name}</h4>
-                  </p>
-                  <p className="operator_content">
-                    Process Skill&nbsp;&nbsp; <h4>11</h4>
-                  </p>
-                </div>
-                <div className="update_below1_content">
-                  <div className="update_below_content">
-                    <div className="update_remove_btn1">
-                      <TbReload className="update_regsave" />
-                      <span>
-                        <button>Change</button>
-                      </span>
-                    </div>
-                    <div className="update_remove_btn2">
-                      <FiTrash className="update_regsave" />
-                      <span>
-                        <button>Remove</button>
-                      </span>
-                    </div>
+        {lineStation
+          .filter((item) => item.line_num === lineNum)
+          .map((item) => (
+            <div className="update__components">
+              <div>
+                <p className="operator_content">
+                  Station Name:&nbsp;&nbsp; <h4>{item.station_id}</h4>
+                </p>
+                <p className="operator_content">
+                  Operator&nbsp;&nbsp; <h4>{item.e_one_name}</h4>
+                </p>
+                <p className="operator_content">
+                  Operator Skill&nbsp;&nbsp; <h4>10</h4>
+                </p>
+                <p className="operator_content">
+                  Station&nbsp;&nbsp; <h4>145A</h4>
+                </p>
+                <p className="operator_content">
+                  Process &nbsp;&nbsp;<h4>{item.process_name}</h4>
+                </p>
+                <p className="operator_content">
+                  Process Skill&nbsp;&nbsp; <h4>11</h4>
+                </p>
+              </div>
+              <div className="update_below1_content">
+                <div className="update_below_content">
+                  <div className="update_remove_btn1">
+                    <TbReload className="update_regsave" />
+                    <span>
+                      <button>Change</button>
+                    </span>
+                  </div>
+                  <div className="update_remove_btn2">
+                    <FiTrash className="update_regsave" />
+                    <span>
+                      <button>Remove</button>
+                    </span>
                   </div>
                 </div>
               </div>
-              ))}
-           <div className="update_addSection">
-            <PiPlusBold className="addstation" onClick={addStation} />
-            <p className="addStation_text">Add</p>
-            <p className="addStation_text">Station</p>
-          </div>
-          </div>
-          
-        
+            </div>
+          ))}
+
+        <div className="update_addSection">
+          <PiPlusBold className="addstation" onClick={addStation} />
+          <p className="addStation_text">Add</p>
+          <p className="addStation_text">Station</p>
+        </div>
+      </div>
     </>
   );
 }

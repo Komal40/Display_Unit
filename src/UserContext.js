@@ -8,7 +8,15 @@ export const UserProvider = ({ children }) => {
   const [lineStation, setLineStation]= useState([]);
   const [lineNum, setLineNum]=useState(0);
   const [portNum, setPortNum]=useState([]);
-  const [portLength, SetPortLength]=useState(0)
+  const [portLength, SetPortLength]=useState(0);
+  const [processData, setProcessData]=useState([])
+  
+  const [stationLine, setStationLine]=useState(0)
+  const [stationId, setStationId]=useState('')
+
+  const particularStationId=(data)=>{
+    setStationId(data)
+  }
 
   const setUserDataContext = (data) => {
     setUserData(data);
@@ -35,9 +43,19 @@ export const UserProvider = ({ children }) => {
   }
 
 
+  const setProcessDataFun=(data)=>{
+    setProcessData(data)
+  }
+
+  const stationOnLine=(data)=>{
+    setStationLine(stationLine)
+  }
+
+
   return (
     <UserContext.Provider value={{ userData, setUserDataContext, lines, setNumberOfLines, lineStation, setNumberLineStations,
-    lineNum, setLineNumber , portNum, setPortNumber, portLength, setPortNumLength}}>
+    lineNum, setLineNumber , portNum, setPortNumber, portLength, setPortNumLength, setProcessDataFun, processData,
+    stationLine, stationOnLine, particularStationId, stationId}}>
       {children}
     </UserContext.Provider>
   );

@@ -111,7 +111,9 @@
     color:#4f4d4d
 }
 
-
+.INP{
+  width: 4.3em;
+}
 .addstation_component input{
     border:2px solid var(--color-orange);
     border-radius: 6px;
