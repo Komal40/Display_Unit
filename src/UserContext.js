@@ -48,7 +48,7 @@ export const UserProvider = ({ children }) => {
   }
 
   const stationOnLine=(data)=>{
-    setStationLine(stationLine)
+    setStationLine(data)
   }
 
 
@@ -70,3 +70,6 @@ export const useUser = () => {
 
   return context;
 };
+
+
+

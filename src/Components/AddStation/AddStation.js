@@ -16,21 +16,31 @@ const AddStationModal = ({ showModal, closeModal }) => {
   const {stationLine}=useUser()
   const {stationId}=useUser() 
   // const [idLen, setIdLen]=useState(stationLine)
+  const [stationid, setStationid] = useState(stationLine);
 
+
+
+  // useEffect(() => {
+  //   // Update stationId whenever count changes
+  //   setStationid(stationLine + count);
+  // }, [count, stationLine]);
 
   const getData=(e)=>{
     setStationNum(stationnum)
   }
   
   const generateDivs = () => {
+    // setStationid(stationLine + count)
     const divs = [];
-
+    {console.log("station line", stationLine)}
+    {console.log("stationLine + count",stationLine + count)}
     for (let i = 0; i < count; i++) {
+      const currentStationId = divs[i] || stationLine + i + 1;
       divs.push(
         <div className="addStations" key={i}>
           <div className="addstation_component">
             <p className="addStaionName">
-              Station Name&nbsp;&nbsp;<h4><input className="INP"/></h4>
+              Station Name&nbsp;&nbsp;<h4>{`${stationId}${currentStationId}`}</h4>
             </p>
             <input
               className="addstation_inputlabel"
@@ -63,8 +73,9 @@ const AddStationModal = ({ showModal, closeModal }) => {
 
   const addCount = () => {
     if (count ==10) return;
-    setCount((prevCount) => prevCount + 1); 
+    setCount((prevCount) => prevCount + 1);
   };
+
 
   useEffect(() => {
     generateDivs();    
@@ -80,8 +91,8 @@ const AddStationModal = ({ showModal, closeModal }) => {
     
         try {
           const baseStationId = stationId; // Define the base part of the station_id
-          const incrementValue = stationLine++; // Define the increment value
-          const dynamicStationId = `${baseStationId}${incrementValue}`; // Construct the dynamic station_id
+         
+          const dynamicStationId = `${baseStationId}${stationLine + count}`; // Construct the dynamic station_id
 
           const data = [
             {
@@ -108,6 +119,7 @@ const AddStationModal = ({ showModal, closeModal }) => {
           });
     
           console.log("add station",JSON.stringify(data));
+          console.log("dynamic station id", dynamicStationId)
     
           if (response.ok) {
             const responseData = await response.json();

@@ -28,6 +28,7 @@ export default function Update() {
   const { setPortNumLength } = useUser();
   const {stationOnLine}=useUser()
   const {particularStationId}=useUser()
+  const [localLineNum, setLocalLineNum] = useState(lineNum);
 
   const openModal = () => {
     setShowModel(true);
@@ -97,12 +98,12 @@ export default function Update() {
     const stations = lineStation.filter((item) => item.line_num === lineNum);
   
     // Update state with the length of the filtered stations
-    stationOnLine(stations.length);
   
     // Initialize an empty string for the station code
     let stationCode = '';
+    let len =stations.length;
     // Check if there are stations before accessing them
-    if (stations.length > 0) {
+    if (len > 0) {
       // Extracting "F1 L2 S" part from the first station's "station_id"
       const parts = stations[0].station_id.split(' ');
       // Ensure the last part contains only alphabetical characters (excluding numeric values)
@@ -113,7 +114,9 @@ export default function Update() {
     console.log("Station Code", stationCode);
     particularStationId(stationCode)
     console.log("Stations Length", stations.length);
-  }, [lineNum, lineStation]);
+    stationOnLine(len);
+
+  }, [localLineNum, lineStation, particularStationId, stationOnLine]);
   
   
   return (

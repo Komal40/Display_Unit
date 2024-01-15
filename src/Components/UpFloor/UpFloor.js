@@ -12,21 +12,38 @@ import { useNavigate } from "react-router-dom";
 export default function UpFloor() {
   const { lines } = useUser();
   const {setLineNumber}=useUser()
+  const {lineNum}=useUser()
   // const codeData = userData.logindata;
   const navigate = useNavigate()
 
   const [selectedLine, setSelectedLine] = useState(0);
 
+  // const handleLineChange = (event) => {
+  //   const selectedLine = event.target.value;
+  //   const lineNumber = parseInt(selectedLine.replace(/\D/g, ""), 10);
+  //   setSelectedLine(lineNumber);
+  //   console.log("linenum", lineNumber)
+  //   setLineNumber(lineNumber)
+  //   navigate('/upFloor')
+  //   // Redirect to the route for the selected line
+  //   // history.push(`/line/${selectedLine}`);
+  // };
+
   const handleLineChange = (event) => {
     const selectedLine = event.target.value;
     const lineNumber = parseInt(selectedLine.replace(/\D/g, ""), 10);
-    setSelectedLine(lineNumber);
-    console.log("linenum", lineNumber)
-    setLineNumber(lineNumber)
-    navigate('/upFloor')
-    // Redirect to the route for the selected line
-    // history.push(`/line/${selectedLine}`);
+  
+    // Log the line change
+    console.log("Line change to:", lineNumber);
+  
+    // Check if the line has changed before triggering navigation
+    if (lineNumber !== lineNum) {
+      setSelectedLine(lineNumber);
+      setLineNumber(lineNumber);
+      navigate('/upFloor');
+    }
   };
+  
 // console.log(selectedLine)
 
 const linePage=()=>{
