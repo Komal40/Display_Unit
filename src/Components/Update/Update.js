@@ -33,6 +33,8 @@ export default function Update() {
   const [selectedPartId, setSelectedPartId] = useState(null);
   const {getLoginProcessFunction}=useUser()
 
+  const {LoginProcess}=useUser()
+
   const openModal = () => {
     setShowModel(true);
   };
@@ -51,6 +53,10 @@ export default function Update() {
   const addStation = () => {
     setShowModel(true);
     // fetch api of getting getlogin process
+  };
+
+
+  useEffect(()=>{
     const fetchAPIData = async () => {
       const link = process.env.REACT_APP_BASE_URL;
       const endPoint = "/getlogin_process";
@@ -82,11 +88,8 @@ export default function Update() {
         console.error("Error galt id:", error);
       }
     };
-
-    fetchAPIData();
-  };
-
-
+    fetchAPIData()
+  },[])
 
   const addLine = () => {
     setShowLine(true);
@@ -144,7 +147,7 @@ export default function Update() {
       const idA = parseInt(a.station_id.split('S')[1]);
       const idB = parseInt(b.station_id.split('S')[1]);
       return idA - idB;
-    });;
+    });
   
     // Update state with the length of the filtered stations
   
@@ -166,7 +169,11 @@ export default function Update() {
     stationOnLine(len);
 
   }, [localLineNum, lineStation, particularStationId, stationOnLine]);
-  
+
+  if (!LoginProcess.payload) {
+    // Loading state
+    return <div>Loading...</div>;
+  }
   
   return (
     <>

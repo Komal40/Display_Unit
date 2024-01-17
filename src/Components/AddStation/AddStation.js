@@ -6,26 +6,36 @@ import { RiSubtractLine } from "react-icons/ri";
 import { FaRegSave } from "react-icons/fa";
 import { useUser } from "../../UserContext";
 import { FiLogIn } from "react-icons/fi";
+import Login from "../Login/Login";
 
 const AddStationModal = ({ showModal, closeModal }) => {
   const [count, setCount] = useState(1);
   const [stationnum, setStationNum] = useState();
+
+  const [selectedMornEmployee, setSelectedMornEmployee] = useState("");
+  const [selectedEveEmployee, setSelectedEveEmployee] = useState("");
+  const [selectProcess, setSelectedProcess] = useState("");
+  const [mornValue, setMornValue] = useState("");
+  const [eveValue, setEveValue] = useState("");
+  const [skill, setSkill] = useState("");
+
+  const [mornName, setMornName]=useState("");
+  const [eveName, setEveName]=useState("")
+  const [empSkill, setEmpSkill]=useState("")
 
   // stationLine is length of stations on particular line
   const { stationLine } = useUser();
   const { stationId } = useUser();
   // const [idLen, setIdLen]=useState(stationLine)
   const [stationid, setStationid] = useState(stationLine);
-  const [arr, setArr]=useState([])
+  const [arr, setArr] = useState([]);
 
-  const {LoginProcess}=useUser()
+  const { LoginProcess } = useUser();
 
   // useEffect(() => {
   //   // Update stationId whenever count changes
   //   setStationid(stationLine + count);
   // }, [count, stationLine]);
-
-
 
   const getData = (e) => {
     setStationNum(stationnum);
@@ -49,51 +59,145 @@ const AddStationModal = ({ showModal, closeModal }) => {
               Station Name&nbsp;&nbsp;
               <h4>{`${stationId}${currentStationId}`}</h4>
             </p>
-            <h4 className="morn_eve">
-              Morning&nbsp;&nbsp;             
-            </h4>
-            
-            
+            <h4 className="morn_eve">Morning&nbsp;&nbsp;</h4>
+
             <div className="dropdown_morn_eve_Station">
-            {/* <select>
-              <option>Select Name</option>
-              {Array.from({ length: arr.payload.employess_data.length }, (_, index) => (
-                <option key={index + 1}>
-                  {arr.payload.employess_data[index].full_name}
-                </option>
-              ))}
-            </select> */}
-              <p>Employee Code</p>
+              <select
+                onChange={(e) => {
+                  const selectedValue = e.target.value;
+                  setSelectedMornEmployee(selectedValue);
+                  setMornValue(selectedValue);
+                  // Find the corresponding employee object based on the selected value
+                  const selectedEmployee =
+                    LoginProcess.payload.employess_data.find(
+                      (employee) => employee.employee_code === selectedValue
+                    );
+
+                  // Update the state with the selected employee code
+                  setSelectedMornEmployee(
+                    selectedEmployee?.employee_code || ""
+                  );
+                  console.log("Selected morn Employee:", selectedEmployee.full_name);
+                  setMornName(selectedEmployee.full_name)
+                }}
+              >
+                <option>Select Name</option>
+                {Array.from(
+                  { length: LoginProcess.payload.employess_data.length },
+                  (_, index) => (
+                    <option
+                      key={index + 1}
+                      value={
+                        LoginProcess.payload.employess_data[index].employee_code
+                      }
+                    >
+                      {LoginProcess.payload.employess_data[index].full_name}
+                    </option>
+                  )
+                )}
+              </select>
+
+              {/* Display selected employee code */}
+              <p>Employee Code: {selectedMornEmployee}</p>
             </div>
-            
-             <h4 className="morn_eve" style={{marginTop:'0.5rem'}}>
-              Evening&nbsp;&nbsp;             
+
+            <h4 className="morn_eve" style={{ marginTop: "0.5rem" }}>
+              Evening&nbsp;&nbsp;
             </h4>
             {/* <input className="addstation_inputlabel" placeholder="Operator Skill" /> */}
             <div className="dropdown_morn_eve_Station">
-            {/* <select>
-              <option>Select Name</option>
-              {Array.from({ length: arr.payload.employess_data.length }, (_, index) => (
-                <option key={index + 1}>
-                  {arr.payload.employess_data[index].full_name}
-                </option>
-              ))}
-            </select> */}
-              <p>Employee Code</p>
+              <select
+                onChange={(e) => {
+                  const selectedValue = e.target.value;
+                  setSelectedEveEmployee(selectedValue);
+                  setEveValue(selectedValue);
+                  {console.log("selec", selectedValue)}
 
+                  // Find the corresponding employee object based on the selected value
+                  const selectedEmployee =
+                    LoginProcess.payload.employess_data.find(
+                      (employee) => employee.employee_code === selectedValue
+                    );
+
+                  // Update the state with the selected employee code for evening shift
+                  setSelectedEveEmployee(selectedEmployee?.employee_code || "");
+                  console.log("Selected eve Employee:", selectedEmployee.full_name);
+                  setEveName(selectedEmployee.full_name)
+
+                }}
+              >
+                <option>Select Name</option>
+                {LoginProcess.payload.employess_data &&
+                LoginProcess.payload.employess_data.length > 0 ? (
+                  Array.from(
+                    { length: LoginProcess.payload.employess_data.length },
+                    (_, index) => (
+                      <option
+                        key={index + 1}
+                        value={
+                          LoginProcess.payload.employess_data[index]
+                            .employee_code
+                        }
+                      >
+                        {LoginProcess.payload.employess_data[index].full_name}
+                      </option>
+                    )
+                  )
+                ) : (
+                  <option>No Employees Data</option>
+                )}
+              </select>
+
+              {/* Display selected employee code for evening shift */}
+              <p>Employee Code: {selectedEveEmployee}</p>
             </div>
+
             <div className="dropdown_addStation">
-            {/* <select>
-              <option>Select Process</option>
-              {Array.from({ length: arr.payload.process_data.length }, (_, index) => (
-                <option key={index + 1}>
-                  {arr.payload.process_data[index].process_name}
-                </option>
-              ))}
-            </select> */}
+              <select
+                onChange={(e) => {
+                  const selectedValue = e.target.value;
+                  setSelectedProcess(selectedValue);
+                  setSkill(selectedValue);
+                  {
+                    console.log("slectedprocess", selectedValue);
+                  }
+
+                  // Find the corresponding process object based on the selected value
+                  const selectedProcess =
+                    LoginProcess.payload.process_data.find(
+                      (process) => process.prrocess_skill === selectedValue
+                    );
+                  {
+                    console.log("selecetd process", selectedProcess);
+                  }
+                  // Update the state with the selected process skill
+                  setSelectedProcess(selectedProcess?.prrocess_skill || "");
+                  console.log("Selected process skill Employee:", selectedProcess.process_name);
+                  setEmpSkill(selectedProcess.process_name)
+
+                }}
+              >
+                <option>Select Process</option>
+                {Array.from(
+                  { length: LoginProcess.payload.process_data.length },
+                  (_, index) => (
+                    <option
+                      key={index + 1}
+                      value={
+                        LoginProcess.payload.process_data[index].prrocess_skill
+                      }
+                    >
+                      {LoginProcess.payload.process_data[index].process_name}
+                    </option>
+                  )
+                )}
+              </select>
+
+              {/* Display selected process skill */}
+              <p>Required Skill: {selectProcess}</p>
             </div>
-            <p>Required Skill</p>
-           
+
+          
           </div>
         </div>
       );
@@ -113,10 +217,11 @@ const AddStationModal = ({ showModal, closeModal }) => {
 
   useEffect(() => {
     generateDivs();
-    {console.log("LoginProcess",LoginProcess)}
-    setArr(LoginProcess)
-  }, [count]);
-
+    {
+      console.log("LoginProcess", LoginProcess);
+    }
+    setArr(LoginProcess);
+  }, [count, LoginProcess.payload]);
 
   const update = async (e) => {
     e.preventDefault();
@@ -134,20 +239,20 @@ const AddStationModal = ({ showModal, closeModal }) => {
 
       for (let i = 0; i < count; i++) {
         const dynamicStationId = `${baseStationId}${stationLine + i + 1}`;
-  
+
         const stationData = {
-          "station_id": dynamicStationId,
-          "e_one": "E12",
-          "e_one_name": "Sharma",
-          "e_one_skill": "10",
-          "e_two": "E15",
-          "e_two_name": "shxhsxv",
-          "e_two_skil": "8",
-          "process_id": "2",
-          "process_skill": "coating",
-          "process_name": "kfokvlvlfkl",
+          station_id: dynamicStationId,
+          e_one: mornValue,
+          e_one_name: mornName,
+          e_one_skill: "10",
+          e_two: eveValue,
+          e_two_name: eveName,
+          e_two_skil: "8",
+          process_id: "2",
+          process_skill: selectProcess,
+          process_name: empSkill,
         };
-  
+
         stationDataArray.push(stationData);
       }
 
@@ -174,6 +279,12 @@ const AddStationModal = ({ showModal, closeModal }) => {
       console.error("Error:", error.message);
     }
   };
+
+  if (!LoginProcess.payload) {
+    // Loading state
+    return <div>Loading...</div>;
+  }
+
 
   return (
     <div className={`modal ${showModal ? "show" : ""}`}>
