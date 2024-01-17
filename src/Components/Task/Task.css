@@ -35,15 +35,33 @@ margin-right: 2rem;
 .task_Add_input{
     margin-top: 2rem;
     background-color: var(--color-grey);
-    border: 2px solid blue;
-    height: 4rem;
+    height: 4.5rem;
     width: fit-content;
     padding: 16px;
-    border-radius: 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.task_Add_input input{
+    padding-left: 8px;
 }
 
 .task_inp{
     border: 2px solid var(--color-orange);
     border-radius: 10px;
     height: 2rem;
+}
+
+.task_qty_container{
+    margin-top: 3rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.task_symbol{
+    margin-left: 2rem;
+    margin-right: 2rem;
 }

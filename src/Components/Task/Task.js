@@ -3,6 +3,8 @@ import './Task.css'
 import Navbar from '../Navbar/Navbar'
 import DashboardR from '../DashboardR/DashboardR'
 import DashBoardAbove from '../DashboardR/DashBoardAbove'
+import { FaPlus } from "react-icons/fa6";
+import { RiEqualFill } from "react-icons/ri";
 
 export default function Task() {
   return (
@@ -42,7 +44,33 @@ export default function Task() {
         </div>
 
         <div className='task_Add_input'>
-            <input className='task_inp'/>
+            <input className='task_inp' placeholder='Add Quantity'/>
+        </div>
+
+        <div >
+
+
+
+<div className='task_qty_container'>
+    <div>
+    <p>Previous Quantity: <span>350</span></p>
+    <div className="dashboard_content_leftline"></div>
+    </div>
+   <div className='task_symbol'>
+   <FaPlus />
+   </div>
+    <div>
+    <p>Current Quantity:<span>5000</span></p>
+    <div className="dashboard_content_leftline"></div>
+    </div>
+    <div className='task_symbol'>
+    <RiEqualFill />
+    </div>
+    <div>
+    <h3>Total:5350</h3>
+    <div className="dashboard_content_leftline"></div>
+    </div>
+</div>
         </div>
 
     </div>
