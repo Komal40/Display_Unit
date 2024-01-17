@@ -1,0 +1,49 @@
+.task_container{
+    margin-left: 18rem;
+    margin-top: 2rem;
+}
+
+.task_aboveLine{
+margin-right: 2rem;
+}
+
+.task__above{
+    display: flex;
+}
+
+.task_line_select{
+    margin-top: 2rem;
+}
+
+.task_abovedrodown select{
+    width: 10rem;
+    height: 2rem;
+    border-radius: 15px;
+    padding-left: 1rem;
+    font-size:15px;
+    font-weight: 700;
+    border: 2px solid #ECECEC;
+    color:#4f4d4d;
+    /* margin-left: 4rem; */
+}
+
+
+.task_partrunning{
+    margin-top: 3rem;
+}
+
+.task_Add_input{
+    margin-top: 2rem;
+    background-color: var(--color-grey);
+    border: 2px solid blue;
+    height: 4rem;
+    width: fit-content;
+    padding: 16px;
+    border-radius: 10px;
+}
+
+.task_inp{
+    border: 2px solid var(--color-orange);
+    border-radius: 10px;
+    height: 2rem;
+}

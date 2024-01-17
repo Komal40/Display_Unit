@@ -41,6 +41,26 @@ const AddStationModal = ({ showModal, closeModal }) => {
     setStationNum(stationnum);
   };
 
+  const closeAndClearModal = () => {
+    // Reset all state variables to their initial values
+    setCount(1);
+    setStationNum("");
+    setSelectedMornEmployee("");
+    setSelectedEveEmployee("");
+    setSelectedProcess("");
+    setMornValue("");
+    setEveValue("");
+    setSkill("");
+    setMornName("");
+    setEveName("");
+    setEmpSkill("");
+
+    // Close the modal
+    closeModal();
+  };
+
+
+  
   const generateDivs = () => {
     // setStationid(stationLine + count)
     const divs = [];
@@ -289,7 +309,7 @@ const AddStationModal = ({ showModal, closeModal }) => {
   return (
     <div className={`modal ${showModal ? "show" : ""}`}>
       <div className="modal-content">
-        <span className="close" onClick={closeModal}>
+        <span className="close" onClick={closeAndClearModal}>
           &times;
         </span>
         {/* {Add heading of Station Modal} */}

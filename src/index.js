@@ -5,12 +5,12 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Update from './Components/Update/Update';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import Assign from './Components/Assign/Assign';
 import Timings from './Components/Timings/Timings';
 import Charts from './Components/Charts/Charts';
 import Login from './Components/Login/Login';
 import { UserProvider } from './UserContext';
 import UpFloor from './Components/UpFloor/UpFloor';
+import Task from './Components/Task/Task';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -23,7 +23,7 @@ root.render(
         <Route path='/app' element={<App/>}/>
         <Route path='/update' element={<UpFloor/>}/>
         <Route path='/upFloor' element={<Update/>}/>
-        <Route path='/assign' element={<Assign/>}/>
+        <Route path='/task' element={<Task/>}/>
         <Route path='/timing' element={<Timings/>}/>
         <Route path='/chart' element={<Charts/>}/>
        
