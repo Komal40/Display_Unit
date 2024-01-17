@@ -16,7 +16,7 @@
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
-    height: 70%;
+    height: 80%;
   }
   
   .close {
@@ -56,6 +56,7 @@
     text-align: center;
     /* filter: drop-shadow(30px 10px 4px  #FAFAFA); */
 }
+
 
 
 .count_var.active {
@@ -114,6 +115,7 @@
 .INP{
   width: 4.3em;
 }
+
 .addstation_component input{
     border:2px solid var(--color-orange);
     border-radius: 6px;
@@ -125,17 +127,33 @@
 
 .addStationsBtn {
   position: absolute;
-  bottom: 3%;
+  bottom: 0%;
   right: 15%;
   display: flex;
   gap: 10px;
   align-items: center;
-
   /* display: flex;
   justify-content: flex-end;
   align-items: flex-end;
   margin-top: auto;
   padding: 20px; */
+}
+
+
+.dropdown_morn_eve_Station select{
+  width: 10rem;
+  height: 2rem;
+  border-radius: 10px;
+  padding-left: 0.4rem;
+  font-size:15px;
+  font-weight: 500;
+  border: 2px solid #ECECEC;
+  color:#4f4d4d;
+  
+}
+
+.morn_eve{
+  color: var(--color-orange);
 }
 
 

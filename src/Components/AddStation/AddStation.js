@@ -5,137 +5,175 @@ import { FaPlus } from "react-icons/fa6";
 import { RiSubtractLine } from "react-icons/ri";
 import { FaRegSave } from "react-icons/fa";
 import { useUser } from "../../UserContext";
-
+import { FiLogIn } from "react-icons/fi";
 
 const AddStationModal = ({ showModal, closeModal }) => {
-  
   const [count, setCount] = useState(1);
-  const [stationnum, setStationNum]=useState()
+  const [stationnum, setStationNum] = useState();
 
   // stationLine is length of stations on particular line
-  const {stationLine}=useUser()
-  const {stationId}=useUser() 
+  const { stationLine } = useUser();
+  const { stationId } = useUser();
   // const [idLen, setIdLen]=useState(stationLine)
   const [stationid, setStationid] = useState(stationLine);
+  const [arr, setArr]=useState([])
 
-
+  const {LoginProcess}=useUser()
 
   // useEffect(() => {
   //   // Update stationId whenever count changes
   //   setStationid(stationLine + count);
   // }, [count, stationLine]);
 
-  const getData=(e)=>{
-    setStationNum(stationnum)
-  }
-  
+
+
+  const getData = (e) => {
+    setStationNum(stationnum);
+  };
+
   const generateDivs = () => {
     // setStationid(stationLine + count)
     const divs = [];
-    {console.log("station line", stationLine)}
-    {console.log("stationLine + count",stationLine + count)}
+    {
+      console.log("station line", stationLine);
+    }
+    {
+      console.log("stationLine + count", stationLine + count);
+    }
     for (let i = 0; i < count; i++) {
       const currentStationId = divs[i] || stationLine + i + 1;
       divs.push(
         <div className="addStations" key={i}>
           <div className="addstation_component">
             <p className="addStaionName">
-              Station Name&nbsp;&nbsp;<h4>{`${stationId}${currentStationId}`}</h4>
+              Station Name&nbsp;&nbsp;
+              <h4>{`${stationId}${currentStationId}`}</h4>
             </p>
-            <input
-              className="addstation_inputlabel"
-              placeholder="Operator Name"
-            />
-            <input
-              className="addstation_inputlabel"
-              placeholder="Operator Skill"
-            />
+            <h4 className="morn_eve">
+              Morning&nbsp;&nbsp;             
+            </h4>
+            
+            
+            <div className="dropdown_morn_eve_Station">
+            {/* <select>
+              <option>Select Name</option>
+              {Array.from({ length: arr.payload.employess_data.length }, (_, index) => (
+                <option key={index + 1}>
+                  {arr.payload.employess_data[index].full_name}
+                </option>
+              ))}
+            </select> */}
+              <p>Employee Code</p>
+            </div>
+            
+             <h4 className="morn_eve" style={{marginTop:'0.5rem'}}>
+              Evening&nbsp;&nbsp;             
+            </h4>
+            {/* <input className="addstation_inputlabel" placeholder="Operator Skill" /> */}
+            <div className="dropdown_morn_eve_Station">
+            {/* <select>
+              <option>Select Name</option>
+              {Array.from({ length: arr.payload.employess_data.length }, (_, index) => (
+                <option key={index + 1}>
+                  {arr.payload.employess_data[index].full_name}
+                </option>
+              ))}
+            </select> */}
+              <p>Employee Code</p>
+
+            </div>
             <div className="dropdown_addStation">
-              <select>
-                <option>Select Process</option>
-              </select>
+            {/* <select>
+              <option>Select Process</option>
+              {Array.from({ length: arr.payload.process_data.length }, (_, index) => (
+                <option key={index + 1}>
+                  {arr.payload.process_data[index].process_name}
+                </option>
+              ))}
+            </select> */}
             </div>
             <p>Required Skill</p>
-            <input className="addstation_inputlabel" placeholder="Password" />
+           
           </div>
         </div>
       );
     }
     return divs;
   };
-  
 
   const subCount = () => {
     if (count == 1) return;
-
     setCount((prevCount) => prevCount - 1);
   };
 
   const addCount = () => {
-    if (count ==10) return;
+    if (count == 10) return;
     setCount((prevCount) => prevCount + 1);
   };
 
-
   useEffect(() => {
-    generateDivs();    
+    generateDivs();
+    {console.log("LoginProcess",LoginProcess)}
+    setArr(LoginProcess)
   }, [count]);
 
 
   const update = async (e) => {
-        e.preventDefault();    
-        const link = process.env.REACT_APP_BASE_URL;
-        console.log('Base URL:', link);
-        const endPoint = '/station/add';
-        const fullLink = link + endPoint;
-    
-        try {
-          const baseStationId = stationId; // Define the base part of the station_id
-         
-          const dynamicStationId = `${baseStationId}${stationLine + count}`; // Construct the dynamic station_id
+    e.preventDefault();
+    const link = process.env.REACT_APP_BASE_URL;
+    console.log("Base URL:", link);
+    const endPoint = "/station/add";
+    const fullLink = link + endPoint;
 
-          const data = [
-            {
-              "station_id": dynamicStationId,
-              "e_one": "E12",
-              "e_one_name": "Sharma",
-              "e_one_skill": "10",
-              "e_two": "E15",
-              "e_two_name": "shxhsxv",
-              "e_two_skil": "8",
-              "process_id": "2",
-              "process_skill": "coating",
-              "process_name": "kfokvlvlfkl",
-            },
-          ];
-    
-          const response = await fetch(fullLink, {
-            method: "POST",
-            body: JSON.stringify(data),
-            headers: {
-              "Content-type": "application/json", // Set the Content-type header for JSON request
-              "Accept": "application/json", // Set the Accept header for JSON response
-            },
-          });
-    
-          console.log("add station",JSON.stringify(data));
-          console.log("dynamic station id", dynamicStationId)
-    
-          if (response.ok) {
-            const responseData = await response.json();
-            console.log("add api", responseData);
-          } else {
-            const errorData = await response.json();
-            console.error("Error:", errorData);
-          }
-        } catch (error) {
-          console.error("Error:", error.message);
-        }
-      };
-    
+    try {
+      // Create an array to store data for all stations
+      const stationDataArray = [];
+      const baseStationId = stationId; // Define the base part of the station_id
 
+      const dynamicStationId = `${baseStationId}${stationLine + count}`; // Construct the dynamic station_id
+
+      for (let i = 0; i < count; i++) {
+        const dynamicStationId = `${baseStationId}${stationLine + i + 1}`;
   
- 
+        const stationData = {
+          "station_id": dynamicStationId,
+          "e_one": "E12",
+          "e_one_name": "Sharma",
+          "e_one_skill": "10",
+          "e_two": "E15",
+          "e_two_name": "shxhsxv",
+          "e_two_skil": "8",
+          "process_id": "2",
+          "process_skill": "coating",
+          "process_name": "kfokvlvlfkl",
+        };
+  
+        stationDataArray.push(stationData);
+      }
+
+      const response = await fetch(fullLink, {
+        method: "POST",
+        body: JSON.stringify(stationDataArray),
+        headers: {
+          "Content-type": "application/json", // Set the Content-type header for JSON request
+          Accept: "application/json", // Set the Accept header for JSON response
+        },
+      });
+
+      console.log("add station", JSON.stringify(stationDataArray));
+      console.log("dynamic station id", dynamicStationId);
+
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log("add api", responseData);
+      } else {
+        const errorData = await response.json();
+        console.error("Error:", errorData);
+      }
+    } catch (error) {
+      console.error("Error:", error.message);
+    }
+  };
 
   return (
     <div className={`modal ${showModal ? "show" : ""}`}>
@@ -162,15 +200,12 @@ const AddStationModal = ({ showModal, closeModal }) => {
             {count}
           </div>
           <div>
-            <FaPlus className="subSign" onClick={() => addCount()} />           
-          </div>      
+            <FaPlus className="subSign" onClick={() => addCount()} />
+          </div>
         </div>
 
         {/* components */}
-        <div className="addStation_container" >
-          {generateDivs()}
-        </div>
-      
+        <div className="addStation_container">{generateDivs()}</div>
 
         <div>
           <p>Error Message</p>
@@ -182,7 +217,7 @@ const AddStationModal = ({ showModal, closeModal }) => {
         <div className="update__btn">
           <FaRegSave className="update_regsave" />
           <span>
-          <button onClick={update}>Update</button>
+            <button onClick={update}>Update</button>
           </span>
         </div>
       </div>
@@ -191,6 +226,3 @@ const AddStationModal = ({ showModal, closeModal }) => {
 };
 
 export default AddStationModal;
-
-
-

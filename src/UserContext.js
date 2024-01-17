@@ -14,6 +14,8 @@ export const UserProvider = ({ children }) => {
   const [stationLine, setStationLine]=useState(0)
   const [stationId, setStationId]=useState('')
 
+  const [LoginProcess, setLoginProcess]=useState([])
+
   const particularStationId=(data)=>{
     setStationId(data)
   }
@@ -51,11 +53,15 @@ export const UserProvider = ({ children }) => {
     setStationLine(data)
   }
 
+const getLoginProcessFunction=(data)=>{
+  setLoginProcess(data)
+}
+
 
   return (
     <UserContext.Provider value={{ userData, setUserDataContext, lines, setNumberOfLines, lineStation, setNumberLineStations,
     lineNum, setLineNumber , portNum, setPortNumber, portLength, setPortNumLength, setProcessDataFun, processData,
-    stationLine, stationOnLine, particularStationId, stationId}}>
+    stationLine, stationOnLine, particularStationId, stationId, LoginProcess, getLoginProcessFunction}}>
       {children}
     </UserContext.Provider>
   );

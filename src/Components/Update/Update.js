@@ -18,7 +18,7 @@ export default function Update() {
   const [showModel, setShowModel] = useState(false);
   const [showLine, setShowLine] = useState(false);
   const [arr, setArr] = useState([]);
-  const [line, setLine] = useState(0);
+  const [line, setLine] = useState(0)
 
   const { lines } = useUser();
   const { lineStation } = useUser();
@@ -30,6 +30,9 @@ export default function Update() {
   const {particularStationId}=useUser()
   const [localLineNum, setLocalLineNum] = useState(lineNum);
 
+  const [selectedPartId, setSelectedPartId] = useState(null);
+  const {getLoginProcessFunction}=useUser()
+
   const openModal = () => {
     setShowModel(true);
   };
@@ -38,12 +41,52 @@ export default function Update() {
     setShowModel(false);
   };
 
-  const addStation = () => {
-    // openModal()
-
-    setShowModel(true);
-    // alert('click')
+  const handlePartChange = (event) => {
+    const selectedOption = event.target.value;
+    setSelectedPartId(selectedOption); // Set the selected part_id in state
+    console.log("Selected Part ID:", selectedOption);
   };
+
+  
+  const addStation = () => {
+    setShowModel(true);
+    // fetch api of getting getlogin process
+    const fetchAPIData = async () => {
+      const link = process.env.REACT_APP_BASE_URL;
+      const endPoint = "/getlogin_process";
+      const fullLink = link + endPoint;
+
+      try {
+        const params = new URLSearchParams();
+        params.append("part_id", selectedPartId);
+        {console.log("arr.partid",selectedPartId)}
+
+        const response = await fetch(fullLink, {
+          method: "POST",
+          body: params,
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log("GET Login Process", data);
+          getLoginProcessFunction(data)
+          
+        } else {
+          const errorData = await response.json();
+          console.error("API Error:", errorData);
+        }
+      } catch (error) {
+        console.error("Error galt id:", error);
+      }
+    };
+
+    fetchAPIData();
+  };
+
+
 
   const addLine = () => {
     setShowLine(true);
@@ -95,7 +138,13 @@ export default function Update() {
 
 
   useEffect(() => {
-    const stations = lineStation.filter((item) => item.line_num === lineNum);
+    const stations = lineStation.filter((item) => item.line_num === lineNum)
+    .sort((a, b) => {
+      // Sort based on station ID
+      const idA = parseInt(a.station_id.split('S')[1]);
+      const idB = parseInt(b.station_id.split('S')[1]);
+      return idA - idB;
+    });;
   
     // Update state with the length of the filtered stations
   
@@ -163,10 +212,12 @@ export default function Update() {
             <h4>Part: 1VF</h4>
           </div>
           <div className="update_dropdown2">
-            <select>
+            <select onChange={handlePartChange}>
               <option>Change Port Number</option>
               {Array.from({ length: line }, (_, index) => (
-                <option key={index + 1} value={`Line ${index + 1}`}>
+                <option key={index + 1}
+                //  value={`Line ${index + 1}`} 
+                value={arr[index].part_id}>
                   {arr[index].part_name}
                 </option>
               ))}
@@ -202,6 +253,11 @@ export default function Update() {
       <div className="updattee">
         {lineStation
           .filter((item) => item.line_num === lineNum)
+          .sort((a, b) => {
+            const idA = parseInt(a.station_id.split('S')[1]);
+            const idB = parseInt(b.station_id.split('S')[1]);
+            return idA - idB;
+          })
           .map((item) => (
             <div className="update__components">
               <div>

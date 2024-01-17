@@ -8,8 +8,6 @@ import Operator from './Components/Operator/Operator';
 
 
 function App({openMenu}) {
-
-
   return (
     <>
      {/* <Login/> */}
@@ -17,9 +15,9 @@ function App({openMenu}) {
      <Navbar isOpen={openMenu}/>
       <Dashboard isNavbarClose={openMenu} /> 
     </div>
-
     </>
   );
 }
 
 export default App;
+
