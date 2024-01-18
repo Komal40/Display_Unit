@@ -65,3 +65,25 @@ margin-right: 2rem;
     margin-left: 2rem;
     margin-right: 2rem;
 }
+
+.task_num{
+    font-weight: 700;
+}
+
+.task_add_button{
+    margin-left: 4rem;
+}
+
+.task_add_button button{
+    width: 9rem;
+    color: white;
+    background-color: var(--color-green);
+    border: none;
+    cursor: pointer;
+    height: 2rem;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+
+

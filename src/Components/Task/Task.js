@@ -53,23 +53,25 @@ export default function Task() {
 
 <div className='task_qty_container'>
     <div>
-    <p>Previous Quantity: <span>350</span></p>
+    <p>Previous Quantity: <span className='task_num'>350</span></p>
     <div className="dashboard_content_leftline"></div>
     </div>
    <div className='task_symbol'>
-   <FaPlus />
+   <FaPlus className='task_num'/>
    </div>
     <div>
-    <p>Current Quantity:<span>5000</span></p>
+    <p>Current Quantity:<span className='task_num'>5000</span></p>
     <div className="dashboard_content_leftline"></div>
     </div>
     <div className='task_symbol'>
-    <RiEqualFill />
+    <RiEqualFill className='task_num'/>
     </div>
     <div>
     <h3>Total:5350</h3>
     <div className="dashboard_content_leftline"></div>
     </div>
+
+    <div className='task_add_button'><button>Add Task</button></div>
 </div>
         </div>
 
