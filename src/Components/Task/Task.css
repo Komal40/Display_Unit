@@ -35,7 +35,7 @@ margin-right: 2rem;
 .task_Add_input{
     margin-top: 2rem;
     background-color: var(--color-grey);
-    height: 4.5rem;
+    height: 4rem;
     width: fit-content;
     padding: 16px;
     border-radius: 5px;

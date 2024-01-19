@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Login.css";
 import bg from "../../Images/bg.png";
-import { useNavigate } from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
 import { useUser } from "../../UserContext";
 
 
@@ -14,6 +14,18 @@ export default function Login() {
 
 
   const { setUserDataContext } = useUser();
+  // const { setUserDataContext, loginData } = useUser(); // Assuming loginData is stored in the context
+  
+  // Check if loginData is present in the context
+  // const isUserLoggedIn = (loginData && loginData.payload) || localStorage.getItem('userLoggedIn');
+
+// useEffect(()=>{
+//   const storedUserData=localStorage.getItem("userData")
+//   if(storedUserData){
+//     setUserDataContext(JSON.parse(storedUserData))
+//     navigate('/app')
+//   }
+// },[])
 
   const clickLogin = async (e) => {
     e.preventDefault();
@@ -59,6 +71,7 @@ export default function Login() {
         setUserDataContext(data); 
         setError("");
         setMsg("Login Successfully");
+        localStorage.setItem('userData', JSON.stringify(data));
         setName("");
         setPass("");
         navigate('/app')
@@ -74,6 +87,13 @@ export default function Login() {
       navigate('/')
     }
   };
+
+
+    // If the user is already logged in, redirect to the app
+    // if (isUserLoggedIn) {
+    //   navigate('/app');
+    //   return null; // You can return null or a loading indicator while redirecting
+    // }
 
 
 

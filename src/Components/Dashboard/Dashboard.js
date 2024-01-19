@@ -4,8 +4,10 @@ import Line from "../Line/Line";
 import Operator from "../Operator/Operator";
 import DashboardR from "../DashboardR/DashboardR";
 import { useUser } from "../../UserContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
+  const navigate=useNavigate()
   //MY VARIABLES
 
   const [firstEffectCompleted, setFirstEffectCompleted] = useState(false);
@@ -33,6 +35,8 @@ export default function Dashboard() {
   // Get the date components
   const month = currentDate.getMonth() + 1; // Months are zero-indexed
   const day = currentDate.getDate();
+
+
 
   useEffect(() => {
     if (!firstEffectCompleted) return;
