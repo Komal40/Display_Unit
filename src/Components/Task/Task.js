@@ -7,6 +7,8 @@ import { FaPlus } from "react-icons/fa6";
 import { RiEqualFill } from "react-icons/ri";
 import { useUser } from "../../UserContext";
 import { useSearchParams } from "react-router-dom";
+import ReactDatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function Task() {
   const [arr, setArr] = useState([]);
@@ -14,6 +16,12 @@ export default function Task() {
   const [partId, setPartId] = useState("");
   const [partName, setPartName] = useState("");
   const [qty, setQty] = useState("");
+  const [selectedDate, setSelectedDate] = useState(null);
+  // Add this state
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedDay, setSelectedDay] = useState("");
+  const [selectedMonth, setSelectedMonth] = useState("");
+  const [selectedYear, setSelectedYear] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,14 +68,24 @@ export default function Task() {
     const fullLink = link + endPoint;
 
     try {
-      const TaskData = [{
-        floor_id: "1",
-        line_id: lineId,
-        part_id: partId,
-        part_name: partName,
-        prev_quantity: "0",
-        quantity: qty,
-      }];
+      // Format the selected date to "YYYY-MM-DD"
+      const formattedDate =
+        selectedDate &&
+        `${selectedDate.getFullYear()}-${(
+          "0" +
+          (selectedDate.getMonth() + 1)
+        ).slice(-2)}-${("0" + selectedDate.getDate()).slice(-2)}`;
+
+      const TaskData = [
+        {
+          floor_id: "1",
+          line_id: lineId,
+          part_id: partId,
+          part_name: partName,
+          prev_quantity: "0",
+          quantity: qty,
+        },
+      ];
 
       const response = await fetch(fullLink, {
         method: "POST",
@@ -78,11 +96,12 @@ export default function Task() {
         },
       });
 
-        console.log("Task add ", JSON.stringify(TaskData));
+      console.log("Task add ", JSON.stringify(TaskData));
 
       if (response.ok) {
         const responseData = await response.json();
         console.log("task api", responseData);
+        setShowPopup(true);
       } else {
         const errorData = await response.json();
         console.error("Error:", errorData);
@@ -127,10 +146,35 @@ export default function Task() {
             <p>Add Task</p>
             <div className="dashboard_content_leftline"></div>
           </div>
-          <div className="task_abovedrodown">
+          {/* <div className="task_abovedrodown">
             <select>
               <option>Select Date</option>
             </select>
+          </div> */}
+
+          <div className="task_abovedrodown">
+            <ReactDatePicker
+              className="task_datepicker"
+              selected={selectedDate}
+              onChange={(date) => {
+                setSelectedDate(date);
+                setSelectedDay(date.getDate());
+                setSelectedMonth(date.getMonth() + 1); // Adding 1 since months are zero-based
+                setSelectedYear(date.getFullYear());
+
+                // Format the selected date to "YYYY-MM-DD"
+                const formattedDate =
+                  date &&
+                  `${date.getFullYear()}-${("0" + (date.getMonth() + 1)).slice(
+                    -2
+                  )}-${("0" + date.getDate()).slice(-2)}`;
+
+                // Log the formatted date
+                console.log("Selected Date (Formatted):", formattedDate);
+              }}
+              placeholderText="Select Date"
+              dateFormat="MMMM d, yyyy"
+            />
           </div>
         </div>
 
@@ -160,6 +204,13 @@ export default function Task() {
             onChange={handleQty}
           />
         </div>
+
+        {showPopup && (
+          <div className="popup">
+            <p>Task added successfully!</p>
+            {/* You can customize the popup content as needed */}
+          </div>
+        )}
 
         <div>
           <div className="task_qty_container">

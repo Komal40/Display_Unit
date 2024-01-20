@@ -17,15 +17,25 @@ margin-right: 2rem;
 
 .task_abovedrodown select{
     width: 10rem;
-    height: 2rem;
+    height: 2.5rem;
     border-radius: 15px;
     padding-left: 1rem;
-    font-size:15px;
+    font-size: 15px;
     font-weight: 700;
-    border: 2px solid #ECECEC;
-    color:#4f4d4d;
-    /* margin-left: 4rem; */
-}
+    border: 2px solid #ececec;
+    color: #4f4d4d;
+  }
+  
+  .task_datepicker{
+    width: 10rem;
+    height: 2.5rem;
+    border-radius: 15px;
+    padding-left: 1rem;
+    font-size: 15px;
+    font-weight: 700;
+    border: 2px solid #ececec;
+    color: #4f4d4d;
+  }
 
 
 .task_partrunning{
@@ -87,3 +97,14 @@ margin-right: 2rem;
 
 
 
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+  
