@@ -26,12 +26,11 @@ export default function Dashboard() {
 
   const { setNumberOfLines } = useUser();
 
-  // const { userData } = useUser();
+
   const {loginData}=useUser();
   console.log("loginData", loginData)
 
   const {setProcessDataFun}=useUser();
-  // const codeData = userData.logindata;
 
   const currentDate = new Date();
 
@@ -246,3 +245,4 @@ export default function Dashboard() {
     </div>
   );
 }
+

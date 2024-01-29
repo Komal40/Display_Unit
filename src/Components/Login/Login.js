@@ -13,27 +13,6 @@ export default function Login() {
   const navigate = useNavigate();
 
 const {setUserDataContext}=useUser()
-  // const { setLoginDataContext } = useUser();
-
-  // const { setUserDataContext, loginData } = useUser(); // Assuming loginData is stored in the context
-  
-  // Check if loginData is present in the context
-  // const isUserLoggedIn = (loginData && loginData.payload) || localStorage.getItem('userLoggedIn');
-
-// useEffect(()=>{
-//   const storedUserData=localStorage.getItem("userData")
-//   if(storedUserData){
-//     setUserDataContext(JSON.parse(storedUserData))
-//     navigate('/app')
-//   }
-// },[])
-
-
-
-
-
-
-
 
 
 // const { setUserDataContext, loginData } = useUser();
@@ -80,15 +59,6 @@ const {setUserDataContext}=useUser()
         },
       });
 
-      // if (response.ok) {
-      //   const data = await response.json();
-      //   console.log(response, "respo");
-      //   // navigate('/')
-      // } else {
-      //   const errorData = await response.json();
-      //   setError(`Error: ${errorData.message}`);
-      // }
-
      
       if (response.ok) {
         const data = await response.json();
@@ -114,14 +84,6 @@ const {setUserDataContext}=useUser()
       // navigate('/')
     }
   };
-
-
-    // If the user is already logged in, redirect to the app
-    // if (isUserLoggedIn) {
-    //   navigate('/app');
-    //   return null; // You can return null or a loading indicator while redirecting
-    // }
-
 
 
   return (

@@ -16,16 +16,6 @@ export const UserProvider = ({ children }) => {
 
   const [LoginProcess, setLoginProcess]=useState([])
 
-  const [loginData, setLoginData] = useState(() => {
-    // Initialize with data from local storage or null if not available
-    const storedUserData = localStorage.getItem("userData");
-    return storedUserData ? JSON.parse(storedUserData) : null;
-  });
-
-  const setLoginDataContext = (data) => {
-    setLoginData(data);
-    localStorage.setItem("userData", JSON.stringify(data));
-  };
 
 
   const particularStationId=(data)=>{
@@ -75,7 +65,6 @@ const getLoginProcessFunction=(data)=>{
     <UserContext.Provider value={{ userData, setUserDataContext, lines, setNumberOfLines, lineStation, setNumberLineStations,
     lineNum, setLineNumber , portNum, setPortNumber, portLength, setPortNumLength, setProcessDataFun, processData,
     stationLine, stationOnLine, particularStationId, stationId, LoginProcess, getLoginProcessFunction,
-    setLoginDataContext, loginData
     }}>
       {children}
     </UserContext.Provider>
