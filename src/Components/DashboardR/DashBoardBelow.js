@@ -1,6 +1,7 @@
 import React from 'react'
 import { useUser } from '../../UserContext'
 
+
 export default function DashBoardBelow() {
 
     
@@ -24,7 +25,7 @@ export default function DashBoardBelow() {
           <div>
             <div>
               <p className="dashboard_content">
-                Total Stations: <h4> 6</h4>
+                Total Stations: <h4> </h4>
               </p>
             </div>
             <div className="dashboard_content_leftline"></div>

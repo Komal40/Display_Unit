@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useUser } from "../../UserContext";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { useState } from "react";
 
 export default function DashBoardAbove() {
-//   const location = useLocation();
-//   const { responseData } = location.state || {};
+
   const [apiData, setApiData] = useState(null);
-  const { userData } = useUser();
-  const codeData = userData.logindata;
+
+  const storedUserData = JSON.parse(localStorage.getItem("userData"));
+  // Log the data to the console
+  console.log("UserData from localStorage jhhfvdf:", storedUserData.logindata);
+
+  // const {loginData}=useUser();
+
   const { lines } = useUser();
 
   const currentDate = new Date();
@@ -26,13 +30,20 @@ export default function DashBoardAbove() {
   const monthName = currentDate.toLocaleString("en-US", { month: "long" });
   const formattedDateTime = `${day} ${monthName} : ${hours}:${minutes}:${seconds}`;
 
+  // useEffect(() => {
+  //   const storedUserData = localStorage.getItem("userData");
+  //   const parsedUserData = JSON.parse(storedUserData);
+  //   console.log("UserData from localStorage:", parsedUserData);
+  // }, []);
+
+
   return (
     <div>
       <div className="dashboard_container">
         <div className="dashboard_navbar">
           <div>
             <p className="dashboard_content">
-              Name: <h4>{codeData.first_name + " " + codeData.last_name}</h4>
+              Name: <h4>{storedUserData?.logindata.first_name + " " +storedUserData?.logindata.last_name}</h4>
             </p>
           </div>
           <div>
@@ -42,7 +53,7 @@ export default function DashBoardAbove() {
           </div>
           <div>
             <p className="dashboard_content">
-              User Id:<h4>{codeData.employee_code}</h4>
+              User Id:<h4>{storedUserData?.logindata.employee_code}</h4>
             </p>
           </div>
           <div>

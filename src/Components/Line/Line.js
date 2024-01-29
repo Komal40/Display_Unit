@@ -23,7 +23,7 @@ function Line({no}) {
     <div>
     <div>
           <p className="dashboard_content">
-            <h4> 3 Stations</h4>
+            <h4>  Stations</h4>
           </p>
         </div>
         <div className="dashboard_content_leftbelowline">          

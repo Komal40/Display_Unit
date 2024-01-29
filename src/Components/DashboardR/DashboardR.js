@@ -5,14 +5,13 @@ import { useUser } from "../../UserContext";
 import DashBoardBelow from "./DashBoardBelow";
 import DashBoardAbove from "./DashBoardAbove";
 
-
 export default function DashboardR() {
-
-
   return (
     <div>
-  <DashBoardAbove/>
-<DashBoardBelow/>
+      <DashBoardAbove />
+      <DashBoardBelow />
     </div>
   );
 }
+
+

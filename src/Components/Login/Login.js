@@ -12,8 +12,9 @@ export default function Login() {
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
 
+const {setUserDataContext}=useUser()
+  // const { setLoginDataContext } = useUser();
 
-  const { setUserDataContext } = useUser();
   // const { setUserDataContext, loginData } = useUser(); // Assuming loginData is stored in the context
   
   // Check if loginData is present in the context
@@ -26,6 +27,30 @@ export default function Login() {
 //     navigate('/app')
 //   }
 // },[])
+
+
+
+
+
+
+
+
+
+// const { setUserDataContext, loginData } = useUser();
+
+// useEffect(() => {
+//   const storedUserData = localStorage.getItem("userData");
+
+//   if (loginData) {
+//     setUserDataContext(loginData);
+//     navigate('/app');
+//   } else if (storedUserData) {
+//     setUserDataContext(JSON.parse(storedUserData));
+//     navigate('/app');
+//   }
+// }, [loginData, setUserDataContext, navigate]);
+
+
 
   const clickLogin = async (e) => {
     e.preventDefault();
@@ -68,10 +93,12 @@ export default function Login() {
       if (response.ok) {
         const data = await response.json();
         console.log("loginData", data);
-        setUserDataContext(data); 
+        // setLoginDataContext(data);
+        setUserDataContext(data) 
         setError("");
         setMsg("Login Successfully");
         localStorage.setItem('userData', JSON.stringify(data));
+
         setName("");
         setPass("");
         navigate('/app')
@@ -84,7 +111,7 @@ export default function Login() {
     } catch (error) {
       console.error("Error galt id:");
       setError("An unexpected error occurred");
-      navigate('/')
+      // navigate('/')
     }
   };
 

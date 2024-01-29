@@ -22,6 +22,8 @@ export default function Task() {
   const [selectedDay, setSelectedDay] = useState("");
   const [selectedMonth, setSelectedMonth] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
+  const [taskArr, setTaskArr]=useState([])
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,8 +32,15 @@ export default function Task() {
       const fullLink = link + endPoint;
 
       try {
+        const formattedDate =
+          selectedDate &&
+          `${selectedDate.getFullYear()}-${(
+            "0" +
+            (selectedDate.getMonth() + 1)
+          ).slice(-2)}-${("0" + selectedDate.getDate()).slice(-2)}`;
+
         const params = new URLSearchParams();
-        // params.append("floor_id", "1");
+        params.append("assigned_for_date", formattedDate);
 
         const response = await fetch(fullLink, {
           method: "POST",
@@ -59,6 +68,7 @@ export default function Task() {
 
     // Dependency array is empty to run the effect only once
   }, []);
+
 
   const addTask = async (e) => {
     e.preventDefault();
@@ -130,6 +140,7 @@ export default function Task() {
     setQty(val);
   };
 
+  
   return (
     <>
       <div>
@@ -146,6 +157,7 @@ export default function Task() {
             <p>Add Task</p>
             <div className="dashboard_content_leftline"></div>
           </div>
+
           {/* <div className="task_abovedrodown">
             <select>
               <option>Select Date</option>
@@ -239,6 +251,28 @@ export default function Task() {
               <button onClick={addTask}>Add Task</button>
             </div>
           </div>
+        </div>
+
+        <div className="task_data">
+          {arr
+            .filter((item) => item.part_id !== undefined) // Filter out items where part_id is undefined
+            .sort((a, b) => {
+              const idA = parseInt(a.part_id.split("S")[1]);
+              const idB = parseInt(b.part_id.split("S")[1]);
+              return idA - idB;
+            })
+            .map((item) => (
+              <div className="update__components" key={item.part_id}>
+                <div>
+                  <p className="operator_content">
+                    Part id:&nbsp;&nbsp; <h4>{item.part_id}</h4>
+                  </p>
+                  <p className="operator_content">
+                    Part Name:&nbsp;&nbsp; <h4>{item.part_name}</h4>
+                  </p>
+                </div>
+              </div>
+            ))}
         </div>
       </div>
     </>

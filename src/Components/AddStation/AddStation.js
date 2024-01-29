@@ -41,6 +41,19 @@ const AddStationModal = ({ showModal, closeModal }) => {
     setStationNum(stationnum);
   };
 
+  const cancel=()=>{
+    setSelectedMornEmployee("");
+    setSelectedEveEmployee("");
+    setSelectedProcess("");
+    setMornValue("");
+    setEveValue("");
+    setSkill("");
+    setMornName("");
+    setEveName("");
+    setEmpSkill("");
+  }
+
+
   const closeAndClearModal = () => {
     // Reset all state variables to their initial values
     setCount(1);
@@ -60,7 +73,7 @@ const AddStationModal = ({ showModal, closeModal }) => {
   };
 
 
-  
+  {console.log("selectProcesggggs",empSkill)}
   const generateDivs = () => {
     // setStationid(stationLine + count)
     const divs = [];
@@ -269,7 +282,7 @@ const AddStationModal = ({ showModal, closeModal }) => {
           e_one_skill: "10",
           e_two: eveValue,
           e_two_name: eveName,
-          e_two_skil: "8",
+          e_two_skill: "8",
           process_id: "2",
           process_skill: selectProcess,
           process_name: empSkill,
@@ -346,7 +359,7 @@ const AddStationModal = ({ showModal, closeModal }) => {
       </div>
 
       <div className="addStationsBtn">
-        <button className="addstationcancelbtn">Cancel</button>
+        <button className="addstationcancelbtn" onClick={cancel}>Cancel</button>
         <div className="update__btn">
           <FaRegSave className="update_regsave" />
           <span>

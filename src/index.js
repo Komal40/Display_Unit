@@ -4,17 +4,21 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Update from './Components/Update/Update';
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Routes, Route, useNavigate} from 'react-router-dom';
 import Timings from './Components/Timings/Timings';
 import Charts from './Components/Charts/Charts';
 import Login from './Components/Login/Login';
-import { UserProvider } from './UserContext';
+import { UserProvider, useUser } from './UserContext';
 import UpFloor from './Components/UpFloor/UpFloor';
 import Task from './Components/Task/Task';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+
 root.render(
+
+  
   // <React.StrictMode>
     <UserProvider>
     <Router>
@@ -25,13 +29,11 @@ root.render(
         <Route path='/upFloor' element={<Update/>}/>
         <Route path='/task' element={<Task/>}/>
         <Route path='/timing' element={<Timings/>}/>
-        <Route path='/chart' element={<Charts/>}/>
-       
+        <Route path='/chart' element={<Charts/>}/>       
         <Route path='/logout'/>
       </Routes>
     </Router>
     </UserProvider>
-
 );
 
 // If you want to start measuring performance in your app, pass a function
@@ -39,3 +41,4 @@ root.render(
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 
 reportWebVitals();
+

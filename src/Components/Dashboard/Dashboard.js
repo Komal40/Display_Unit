@@ -26,9 +26,12 @@ export default function Dashboard() {
 
   const { setNumberOfLines } = useUser();
 
-  const { userData } = useUser();
+  // const { userData } = useUser();
+  const {loginData}=useUser();
+  console.log("loginData", loginData)
+
   const {setProcessDataFun}=useUser();
-  const codeData = userData.logindata;
+  // const codeData = userData.logindata;
 
   const currentDate = new Date();
 
@@ -36,6 +39,7 @@ export default function Dashboard() {
   const month = currentDate.getMonth() + 1; // Months are zero-indexed
   const day = currentDate.getDate();
 
+ 
 
 
   useEffect(() => {
@@ -82,6 +86,7 @@ export default function Dashboard() {
     // Dependency array is empty to run the effect only once
   }, [firstEffectCompleted]);
 
+
   useEffect(() => {
     // console.log("lines", lines)
 
@@ -105,7 +110,7 @@ export default function Dashboard() {
           },
         });
 
-        console.log("floor-id", codeData.floor_id);
+        console.log("floor-id", "1");
 
         if (response.ok) {
           setFirstEffectCompleted(true);
@@ -138,8 +143,8 @@ export default function Dashboard() {
 
       try {
         const params = new URLSearchParams();
-        params.append("date", "5");
-        params.append("month", month);
+        params.append("month", "01");
+        params.append("date", "05");
 
         const response = await fetch(fullLink, {
           method: "POST",

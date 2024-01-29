@@ -64,7 +64,7 @@ export default function Update() {
 
       try {
         const params = new URLSearchParams();
-        params.append("part_id", selectedPartId);
+        params.append("part_id", "1");
         {console.log("arr.partid",selectedPartId)}
 
         const response = await fetch(fullLink, {
@@ -220,7 +220,7 @@ export default function Update() {
           </div>
           <div className="update_dropdown2">
             <select onChange={handlePartChange}>
-              <option>Change Port Number</option>
+              <option>Change Part Number</option>
               {Array.from({ length: line }, (_, index) => (
                 <option key={index + 1}
                 //  value={`Line ${index + 1}`} 
