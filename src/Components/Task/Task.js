@@ -157,6 +157,10 @@ export default function Task() {
             <p>Add Task</p>
             <div className="dashboard_content_leftline"></div>
           </div>
+          <div className="task_aboveLine">
+            <p>Previous Task</p>
+            <div className="dashboard_content_leftline"></div>
+          </div>
 
           {/* <div className="task_abovedrodown">
             <select>
@@ -252,6 +256,7 @@ export default function Task() {
             </div>
           </div>
         </div>
+
 
         <div className="task_data">
           {arr

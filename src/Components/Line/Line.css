@@ -20,6 +20,42 @@
     align-items: center;
 }
 
+.dashboard_line_buttons {
+    overflow-x: auto;
+    white-space: nowrap;
+    display: flex;
+    margin-left: 14rem;
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
+}
+
+.dashboard_line_buttons button{
+    flex: 0 0 7rem;
+    height: 3rem;
+    background-color: var(--color-blue);
+    color: white;
+    margin-right: 1rem;
+    border: none;
+    border-radius: 8px;
+    display: inline-block;
+    cursor: pointer;
+
+}
+
+.dashboard_line_buttons button:active{
+    background-color: var(--color-skin);
+    border: none;
+}
+
+.dashboard_line_buttons button.active {
+    background-color: var(--color-skin);
+    border: none;
+  }
+
+
+
 .bell{
     width: 3rem;
     height: 1.5rem;

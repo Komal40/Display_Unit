@@ -296,7 +296,7 @@ export default function Dashboard() {
                           Process :&nbsp;&nbsp;<h4>{item.process_name}</h4>
                         </p>
                         <br />
-                        <h3>Evening Shift</h3>
+                        {/* <h3>Evening Shift</h3>
                         <p className="operator_content">
                           Operator :&nbsp;&nbsp; <h4>{item.e_two_name}</h4>
                         </p>
@@ -306,7 +306,7 @@ export default function Dashboard() {
                         <p className="operator_content">
                           Process Skill:&nbsp;&nbsp;
                           <h4>{item.process_skill}</h4>
-                        </p>
+                        </p> */}
                       </div>
                       <div className="operator_below_content">
                         {passes + fails}Done&nbsp; {passes} Pass &nbsp;{fails}

@@ -167,7 +167,6 @@ export default function Update() {
     particularStationId(stationCode)
     console.log("Stations Length", stations.length);
     stationOnLine(len);
-
   }, [localLineNum, lineStation, particularStationId, stationOnLine]);
 
   if (!LoginProcess.payload) {
