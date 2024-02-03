@@ -65,8 +65,6 @@ export default function Task() {
     };
 
     fetchData();
-
-    // Dependency array is empty to run the effect only once
   }, []);
 
 
@@ -74,7 +72,7 @@ export default function Task() {
     e.preventDefault();
     const link = process.env.REACT_APP_BASE_URL;
     console.log("Base URL:", link);
-    const endPoint = "/task_assigned";
+    const endPoint = "/task_assigned_version_two";
     const fullLink = link + endPoint;
 
     try {

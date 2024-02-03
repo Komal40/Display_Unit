@@ -5,29 +5,15 @@ import { useUser } from '../../UserContext'
 
 function Line({no}) {
 
-  // const [activeButton, setActiveButton] = useState(null);
-
-  // const handleButtonClick = (buttonNumber) => {
-  //   setActiveButton(buttonNumber);
-  // };
-
-  //   // Create an array of length equal to buttonCount
-  //   const buttons = Array.from({ length: 16 }, (_, index) => index + 1);
 
   return (
     <div>
- 
-
-
-
-
       <div className="dashboard__below_container">
         <div className="dashboard_container_leftbelowside">
        <div>
        <div>
           <p className="dashboard_content">
              <h4> Line {no} </h4>
-
           </p>
         </div>
         <div className="dashboard_content_leftbelowline">          

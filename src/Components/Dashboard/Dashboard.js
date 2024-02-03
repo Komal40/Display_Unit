@@ -41,21 +41,14 @@ export default function Dashboard() {
   const month = currentDate.getMonth() + 1; // Months are zero-indexed
   const day = currentDate.getDate();
 
-  useEffect(() => {
-    // Set the initial state when the component mounts
-    setActiveButton(1);
-  }, []);
-
-  const [activeButton, setActiveButton] = useState(null);
+  const [activeButton, setActiveButton] = useState(1);
 
   const handleButtonClick = (buttonNumber) => {
     setActiveButton(buttonNumber);
   };
 
-    // Create an array of length equal to buttonCount
-    const buttons = Array.from({ length: 16 }, (_, index) => index + 1);
-
-
+  // Create an array of length equal to buttonCount
+  const buttons = Array.from({ length: 16 }, (_, index) => index + 1);
 
   useEffect(() => {
     if (!firstEffectCompleted) return;
@@ -147,34 +140,45 @@ export default function Dashboard() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const link = "http://localhost:5000";
+    const month = "01";
+    const date = "05";
 
-      useEffect(() => {
-        const link = 'http://localhost:5000';
-        const month = '01';
-        const date = '08';
-    
-        // Construct the WebSocket connection URL with query parameters
-        const fullUrl = `${link}?month=${encodeURIComponent(month)}&date=${encodeURIComponent(date)}`;
-    
+    // Construct the WebSocket connection URL with query parameters
+    const fullUrl = `${link}?month=${encodeURIComponent(
+      month
+    )}&date=${encodeURIComponent(date)}`;
 
-        const socket = socketIOClient(fullUrl, {
-          transports:['websocket'],
-          withCredentials: true,
-        });
+    const socket = socketIOClient(fullUrl, {
+      transports: ["websocket"],
+      withCredentials: true,
+    });
 
-        socket.on('update_work_for_operator', (data) => {
-          console.log('Received update from WebSocket:', data);
-          setProcessData(data.data.processdata);
-        });
+    socket.on("update_work_for_operator", (data) => {
+      console.log("Received update from WebSocket:", data);
+      setProcessData(data.data.processdata);
+      console.log("processdata", processData)
+    });
 
+    return () => {
+      socket.disconnect(); // Cleanup on component unmount
+    };
+  }, []);
 
-      return () => {
-        socket.disconnect(); // Cleanup on component unmount
-      };
-    }, []);
+  const scrollLeft = () => {
+    const container = document.querySelector(".dashboard_line_buttons");
+    if (container) {
+      container.scrollLeft -= 100; // Adjust the scroll amount as needed
+    }
+  };
 
-
-
+  const scrollRight = () => {
+    const container = document.querySelector(".dashboard_line_buttons");
+    if (container) {
+      container.scrollLeft += 100; // Adjust the scroll amount as needed
+    }
+  };
 
   return (
     <div>
@@ -182,21 +186,34 @@ export default function Dashboard() {
       {/* <div style={dashboardStyle}> */}
 
       <DashboardR />
-      <div className='dashboard_line_buttons'>
-      {Array.from({ length: line }).map((_, index) => (
-        <button
-          key={index}
-          className={activeButton === index + 1 ? 'active' : ''}
-          onClick={() => handleButtonClick(index + 1)}
-        >
-          Line {index + 1}
-        </button>
-      ))}
+      <div className="arrow_btn">
+        {/* <div className="dashboard_arrows">
+          <button className="arrow-button left" onClick={scrollLeft}>
+            &#60;
+          </button>
+          <button className="arrow-button right" onClick={scrollRight}>
+            &#62;
+          </button>
+        </div> */}
+        <div className="dashboard_line_buttons">
+          {Array.from({ length: line }).map((_, index) => (
+            <button
+              key={index}
+              className={activeButton === index + 1 ? "active" : ""}
+              onClick={() => handleButtonClick(index + 1)}
+            >
+              Line {index + 1}
+            </button>
+          ))}
+        </div>
       </div>
 
 
- {Array.from({ length: line }).map((_, index) => (
-        <div key={index} style={{ display: activeButton === index + 1 ? 'block' : 'none' }}>
+      {Array.from({ length: line }).map((_, index) => (
+        <div
+          key={index}
+          style={{ display: activeButton === index + 1 ? "block" : "none" }}
+        >
           {activeButton === index + 1 && <Line no={index + 1} />}
 
           <div className="dashboard_stations">
@@ -206,11 +223,15 @@ export default function Dashboard() {
                 const stationNum = item.station_num;
 
                 const passes = processData.filter(
-                  (data) => data.status === "1" && data.station_num === stationNum
+                  (data) =>
+                    data.status == "1" && data.station_num == stationNum
                 ).length;
                 const fails = processData.filter(
-                  (data) => data.status === "0" && data.station_num === stationNum
+                  (data) =>
+                    data.status == "0" && data.station_num == stationNum
                 ).length;
+                const added=processData.filter((data)=>data.isfilled== "1" && data.stationNum==stationNum).length
+                const added2=processData.filter((data)=>data.isfilled== "0" && data.stationNum==stationNum ).length
 
                 return (
                   <div className="operator_line" key={stationNum}>
@@ -231,7 +252,8 @@ export default function Dashboard() {
                         </p>
                       </div>
                       <div className="operator_below_content">
-                        {passes + fails} Done&nbsp; {passes} Pass &nbsp;{fails} Fail&nbsp; 9 Added
+                        {passes + fails} Done&nbsp; {passes} Pass &nbsp;{fails}{" "}
+                        Fail&nbsp; {added+added2} Added
                       </div>
                     </div>
                   </div>
@@ -240,13 +262,6 @@ export default function Dashboard() {
           </div>
         </div>
       ))}
-
     </div>
   );
 }
-
-
-
-
-
-
