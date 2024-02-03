@@ -42,6 +42,22 @@ export default function Dashboard() {
   const day = currentDate.getDate();
 
   useEffect(() => {
+    // Set the initial state when the component mounts
+    setActiveButton(1);
+  }, []);
+
+  const [activeButton, setActiveButton] = useState(null);
+
+  const handleButtonClick = (buttonNumber) => {
+    setActiveButton(buttonNumber);
+  };
+
+    // Create an array of length equal to buttonCount
+    const buttons = Array.from({ length: 16 }, (_, index) => index + 1);
+
+
+
+  useEffect(() => {
     if (!firstEffectCompleted) return;
 
     const fetchData = async () => {
@@ -132,46 +148,6 @@ export default function Dashboard() {
   }, []);
 
 
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const link = process.env.REACT_APP_BASE_URL;
-  //     console.log("Base URL:", link);
-  //     const endPoint = "/work/getoperator";
-  //     const fullLink = link + endPoint;
-
-  //     try {
-  //       const params = new URLSearchParams();
-  //       params.append("month", "01");
-  //       params.append("date", "05");
-
-  //       const response = await fetch(fullLink, {
-  //         method: "POST",
-  //         body: params,
-  //         headers: {
-  //           "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-  //         },
-  //       });
-
-  //       if (response.ok) {
-  //         const data = await response.json();
-  //         // console.log(day,month)
-  //         console.log("process data", data.processdata);
-  //         console.log("Process data is array", Array.isArray(data.processdata));
-  //         setProcessDataFun(data.processdata);
-  //         setProcessData(data.processdata);
-  //       } else {
-  //         const errorData = await response.json();
-  //         console.error("API Error:", errorData);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error galt id:", error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
-
       useEffect(() => {
         const link = 'http://localhost:5000';
         const month = '01';
@@ -199,59 +175,6 @@ export default function Dashboard() {
 
 
 
-  // const [data, setData] = useState("hjhknmn");
-
-  // const socket = socketIOClient("http://localhost:5000", {
-  //   transports: ["websocket"],
-  //   withCredentials: true,
-  // });
-  
-  // // Listen for updates from the server
-  // socket.on("update_work_for_operator", (newData) => {
-  //   setData(newData.data.processdata);
-  //   console.log("update_work_for_operator", newData.data.processdata);
-  // });
-  
-  // // Cleanup the socket connection on component unmount
-  // return () => {
-  //   socket.disconnect();
-  // };
-  
-  // ...
-  
-  // Render logic
-  // return (
-  //   <div>
-  //     <h1>WebSocket Data</h1>
-  //     {newData.data && typeof newData.data === "object" ? (
-  //       <pre>{JSON.stringify(newData.data, null, 2)}</pre>
-  //     ) : (
-  //       <p>No data received yet.</p>
-  //     )}
-  //   </div>
-  // );
-  
-  
-
-  // {console.log("processData", processData)}
-  // const [objectData, setObjectData] = useState({ name: 'Loading...', status: 'Loading...' });
-
-  // useEffect(() => {
-  //   const socket = socketIOClient('http://localhost:5000', {
-  //       transports: ['websocket'],
-  //       withCredentials: true,  // Add this line
-  //     });
-
-  //   socket.on('update_object', (data) => {
-  //     console.log('Received object update:', data);
-  //     setObjectData(data);
-  //   });
-
-  //   return () => {
-  //     socket.disconnect(); // Cleanup on component unmount
-  //   };
-  // }, []);
-
 
   return (
     <div>
@@ -259,11 +182,23 @@ export default function Dashboard() {
       {/* <div style={dashboardStyle}> */}
 
       <DashboardR />
+      <div className='dashboard_line_buttons'>
       {Array.from({ length: line }).map((_, index) => (
-        <div key={index}>
-          <Line no={index + 1} />
+        <button
+          key={index}
+          className={activeButton === index + 1 ? 'active' : ''}
+          onClick={() => handleButtonClick(index + 1)}
+        >
+          Line {index + 1}
+        </button>
+      ))}
+      </div>
 
-          {/* stations */}
+
+ {Array.from({ length: line }).map((_, index) => (
+        <div key={index} style={{ display: activeButton === index + 1 ? 'block' : 'none' }}>
+          {activeButton === index + 1 && <Line no={index + 1} />}
+
           <div className="dashboard_stations">
             {arr
               .filter((item) => item.line_num === index + 1)
@@ -271,15 +206,14 @@ export default function Dashboard() {
                 const stationNum = item.station_num;
 
                 const passes = processData.filter(
-                  (data) => data.status == "1" && data.station_num == stationNum
+                  (data) => data.status === "1" && data.station_num === stationNum
                 ).length;
                 const fails = processData.filter(
-                  (data) => data.status == "0" && data.station_num == stationNum
+                  (data) => data.status === "0" && data.station_num === stationNum
                 ).length;
-                // const stationId=processData.filter((e)=>e.station_num==stationNum)
 
                 return (
-                  <div className="operator_line">
+                  <div className="operator_line" key={stationNum}>
                     <div className="operator_container1">
                       <div>
                         <h3>Morning Shift</h3>
@@ -295,24 +229,9 @@ export default function Dashboard() {
                         <p className="operator_content">
                           Process :&nbsp;&nbsp;<h4>{item.process_name}</h4>
                         </p>
-                        <br />
-                        {/* <h3>Evening Shift</h3>
-                        <p className="operator_content">
-                          Operator :&nbsp;&nbsp; <h4>{item.e_two_name}</h4>
-                        </p>
-                        <p className="operator_content">
-                          Operator Skill:&nbsp;&nbsp;<h4>{item.e_two_skill}</h4>
-                        </p>
-                        <p className="operator_content">
-                          Process Skill:&nbsp;&nbsp;
-                          <h4>{item.process_skill}</h4>
-                        </p> */}
                       </div>
                       <div className="operator_below_content">
-                        {passes + fails}Done&nbsp; {passes} Pass &nbsp;{fails}
-                        Fail&nbsp; 9 Added
-                        {/* <p>Name: {objectData.name}, Status: {objectData.status}</p> */}
-                        {/* {data !== null ? <p>{data}</p> : <p>Loading data...</p>} */}
+                        {passes + fails} Done&nbsp; {passes} Pass &nbsp;{fails} Fail&nbsp; 9 Added
                       </div>
                     </div>
                   </div>
@@ -321,9 +240,13 @@ export default function Dashboard() {
           </div>
         </div>
       ))}
+
     </div>
   );
 }
+
+
+
 
 
 

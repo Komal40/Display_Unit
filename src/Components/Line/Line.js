@@ -5,27 +5,18 @@ import { useUser } from '../../UserContext'
 
 function Line({no}) {
 
-  const [activeButton, setActiveButton] = useState(null);
+  // const [activeButton, setActiveButton] = useState(null);
 
-  const handleButtonClick = (buttonNumber) => {
-    setActiveButton(buttonNumber);
-  };
+  // const handleButtonClick = (buttonNumber) => {
+  //   setActiveButton(buttonNumber);
+  // };
 
-    // Create an array of length equal to buttonCount
-    const buttons = Array.from({ length: 16 }, (_, index) => index + 1);
+  //   // Create an array of length equal to buttonCount
+  //   const buttons = Array.from({ length: 16 }, (_, index) => index + 1);
 
   return (
     <div>
-      <div className='dashboard_line_buttons'>
-      {buttons.map((buttonNumber) => (        
-          <button 
-          key={buttonNumber}
-          className={activeButton === buttonNumber ? 'active' : ''}
-          onClick={() => handleButtonClick(buttonNumber)}>Line {buttonNumber}
-        </button>
-          
-      ))}
-      </div>
+ 
 
 
 

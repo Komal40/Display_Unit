@@ -24,7 +24,8 @@
     overflow-x: auto;
     white-space: nowrap;
     display: flex;
-    margin-left: 14rem;
+    margin-left: 17rem;
+    margin-top: 2rem;
   }
 
   ::-webkit-scrollbar {
