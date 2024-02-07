@@ -3,7 +3,8 @@ import "./Line.css"
 import { useUser } from '../../UserContext'
 
 
-function Line({no}) {
+function Line({no,passMin, failTotal,totalStations}) {
+
 
 
   return (
@@ -14,6 +15,7 @@ function Line({no}) {
        <div>
           <p className="dashboard_content">
              <h4> Line {no} </h4>
+             {console.log("object",passMin, failTotal)}
           </p>
         </div>
         <div className="dashboard_content_leftbelowline">          
@@ -23,7 +25,7 @@ function Line({no}) {
     <div>
     <div>
           <p className="dashboard_content">
-            <h4>  Stations</h4>
+            <h4> {totalStations} Stations</h4>
           </p>
         </div>
         <div className="dashboard_content_leftbelowline">          
@@ -55,19 +57,19 @@ function Line({no}) {
         </div>
         <div>
           <p className="dashboard_content">
-            <h4>140 passed</h4>
+            <h4>{passMin} passed</h4>
           </p>
         </div>
         <div>
           <p className="dashboard_content">
-            <h4>5 failed</h4>
+            <h4>{failTotal} failed</h4>
           </p>
         </div>
-        <div>
+        {/* <div>
           <p className="dashboard_content">
             <h4>15 filled</h4>
           </p>
-        </div>
+        </div> */}
         </div>
       </div>
 

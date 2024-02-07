@@ -10,6 +10,7 @@ import io from "socket.io-client";
 import { io as socketIOClient } from "socket.io-client";
 import WebSocket from "websocket";
 
+
 export default function Dashboard() {
   const navigate = useNavigate();
   //MY VARIABLES
@@ -21,8 +22,7 @@ export default function Dashboard() {
   const [arr, setArr] = useState([]);
   const [processData, setProcessData] = useState([]);
   const [line, setLine] = useState(0);
-  const [pass, setPass] = useState(0);
-  const [fail, setFail] = useState(0);
+
 
   const [stations, setStations] = useState(0);
 
@@ -34,6 +34,9 @@ export default function Dashboard() {
   console.log("loginData", loginData);
 
   const { setProcessDataFun } = useUser();
+  const [passMin, setPassMin] = useState(Number.MAX_SAFE_INTEGER);
+  const [failTotal, setFailTotal] = useState(0);
+  const [totalStations, setTotalStations]=useState(0)
 
   const currentDate = new Date();
 
@@ -50,6 +53,50 @@ export default function Dashboard() {
   // Create an array of length equal to buttonCount
   const buttons = Array.from({ length: 16 }, (_, index) => index + 1);
 
+
+  useEffect(() => {
+    if (!firstEffectCompleted) return;
+  
+    const calculateLineStats = () => {
+      let minPasses = Number.MAX_SAFE_INTEGER;    
+      let totalFails = 0;
+      let totalStation = 0;
+      arr
+      .filter((item) => item.line_num === activeButton)
+      .forEach((item) => {
+        const stationNum = item.station_num;
+        console.log("Current station:", stationNum);
+        const passes = processData.filter(
+          (data) => {
+            // console.log("Data:", data);
+            return data.status == "1" && data.station_num == stationNum && data.line_id == activeButton;
+          }
+        ).length;
+        const fails = processData.filter(
+          (data) => data.status == "0" && data.station_num == stationNum && data.line_id == activeButton
+        ).length;
+
+        console.log("Passes:", passes);
+        console.log("Fails:", fails);
+
+        totalFails += fails;
+        minPasses = Math.min(minPasses, passes);
+        totalStation++;
+        
+      });
+  
+      // Set the state with the calculated values
+      setTotalStations(totalStation);
+      setPassMin(minPasses);
+      setFailTotal(totalFails);
+      console.log("object passMin,failTotal",passMin,failTotal)
+    };
+  
+    calculateLineStats();
+  }, [activeButton, arr, processData, firstEffectCompleted]);
+  
+
+  
   useEffect(() => {
     if (!firstEffectCompleted) return;
 
@@ -86,13 +133,11 @@ export default function Dashboard() {
         console.error("Error galt id:", error);
       }
     };
-
-    // Introduce a delay of 3 seconds (3000 milliseconds)
-
     fetchData();
 
     // Dependency array is empty to run the effect only once
   }, [firstEffectCompleted]);
+
 
   useEffect(() => {
     // console.log("lines", lines)
@@ -139,6 +184,7 @@ export default function Dashboard() {
 
     fetchData();
   }, []);
+
 
   useEffect(() => {
     const link = "http://localhost:5000";
@@ -187,14 +233,14 @@ export default function Dashboard() {
 
       <DashboardR />
       <div className="arrow_btn">
-        {/* <div className="dashboard_arrows">
+        <div className="dashboard_arrows">
           <button className="arrow-button left" onClick={scrollLeft}>
             &#60;
           </button>
           <button className="arrow-button right" onClick={scrollRight}>
             &#62;
           </button>
-        </div> */}
+        </div>
         <div className="dashboard_line_buttons">
           {Array.from({ length: line }).map((_, index) => (
             <button
@@ -214,22 +260,28 @@ export default function Dashboard() {
           key={index}
           style={{ display: activeButton === index + 1 ? "block" : "none" }}
         >
-          {activeButton === index + 1 && <Line no={index + 1} />}
+          {activeButton === index + 1 && <Line no={index + 1} passMin={passMin} failTotal={failTotal} totalStations={totalStations}  />}
 
           <div className="dashboard_stations">
             {arr
               .filter((item) => item.line_num === index + 1)
               .map((item) => {
+               
                 const stationNum = item.station_num;
 
                 const passes = processData.filter(
                   (data) =>
                     data.status == "1" && data.station_num == stationNum
-                ).length;
+                ).length;  
+                         
+                
+               
                 const fails = processData.filter(
                   (data) =>
                     data.status == "0" && data.station_num == stationNum
                 ).length;
+                
+
                 const added=processData.filter((data)=>data.isfilled== "1" && data.stationNum==stationNum).length
                 const added2=processData.filter((data)=>data.isfilled== "0" && data.stationNum==stationNum ).length
 
