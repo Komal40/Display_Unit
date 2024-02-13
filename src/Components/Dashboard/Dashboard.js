@@ -73,15 +73,13 @@ export default function Dashboard() {
           }
         ).length;
         const fails = processData.filter(
-          (data) => data.status == "0" && data.station_num == stationNum && data.line_id == activeButton
+          (data) => data.status == "0" && data.station_num == stationNum && data.line_id == activeButton && data.process_id
         ).length;
-
-        console.log("Passes:", passes);
-        console.log("Fails:", fails);
 
         totalFails += fails;
         minPasses = Math.min(minPasses, passes);
         totalStation++;
+        console.log(fails,"fail number")
         
       });
   
@@ -226,6 +224,7 @@ export default function Dashboard() {
     }
   };
 
+  
   return (
     <div>
       {/* <div className={`${isNavbarClose ? 'dashboard_container':'shifted'}`}> */}
@@ -233,14 +232,14 @@ export default function Dashboard() {
 
       <DashboardR />
       <div className="arrow_btn">
-        <div className="dashboard_arrows">
+        {/* <div className="dashboard_arrows">
           <button className="arrow-button left" onClick={scrollLeft}>
             &#60;
           </button>
           <button className="arrow-button right" onClick={scrollRight}>
             &#62;
           </button>
-        </div>
+        </div> */}
         <div className="dashboard_line_buttons">
           {Array.from({ length: line }).map((_, index) => (
             <button
@@ -260,7 +259,9 @@ export default function Dashboard() {
           key={index}
           style={{ display: activeButton === index + 1 ? "block" : "none" }}
         >
-          {activeButton === index + 1 && <Line no={index + 1} passMin={passMin} failTotal={failTotal} totalStations={totalStations}  />}
+          {activeButton === index + 1 && <Line no={index + 1} 
+          // passMin={passMin} failTotal={failTotal} totalStations={totalStations}  
+          />}
 
           <div className="dashboard_stations">
             {arr
@@ -274,7 +275,7 @@ export default function Dashboard() {
                     data.status == "1" && data.station_num == stationNum
                 ).length;  
                          
-                
+                console.log(passes,"pass")
                
                 const fails = processData.filter(
                   (data) =>

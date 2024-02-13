@@ -1,0 +1,39 @@
+.newTask_main{
+    margin-left: 15rem;
+    margin-top: 2rem;
+}
+
+.newtaskheading{
+    margin-top: 2rem;
+}
+
+.custom-table {
+    border-collapse: separate;
+    border-spacing: 10px; /* Adjust the spacing as needed */
+  }
+  
+  .custom-table th,
+  .custom-table td {
+    padding: 10px; /* Add padding to cells for spacing */
+  }
+
+  
+  .Approve_btn{
+    background: #50BA4E;
+    color: white; 
+    width: 8rem; 
+    height: 1.8rem;
+    border-radius: 1rem; 
+    border: none;
+    cursor: pointer; 
+}
+
+.check_box{
+    width: 1.5rem;
+    height: 1.5rem;
+}
+.table_content{
+    text-align: center;
+}
+
+

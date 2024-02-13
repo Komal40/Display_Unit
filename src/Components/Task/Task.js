@@ -16,7 +16,10 @@ export default function Task() {
   const [partId, setPartId] = useState("");
   const [partName, setPartName] = useState("");
   const [qty, setQty] = useState("");
+  const [qty2, setqty2]=useState("");
   const [selectedDate, setSelectedDate] = useState(null);
+  const [isCompleted, setIsCompleted]=useState(false)
+
   // Add this state
   const [showPopup, setShowPopup] = useState(false);
   const [selectedDay, setSelectedDay] = useState("");
@@ -28,7 +31,8 @@ export default function Task() {
   useEffect(() => {
     const fetchData = async () => {
       const link = process.env.REACT_APP_BASE_URL;
-      const endPoint = "/get/assigend_parts";
+      // const endPoint = "/get/assigend_parts";
+      const endPoint='/get/assigned_parts_all'
       const fullLink = link + endPoint;
 
       try {
@@ -69,10 +73,13 @@ export default function Task() {
 
 
   const addTask = async (e) => {
+
+    // if (!setIsCompleted) return;
+
     e.preventDefault();
     const link = process.env.REACT_APP_BASE_URL;
     console.log("Base URL:", link);
-    const endPoint = "/task_assigned_version_two";
+    const endPoint = "/task_assigned_version_three";
     const fullLink = link + endPoint;
 
     try {
@@ -84,16 +91,28 @@ export default function Task() {
           (selectedDate.getMonth() + 1)
         ).slice(-2)}-${("0" + selectedDate.getDate()).slice(-2)}`;
 
-      const TaskData = [
-        {
-          floor_id: "1",
-          line_id: lineId,
-          part_id: partId,
-          part_name: partName,
-          prev_quantity: "0",
-          quantity: qty,
-        },
-      ];
+        let TaskData = [];
+        if (qty && document.querySelector('.task_checkbox').checked) {
+          TaskData.push({
+            floor_id: "1",
+            line_id: "1", // Assuming the line ID for qty is 1
+            part_id: arr[0]?.part_id || "", // Assuming first part for line 1
+          part_name: arr[0]?.part_name || "", // Assuming first part for line 1
+            prev_quantity: "0",
+            quantity: qty,
+          });
+        }
+        if (qty2 && document.querySelectorAll('.task_checkbox')[1].checked) {
+          TaskData.push({
+            floor_id: "1",
+            line_id: "2", // Assuming the line ID for qty2 is 2
+            part_id: arr[1]?.part_id || "", // Assuming first part for line 1
+            part_name: arr[1]?.part_name || "", // Assuming first part for line 1
+            prev_quantity: "0",
+            quantity: qty2,
+          });
+        }
+
 
       const response = await fetch(fullLink, {
         method: "POST",
@@ -119,6 +138,7 @@ export default function Task() {
     }
   };
 
+
   const handleLineChange = (event) => {
     const selectedLineId = event.target.value;
     setLineId(selectedLineId);
@@ -138,6 +158,10 @@ export default function Task() {
     setQty(val);
   };
 
+  const handleQty2=(e)=>{
+    const val=e.target.value;
+    setqty2(val)
+  }
   
   return (
     <>
@@ -192,7 +216,7 @@ export default function Task() {
           </div>
         </div>
 
-        <div className="task_line_select">
+        {/* <div className="task_line_select">
           <div className="task_abovedrodown">
             <select value={lineId} onChange={handleLineChange}>
               <option value="">Select Line</option>
@@ -203,14 +227,18 @@ export default function Task() {
               ))}
             </select>
           </div>
-        </div>
+        </div> */}
 
-        <div className="task_partrunning">
+        {/* <div className="task_partrunning">
           <p>Part Running: {partName}</p>
           <div className="dashboard_content_leftline"></div>
-        </div>
+        </div> */}
 
-        <div className="task_Add_input">
+
+       <div className="task__container">
+       <h4>Line 1</h4>
+       <div className="task_Add_input">
+         
           <input
             className="task_inp"
             placeholder="Add Quantity"
@@ -218,6 +246,9 @@ export default function Task() {
             onChange={handleQty}
           />
         </div>
+        <input type="checkbox" className="task_checkbox"/>
+       </div>
+
 
         {showPopup && (
           <div className="popup">
@@ -228,6 +259,8 @@ export default function Task() {
 
         <div>
           <div className="task_qty_container">
+
+
             {/* <div>
     <p>Previous Quantity: <span className='task_num'>350</span></p>
     <div className="dashboard_content_leftline"></div>
@@ -235,7 +268,8 @@ export default function Task() {
             {/* <div className='task_symbol'>
    <FaPlus className='task_num'/>
    </div> */}
-            <div>
+   
+            {/* <div>
               <p>
                 Current Quantity:<span className="task_num">{qty}</span>
               </p>
@@ -247,7 +281,7 @@ export default function Task() {
             <div>
               <h3>Total:{qty}</h3>
               <div className="dashboard_content_leftline"></div>
-            </div>
+            </div> */}
 
             <div className="task_add_button">
               <button onClick={addTask}>Add Task</button>
@@ -256,7 +290,7 @@ export default function Task() {
         </div>
 
 
-        <div className="task_data">
+        {/* <div className="task_data">
           {arr
             .filter((item) => item.part_id !== undefined) // Filter out items where part_id is undefined
             .sort((a, b) => {
@@ -276,8 +310,13 @@ export default function Task() {
                 </div>
               </div>
             ))}
-        </div>
+        </div> */}
+
+
       </div>
     </>
   );
 }
+
+
+

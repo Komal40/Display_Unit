@@ -11,6 +11,7 @@ import Login from './Components/Login/Login';
 import { UserProvider, useUser } from './UserContext';
 import UpFloor from './Components/UpFloor/UpFloor';
 import Task from './Components/Task/Task';
+import NewTask from './Components/NewTask/NewTask';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -27,7 +28,7 @@ root.render(
         <Route path='/app' element={<App/>}/>
         <Route path='/update' element={<UpFloor/>}/>
         <Route path='/upFloor' element={<Update/>}/>
-        <Route path='/task' element={<Task/>}/>
+        <Route path='/task' element={<NewTask/>}/>
         <Route path='/timing' element={<Timings/>}/>
         <Route path='/chart' element={<Charts/>}/>       
         <Route path='/logout'/>
