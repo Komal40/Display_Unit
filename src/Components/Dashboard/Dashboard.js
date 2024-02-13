@@ -34,9 +34,7 @@ export default function Dashboard() {
   console.log("loginData", loginData);
 
   const { setProcessDataFun } = useUser();
-  const [passMin, setPassMin] = useState(Number.MAX_SAFE_INTEGER);
-  const [failTotal, setFailTotal] = useState(0);
-  const [totalStations, setTotalStations]=useState(0)
+ 
 
   const currentDate = new Date();
 
@@ -54,45 +52,6 @@ export default function Dashboard() {
   const buttons = Array.from({ length: 16 }, (_, index) => index + 1);
 
 
-  useEffect(() => {
-    if (!firstEffectCompleted) return;
-  
-    const calculateLineStats = () => {
-      let minPasses = Number.MAX_SAFE_INTEGER;    
-      let totalFails = 0;
-      let totalStation = 0;
-      arr
-      .filter((item) => item.line_num === activeButton)
-      .forEach((item) => {
-        const stationNum = item.station_num;
-        console.log("Current station:", stationNum);
-        const passes = processData.filter(
-          (data) => {
-            // console.log("Data:", data);
-            return data.status == "1" && data.station_num == stationNum && data.line_id == activeButton;
-          }
-        ).length;
-        const fails = processData.filter(
-          (data) => data.status == "0" && data.station_num == stationNum && data.line_id == activeButton && data.process_id
-        ).length;
-
-        totalFails += fails;
-        minPasses = Math.min(minPasses, passes);
-        totalStation++;
-        console.log(fails,"fail number")
-        
-      });
-  
-      // Set the state with the calculated values
-      setTotalStations(totalStation);
-      setPassMin(minPasses);
-      setFailTotal(totalFails);
-      console.log("object passMin,failTotal",passMin,failTotal)
-    };
-  
-    calculateLineStats();
-  }, [activeButton, arr, processData, firstEffectCompleted]);
-  
 
   
   useEffect(() => {
@@ -259,7 +218,7 @@ export default function Dashboard() {
           key={index}
           style={{ display: activeButton === index + 1 ? "block" : "none" }}
         >
-          {activeButton === index + 1 && <Line no={index + 1} 
+          {activeButton === index + 1 && <Line no={index + 1} processData={processData} arr={arr}
           // passMin={passMin} failTotal={failTotal} totalStations={totalStations}  
           />}
 

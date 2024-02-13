@@ -2,8 +2,12 @@ import React, { useEffect, useState } from "react";
 import "./Line.css";
 import { useUser } from "../../UserContext";
 
-function Line({ no }) {
+
+function Line({ no ,processData, arr}) {
   const [lineData, setLineData] = useState({});
+  const [passMin, setPassMin] = useState(Number.MAX_SAFE_INTEGER);
+  const [failTotal, setFailTotal] = useState(0);
+  const [totalStations, setTotalStations]=useState(0)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,7 +44,47 @@ function Line({ no }) {
     fetchData();
   }, [no]);
 
+
+  useEffect(() => {
+    
   
+    const calculateLineStats = () => {
+      let minPasses = Number.MAX_SAFE_INTEGER;    
+      let totalFails = 0;
+      let totalStation = 0;
+      arr
+      .filter((item) => item.line_num == no)
+      .forEach((item) => {
+        const stationNum = item.station_num;
+        console.log("Current station:", stationNum);
+        const passes = processData.filter(
+          (data) => {
+            // console.log("Data:", data);
+            return data.status == "1" && data.station_num == stationNum 
+          }
+        ).length;
+        const fails = processData.filter(
+          (data) => data.status == "0" && data.station_num == stationNum && data.process_id
+        ).length;
+
+        totalFails += fails;
+        minPasses = Math.min(minPasses, passes);
+        totalStation++;
+        console.log(fails,"fail number")
+        
+      });
+  
+      // Set the state with the calculated values
+      setTotalStations(totalStation);
+      setPassMin(minPasses);
+      setFailTotal(totalFails);
+      console.log("object passMin,failTotal",passMin,failTotal)
+    };
+  
+    calculateLineStats();
+  }, [processData,arr]);
+  
+
   return (
     <div>
       <div className="dashboard__below_container">
@@ -57,13 +101,13 @@ function Line({ no }) {
           <div>
             <div>
               <p className="dashboard_content">
-                <h4 style={{display:'flex'}}>Stations:
+                <h4 style={{display:'flex'}}>Stations:{' '}
                   {lineData.stations_count &&
                     lineData.stations_count
                       .filter((item) => item.line_number == `${no}`)
                       .map((filteredItem) => (
                         <p key={filteredItem.line_number}>
-                          {filteredItem.number_of_stations}
+                          {' '}{filteredItem.number_of_stations}
                         </p>
                       ))}
                 </h4>
@@ -75,13 +119,13 @@ function Line({ no }) {
           <div>
             <div>
               <p className="dashboard_content">
-                <h4 style={{display:'flex'}}>Part Name:
+                <h4 style={{display:'flex'}}>{'Part Name: '}
                   {lineData.part_data &&
                     lineData.part_data
                       .filter((part) => part.line_id === `${no}`)
                       .map((part) => (
                         <p key={part.line_id + part.part_id}>
-                           {part.part_name}
+                           {' '}{part.part_name}
                         </p>
                       ))}
                 </h4>
@@ -102,12 +146,12 @@ function Line({ no }) {
           </div>
           <div>
             <p className="dashboard_content">
-              <h4> passed</h4>
+              <h4>{passMin} passed</h4>
             </p>
           </div>
           <div>
             <p className="dashboard_content">
-              <h4> failed</h4>
+              <h4>{failTotal} failed</h4>
             </p>
           </div>
           {/* <div>
