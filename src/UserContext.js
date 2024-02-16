@@ -27,6 +27,7 @@ export const UserProvider = ({ children }) => {
 
   const setNumberOfLines = (data) => {
     setLines(data);
+    localStorage.setItem("lines",data)
   };
 
   const setNumberLineStations=(data)=>{
