@@ -7,13 +7,16 @@ import { useUser } from "../../UserContext";
 
 export default function NewTask() {
   const [shiftData, setShiftData] = useState([]);
+  const [selectedShift, setSelectedShift] = useState("");
+  const [taskdata, settaskdata] = useState([]);
   const [partId, setPartId] = useState([]);
   const [qty, setQty] = useState("");
   const [total, setTotal] = useState(0);
   const [quantities, setQuantities] = useState({});
   const [showPopup, setShowPopup] = useState(false);
   const [alreadyRunningLines, setAlreadyRunningLines] = useState([]);
-
+  const [approvalStatuses, setApprovalStatuses] = useState([]);
+  // const taskdata=JSON.parse(localStorage.getItem("TaskData"))
 
   // const {lines}=useUser()
   const line = localStorage.getItem("lines");
@@ -60,6 +63,45 @@ export default function NewTask() {
 
     fetchData();
   }, []);
+  // GET TASK DATA
+
+  // Function to fetch task data from the server
+  const fetchTaskData = async () => {
+    const link = process.env.REACT_APP_BASE_URL;
+    const endPoint = "/get/task/version_two";
+    const fullLink = link + endPoint;
+
+    try {
+      const params = new URLSearchParams();
+
+      const response = await fetch(fullLink, {
+        method: "POST",
+        body: params,
+        headers: {
+          "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+        },
+      });
+
+      if (response.ok) {
+        const taskData = await response.json();
+        console.log("Task Data approved", taskData);
+        settaskdata(taskData.payload);
+      } else {
+        const errorData = await response.json();
+        console.error("API Error task component:", errorData);
+      }
+    } catch (error) {
+      console.error("Error occurred on Task:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTaskData();
+  }, []);
+
+  const handleRefresh = () => {
+    fetchTaskData();
+  };
 
   useEffect(() => {
     if (line <= 0) return;
@@ -96,7 +138,6 @@ export default function NewTask() {
     fetchData();
   }, []);
 
-
   const addTask = async (e) => {
     e.preventDefault();
 
@@ -110,11 +151,12 @@ export default function NewTask() {
     }
 
     const link = process.env.REACT_APP_BASE_URL;
-    const endPoint = "/task_assigned_version_two/version_two";
+    const endPoint = "/task_assigned_version_three/version_two";
     const fullLink = link + endPoint;
 
     try {
       let TaskData = [];
+      let taskResponse = {};
 
       checkboxes.forEach((checkbox) => {
         const lineNumber = checkbox.getAttribute("data-line-number");
@@ -145,13 +187,37 @@ export default function NewTask() {
       if (response.ok) {
         const responseData = await response.json();
         console.log("Task API Response:", responseData);
+        // After successfully adding tasks, fetch the updated task data
+        // const updatedTaskDataResponse = await fetchRunningTasksData();
+        // const updatedTaskData = await updatedTaskDataResponse.json();
+        // console.log("Updated Task Data:", updatedTaskData);
+        // settaskdata(updatedTaskData.payload);
+
         if (responseData.message == "Task is already running") {
           const runningLine = TaskData.map((data) => data.line_id);
           setAlreadyRunningLines(runningLine);
-          console.log("alreadyRunningLines",alreadyRunningLines)
+          console.log("alreadyRunningLines", alreadyRunningLines);
         } else {
           setShowPopup(true);
         }
+        // const taskResponse = await response.json();
+        // console.log("Task API Response:", taskResponse);
+
+        // TaskData.forEach((task) => {
+        //   if (taskResponse[task.line_id] === "Task is already running") {
+        //     setAlreadyRunningLines((prevLines) => [...prevLines, task.line_id]);
+        //   }
+        // });
+
+        // setShowPopup(true);
+
+        // Update approval statuses array based on the response
+        // const updatedStatuses = TaskData.map((data) =>
+        //   responseData.message === "Task is already running"
+        //     ? "Approved"
+        //     : "notApproved"
+        // );
+        // setApprovalStatuses(updatedStatuses);
       } else {
         const errorData = await response.json();
         console.error("Error:", errorData);
@@ -163,6 +229,46 @@ export default function NewTask() {
 
   const handlePopupClick = () => {
     setShowPopup(false);
+  };
+
+  const handleSelectChange = (event) => {
+    setSelectedShift(event.target.value);
+  };
+
+  // APPROVED FUNCTION
+  const handle_approved = async (taskId, approvalStatus, index) => {
+    const link = process.env.REACT_APP_BASE_URL;
+    const endPoint = "/task/approved";
+    const fullLink = link + endPoint;
+
+    try {
+      const params = new URLSearchParams();
+      params.append("task_id", taskId);
+      params.append("value", approvalStatus);
+
+      const response = await fetch(fullLink, {
+        method: "POST",
+        body: params,
+        headers: {
+          "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Approval response:", data);
+        // Handle response if needed
+              // Update the approval status in the local state
+      const updatedStatuses = [...approvalStatuses];
+      updatedStatuses[index] = approvalStatus; // Assuming `index` is defined
+      setApprovalStatuses(updatedStatuses); // Update the state with the new values
+      } else {
+        const errorData = await response.json();
+        console.error("API Error during approval:", errorData);
+      }
+    } catch (error) {
+      console.error("Error during approval:", error);
+    }
   };
 
   return (
@@ -186,7 +292,7 @@ export default function NewTask() {
             {/* <div className="dashboard_content_leftline"></div> */}
           </div>
           <div className="update_dropdown">
-            <select>
+            <select value={selectedShift} onChange={handleSelectChange}>
               {<option value="">Select Shift</option>}
               {shiftData.map((shift, index) => (
                 <option key={index} value={shift.shift_name}>
@@ -220,7 +326,8 @@ export default function NewTask() {
             </thead>
             <tbody>
               {Array.from({ length: line }, (_, index) => index + 1).map(
-                (lineNumber) => {
+                (lineNumber, index) => {
+                  // Specify `index` parameter here
                   const part = partId.find(
                     (task) => task.line_id == lineNumber.toString()
                   );
@@ -249,12 +356,44 @@ export default function NewTask() {
                           data-part-name={part ? part.part_name : ""}
                         />
                       </td>
-                      <td>4/90</td>
+                      <td>4/10</td>
+                      <td>
+                        {/* {alreadyRunningLines.includes(lineNumber.toString()) ? (
+                          <p>Task is already running</p>
+                        ) : (
+                          <select
+                          onClick={handle_approved}
+                            className="approve-dropdown"
+                            value={approvalStatuses[index] || ""}
+                            onChange={(e) => {
+                              const updatedStatuses = [...approvalStatuses];
+                              updatedStatuses[index] = e.target.value;
+                              setApprovalStatuses(updatedStatuses);
+                            }}
+                          >
+                            <option value="approve" >Approve</option>
+                            <option value="notApproved" >Not Approve</option>
+                          </select>
+                        )} */}
+                        {/* <select
+                          onClick={handle_approved}
+                          className="approve-dropdown"
+                          value={approvalStatuses[index] || ""}
+                          onChange={(e) => {
+                            const updatedStatuses = [...approvalStatuses];
+                            updatedStatuses[index] = e.target.value;
+                            setApprovalStatuses(updatedStatuses);
+                          }}
+                        >
+                          <option value="approve">Approve</option>
+                          <option value="notApproved">Not Approve</option>
+                        </select> */}
+                      </td>
                       <td>
                         {alreadyRunningLines.includes(lineNumber.toString()) ? (
                           <p>Task is already running</p>
                         ) : (
-                          <button className="Approve_btn">Approve</button>
+                          ""
                         )}
                       </td>
                     </tr>
@@ -263,6 +402,7 @@ export default function NewTask() {
               )}
             </tbody>
           </table>
+
           {/* <div >
     <button className="Approve_btn">
         Approved
@@ -271,6 +411,71 @@ export default function NewTask() {
         </div>
         <div className="task_add_button">
           <button onClick={addTask}>Add Task</button>
+        </div>
+      </div>
+      <hr style={{ marginTop: "2rem" }} />
+
+      {/* GET TASK API UI  */}
+      <div className="running_task">
+        <div className="newtaskheading">
+          <h3>Running Tasks</h3>
+
+          <button className="approve-dropdown" onClick={handleRefresh}>
+            Refresh
+          </button>
+        </div>
+
+        <div className="table_content">
+          <table className="custom-table">
+            <thead>
+              <tr>
+                <th>Line</th>
+                <th>Part Id</th>
+                <th>Previous</th>
+                <th>Passed</th>
+                <th>Failed</th>
+                <th>Current</th>
+                <th>Completed</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {taskdata.map((task, index) => (
+                <tr key={index}>
+                  <td>{task.line_id}</td>
+                  <td>{task.part_id || "-"}</td>
+                  <td>{task.prev_quantity || 0}</td>
+                  <td>{task.parts_passed || 0}</td>
+                  <td>{task.parts_failed || 0}</td>
+                  <td>{task.quantity || 0}</td>
+                  <td>{task.parts_completed || 0}</td>
+                  <td>
+                    {task.prev_quantity
+                      ? parseInt(task.prev_quantity) + parseInt(task.quantity)
+                      : parseInt(task.quantity)}
+                  </td>
+                  <td>
+                    <select
+                      className="approve-dropdown"
+                      value={approvalStatuses[index] || ""}
+                      onChange={(e) =>
+                        handle_approved(task.task_id, e.target.value, index)
+                      }
+                    >
+                      <option value="1">Approve</option>
+                      <option value="2">Not Approve</option>
+                    </select>
+                  </td>
+
+                  {/* <td>
+            {alreadyRunningLines.includes(task.line_id.toString()) ? (
+              <p>Task is already running</p>
+            ) : null}
+          </td> */}
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </>

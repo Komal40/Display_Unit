@@ -5,6 +5,12 @@
 
 .newtaskheading{
     margin-top: 2rem;
+    display: flex;
+    flex-direction: row;
+}
+
+.newtaskheading button{
+    margin-left: 2rem;
 }
 
 .custom-table {
@@ -18,7 +24,7 @@
   }
 
   
-  .Approve_btn{
+  .approve-dropdown{
     background: #50BA4E;
     color: white; 
     width: 8rem; 
@@ -26,6 +32,8 @@
     border-radius: 1rem; 
     border: none;
     cursor: pointer; 
+    padding-left: 3px;
+    padding-right: 5px;
 }
 
 .check_box{
@@ -36,4 +44,7 @@
     text-align: center;
 }
 
+.running_task{
+    margin-left: 15rem;
+}
 

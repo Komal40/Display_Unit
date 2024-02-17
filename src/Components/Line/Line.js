@@ -30,7 +30,7 @@ function Line({ no ,processData, arr}) {
 
         if (response.ok) {
           const data = await response.json();
-          // console.log("dataa of line", data);
+          console.log("dataa of line", data);
           setLineData(data.payload);
         } else {
           const errorData = await response.json();
