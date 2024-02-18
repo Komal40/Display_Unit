@@ -15,12 +15,17 @@ export default function NewTask() {
   const [quantities, setQuantities] = useState({});
   const [showPopup, setShowPopup] = useState(false);
   const [alreadyRunningLines, setAlreadyRunningLines] = useState([]);
-  const [approvalStatuses, setApprovalStatuses] = useState([]);
   // const taskdata=JSON.parse(localStorage.getItem("TaskData"))
+
 
   // const {lines}=useUser()
   const line = localStorage.getItem("lines");
   // Create an array with numbers from 1 to lines
+    // Define initial approval statuses for each line
+const initialApprovalStatuses = Array.from({ length: line }, () => "");
+
+// State for approval statuses
+const [approvalStatuses, setApprovalStatuses] = useState(initialApprovalStatuses);
   const lineNumbers = Array.from({ length: line }, (_, index) => index + 1);
 
   const handleQuantity = (e, lineNumber) => {
@@ -63,6 +68,7 @@ export default function NewTask() {
 
     fetchData();
   }, []);
+
   // GET TASK DATA
 
   // Function to fetch task data from the server
@@ -187,12 +193,6 @@ export default function NewTask() {
       if (response.ok) {
         const responseData = await response.json();
         console.log("Task API Response:", responseData);
-        // After successfully adding tasks, fetch the updated task data
-        // const updatedTaskDataResponse = await fetchRunningTasksData();
-        // const updatedTaskData = await updatedTaskDataResponse.json();
-        // console.log("Updated Task Data:", updatedTaskData);
-        // settaskdata(updatedTaskData.payload);
-
         if (responseData.message == "Task is already running") {
           const runningLine = TaskData.map((data) => data.line_id);
           setAlreadyRunningLines(runningLine);
@@ -200,24 +200,6 @@ export default function NewTask() {
         } else {
           setShowPopup(true);
         }
-        // const taskResponse = await response.json();
-        // console.log("Task API Response:", taskResponse);
-
-        // TaskData.forEach((task) => {
-        //   if (taskResponse[task.line_id] === "Task is already running") {
-        //     setAlreadyRunningLines((prevLines) => [...prevLines, task.line_id]);
-        //   }
-        // });
-
-        // setShowPopup(true);
-
-        // Update approval statuses array based on the response
-        // const updatedStatuses = TaskData.map((data) =>
-        //   responseData.message === "Task is already running"
-        //     ? "Approved"
-        //     : "notApproved"
-        // );
-        // setApprovalStatuses(updatedStatuses);
       } else {
         const errorData = await response.json();
         console.error("Error:", errorData);
@@ -258,10 +240,17 @@ export default function NewTask() {
         const data = await response.json();
         console.log("Approval response:", data);
         // Handle response if needed
-              // Update the approval status in the local state
-      const updatedStatuses = [...approvalStatuses];
-      updatedStatuses[index] = approvalStatus; // Assuming `index` is defined
-      setApprovalStatuses(updatedStatuses); // Update the state with the new values
+        // Update the approval status in the local state
+        const updatedStatuses = [...approvalStatuses];
+        updatedStatuses[index] = approvalStatus; // Assuming `index` is defined
+        // updatedStatuses[index] = ""; 
+        setApprovalStatuses(updatedStatuses); // Update the state with the new values
+
+        // Save the updated approval statuses to localStorage
+        // localStorage.setItem(
+        //   "approvalStatuses",
+        //   JSON.stringify(updatedStatuses)
+        // );
       } else {
         const errorData = await response.json();
         console.error("API Error during approval:", errorData);
@@ -270,6 +259,16 @@ export default function NewTask() {
       console.error("Error during approval:", error);
     }
   };
+
+  // // Retrieve approval statuses from localStorage when component mounts
+  // useEffect(() => {
+  //   const storedStatuses = JSON.parse(localStorage.getItem("approvalStatuses"));
+  //   if (storedStatuses) {
+  //     setApprovalStatuses(storedStatuses);
+  //   }
+  // }, []);
+
+  
 
   return (
     <>
@@ -357,38 +356,7 @@ export default function NewTask() {
                         />
                       </td>
                       <td>4/10</td>
-                      <td>
-                        {/* {alreadyRunningLines.includes(lineNumber.toString()) ? (
-                          <p>Task is already running</p>
-                        ) : (
-                          <select
-                          onClick={handle_approved}
-                            className="approve-dropdown"
-                            value={approvalStatuses[index] || ""}
-                            onChange={(e) => {
-                              const updatedStatuses = [...approvalStatuses];
-                              updatedStatuses[index] = e.target.value;
-                              setApprovalStatuses(updatedStatuses);
-                            }}
-                          >
-                            <option value="approve" >Approve</option>
-                            <option value="notApproved" >Not Approve</option>
-                          </select>
-                        )} */}
-                        {/* <select
-                          onClick={handle_approved}
-                          className="approve-dropdown"
-                          value={approvalStatuses[index] || ""}
-                          onChange={(e) => {
-                            const updatedStatuses = [...approvalStatuses];
-                            updatedStatuses[index] = e.target.value;
-                            setApprovalStatuses(updatedStatuses);
-                          }}
-                        >
-                          <option value="approve">Approve</option>
-                          <option value="notApproved">Not Approve</option>
-                        </select> */}
-                      </td>
+                      <td></td>
                       <td>
                         {alreadyRunningLines.includes(lineNumber.toString()) ? (
                           <p>Task is already running</p>
@@ -402,12 +370,6 @@ export default function NewTask() {
               )}
             </tbody>
           </table>
-
-          {/* <div >
-    <button className="Approve_btn">
-        Approved
-    </button>
-</div> */}
         </div>
         <div className="task_add_button">
           <button onClick={addTask}>Add Task</button>
@@ -462,16 +424,11 @@ export default function NewTask() {
                         handle_approved(task.task_id, e.target.value, index)
                       }
                     >
+                      <option value="">Select</option>
                       <option value="1">Approve</option>
                       <option value="2">Not Approve</option>
                     </select>
                   </td>
-
-                  {/* <td>
-            {alreadyRunningLines.includes(task.line_id.toString()) ? (
-              <p>Task is already running</p>
-            ) : null}
-          </td> */}
                 </tr>
               ))}
             </tbody>
