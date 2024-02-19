@@ -18,6 +18,8 @@ export default function Dashboard() {
   const [modalOpen, setModalOpen] = useState(false); // Step 1: State variable for modal visibility
   const [selectedStation, setSelectedStation] = useState(null); // State to track the selected station
   const [workModalData, setWorkModalData] = useState({});
+  const [stationid, setStationid] = useState("");
+  const [modal1, setModal1] = useState(false);
 
   //MY VARIABLES
 
@@ -181,7 +183,8 @@ export default function Dashboard() {
   const handleStationClick = async (stationNum, stationId) => {
     try {
       setSelectedStation(stationNum);
-      setModalOpen(true);
+
+      setStationid(stationId);
 
       const link = process.env.REACT_APP_BASE_URL;
       const endPoint = "/get/work_f1/version_two";
@@ -203,20 +206,28 @@ export default function Dashboard() {
         },
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(`API Error: ${JSON.stringify(errorData)}`);
+      if (response.ok) {
+        const data = await response.json();
+        console.log("work process data :", data);
+        setModalOpen(true);
+        setWorkModalData(data.payload);
+        // If data is found, hide the "No data found" modal if it's visible
+        setModal1(false);
+      } else {
+        // If response is not okay, show the "No data found" modal
+        setModal1(true);
       }
-
-      const data = await response.json();
-      console.log("work process data :", data);
-      setWorkModalData(data.payload);
+      // const errorData = await response.json();
+      // throw new Error(`API Error: ${JSON.stringify(errorData)}`);
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
   console.log("workModalData", workModalData);
+  function handlechartClick() {
+    navigate("/chart");
+  }
 
   return (
     <div>
@@ -315,9 +326,9 @@ export default function Dashboard() {
                         {passes + fails} Done&nbsp; {passes} Pass &nbsp;{fails}{" "}
                         Fail&nbsp; {added + added2} Added
                       </div>
-                      {/* <button onClick={() => handleStationClick(stationNum)}>
-                        More{" "}
-                      </button> */}
+                      <button onClick={() => handlechartClick(stationNum)}>
+                        chart{" "}
+                      </button>
                     </div>
                   </div>
                 );
@@ -327,6 +338,18 @@ export default function Dashboard() {
       ))}
 
       {/* Modal */}
+      {modal1 && (
+        <div className="station_modal">
+          <div className="station_modal-content">
+            <span className="close" onClick={() => setModal1(false)}>
+              &times;
+            </span>
+
+            <p>No Data Found</p>
+          </div>
+        </div>
+      )}
+
       {modalOpen && (
         <div className="station_modal">
           <div className="station_modal-content">
@@ -334,9 +357,13 @@ export default function Dashboard() {
               &times;
             </span>
             {/* Content of your modal */}
-            <h1 style={{margin:'auto'}}>Station {selectedStation} Details</h1>
-            {/* Render tables dynamically based on API response */}
-            {workModalData && workModalData.work_f1_data ? (
+            <h1 style={{ margin: "auto" }}>
+              Station {selectedStation} Details
+            </h1>
+            {/* Check if workModalData is null or empty */}
+            {workModalData &&
+            workModalData.work_f1_data &&
+            workModalData.work_f1_data.length > 0 ? (
               <div>
                 {workModalData.work_f1_data.map((work, index) => (
                   <div key={index} className="process__container">
@@ -352,10 +379,10 @@ export default function Dashboard() {
                       </thead>
                       <tbody>
                         <tr>
-                          <td>{work.status == 1 ? "Pass" : "Fail"}</td>
+                          <td>{work.status === "1" ? "Pass" : "Fail"}</td>
                           <td>{work.isfilled}</td>
-                          <td>{work.status === 0 ? work.reason : "-"}</td>
-                          <td>{work.status === 0 ? work.remark : "-"}</td>
+                          <td>{work.status === "0" ? work.reason : "-"}</td>
+                          <td>{work.status === "0" ? work.remark : "-"}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -373,7 +400,7 @@ export default function Dashboard() {
                 ))}
               </div>
             ) : (
-              <p>Loading...</p> // You can render a loading indicator here
+              <p>No data found for Station {selectedStation}</p>
             )}
           </div>
         </div>
