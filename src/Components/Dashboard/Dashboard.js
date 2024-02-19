@@ -10,19 +10,20 @@ import io from "socket.io-client";
 import { io as socketIOClient } from "socket.io-client";
 import WebSocket from "websocket";
 
-
 export default function Dashboard() {
   const navigate = useNavigate();
   //MY VARIABLES
 
   const [firstEffectCompleted, setFirstEffectCompleted] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false); // Step 1: State variable for modal visibility
+  const [selectedStation, setSelectedStation] = useState(null); // State to track the selected station
+  const [workModalData, setWorkModalData] = useState({});
 
   //MY VARIABLES
 
   const [arr, setArr] = useState([]);
   const [processData, setProcessData] = useState([]);
   const [line, setLine] = useState(0);
-
 
   const [stations, setStations] = useState(0);
 
@@ -34,7 +35,6 @@ export default function Dashboard() {
   console.log("loginData", loginData);
 
   const { setProcessDataFun } = useUser();
- 
 
   const currentDate = new Date();
 
@@ -51,9 +51,6 @@ export default function Dashboard() {
   // Create an array of length equal to buttonCount
   const buttons = Array.from({ length: 16 }, (_, index) => index + 1);
 
-
-
-  
   useEffect(() => {
     if (!firstEffectCompleted) return;
 
@@ -94,7 +91,6 @@ export default function Dashboard() {
 
     // Dependency array is empty to run the effect only once
   }, [firstEffectCompleted]);
-
 
   useEffect(() => {
     // console.log("lines", lines)
@@ -142,7 +138,6 @@ export default function Dashboard() {
     fetchData();
   }, []);
 
-
   useEffect(() => {
     const link = "http://localhost:5000";
     const month = "01";
@@ -161,7 +156,7 @@ export default function Dashboard() {
     socket.on("update_work_for_operator", (data) => {
       console.log("Received update from WebSocket:", data);
       setProcessData(data.data.processdata);
-      console.log("processdata", processData)
+      console.log("processdata", processData);
     });
 
     return () => {
@@ -183,7 +178,46 @@ export default function Dashboard() {
     }
   };
 
-  
+  const handleStationClick = async (stationNum, stationId) => {
+    try {
+      setSelectedStation(stationNum);
+      setModalOpen(true);
+
+      const link = process.env.REACT_APP_BASE_URL;
+      const endPoint = "/get/work_f1/version_two";
+      const fullLink = link + endPoint;
+      const currentDate = new Date();
+      const currentDay = currentDate.getDate();
+      const currentMonth = currentDate.getMonth() + 1; // January is 0, so add 1 to get correct month
+
+      const params = new URLSearchParams();
+      params.append("station_id", stationId);
+      params.append("date", currentDay);
+      params.append("month", currentMonth);
+
+      const response = await fetch(fullLink, {
+        method: "POST",
+        body: params,
+        headers: {
+          "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(`API Error: ${JSON.stringify(errorData)}`);
+      }
+
+      const data = await response.json();
+      console.log("work process data :", data);
+      setWorkModalData(data.payload);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  console.log("workModalData", workModalData);
+
   return (
     <div>
       {/* <div className={`${isNavbarClose ? 'dashboard_container':'shifted'}`}> */}
@@ -212,42 +246,56 @@ export default function Dashboard() {
         </div>
       </div>
 
-
       {Array.from({ length: line }).map((_, index) => (
         <div
           key={index}
           style={{ display: activeButton === index + 1 ? "block" : "none" }}
         >
-          {activeButton === index + 1 && <Line no={index + 1} processData={processData} arr={arr}
-          // passMin={passMin} failTotal={failTotal} totalStations={totalStations}  
-          />}
+          {activeButton === index + 1 && (
+            <Line
+              no={index + 1}
+              processData={processData}
+              arr={arr}
+              // passMin={passMin} failTotal={failTotal} totalStations={totalStations}
+            />
+          )}
 
           <div className="dashboard_stations">
             {arr
               .filter((item) => item.line_num === index + 1)
               .map((item) => {
-               
                 const stationNum = item.station_num;
+                const stationId = item.station_id;
 
                 const passes = processData.filter(
-                  (data) =>
-                    data.status == "1" && data.station_num == stationNum
-                ).length;  
-                         
-                console.log(passes,"pass")
-               
-                const fails = processData.filter(
-                  (data) =>
-                    data.status == "0" && data.station_num == stationNum
+                  (data) => data.status == "1" && data.station_num == stationNum
                 ).length;
-                
 
-                const added=processData.filter((data)=>data.isfilled== "1" && data.stationNum==stationNum).length
-                const added2=processData.filter((data)=>data.isfilled== "0" && data.stationNum==stationNum ).length
+                console.log(passes, "pass");
+
+                const fails = processData.filter(
+                  (data) => data.status == "0" && data.station_num == stationNum
+                ).length;
+
+                const added = processData.filter(
+                  (data) =>
+                    data.isfilled == "1" && data.stationNum == stationNum
+                ).length;
+                const added2 = processData.filter(
+                  (data) =>
+                    data.isfilled == "0" && data.stationNum == stationNum
+                ).length;
 
                 return (
-                  <div className="operator_line" key={stationNum}>
-                    <div className="operator_container1">
+                  <div
+                    className="operator_line"
+                    // Step 3: Attach event handler to open modal
+                    key={stationNum}
+                  >
+                    <div
+                      className="operator_container1"
+                      onClick={() => handleStationClick(stationNum, stationId)}
+                    >
                       <div>
                         <h3>Morning Shift</h3>
                         <p className="operator_content">
@@ -265,8 +313,11 @@ export default function Dashboard() {
                       </div>
                       <div className="operator_below_content">
                         {passes + fails} Done&nbsp; {passes} Pass &nbsp;{fails}{" "}
-                        Fail&nbsp; {added+added2} Added
+                        Fail&nbsp; {added + added2} Added
                       </div>
+                      {/* <button onClick={() => handleStationClick(stationNum)}>
+                        More{" "}
+                      </button> */}
                     </div>
                   </div>
                 );
@@ -274,6 +325,59 @@ export default function Dashboard() {
           </div>
         </div>
       ))}
+
+      {/* Modal */}
+      {modalOpen && (
+        <div className="station_modal">
+          <div className="station_modal-content">
+            <span className="close" onClick={() => setModalOpen(false)}>
+              &times;
+            </span>
+            {/* Content of your modal */}
+            <h1 style={{margin:'auto'}}>Station {selectedStation} Details</h1>
+            {/* Render tables dynamically based on API response */}
+            {workModalData && workModalData.work_f1_data ? (
+              <div>
+                {workModalData.work_f1_data.map((work, index) => (
+                  <div key={index} className="process__container">
+                    <h3 className="process_heading">Work {index + 1}</h3>
+                    <table className="custom-table">
+                      <thead>
+                        <tr>
+                          <td>Status</td>
+                          <td>IsFilled</td>
+                          <td>Reason</td>
+                          <td>Remark</td>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>{work.status == 1 ? "Pass" : "Fail"}</td>
+                          <td>{work.isfilled}</td>
+                          <td>{work.status === 0 ? work.reason : "-"}</td>
+                          <td>{work.status === 0 ? work.remark : "-"}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div>
+                      {workModalData.process_data[index] && (
+                        <div className="process_div">
+                          <h4>Process Setting Value</h4>
+                          <td>{workModalData.process_data[index].p1}</td>
+                          <h4>Process Actual Value</h4>
+                          <td>{workModalData.process_data[index].p2}</td>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p>Loading...</p> // You can render a loading indicator here
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

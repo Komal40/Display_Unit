@@ -16,13 +16,23 @@
 .custom-table {
     border-collapse: separate;
     border-spacing: 10px; /* Adjust the spacing as needed */
+    width: 100%; /* Set table width to 100% */
   }
   
   .custom-table th,
   .custom-table td {
-    padding: 10px; /* Add padding to cells for spacing */
+    padding-left: 10px;
+    overflow: auto; /* Hide overflow content */
+    text-overflow: ellipsis; /* Display an ellipsis (...) to indicate overflow */
+    white-space: nowrap; /* Prevent content from wrapping */
   }
-
+  
+  /* Apply fixed width and height to specific column */
+  .custom-table td.fixed-column {
+    width: 100px; /* Adjust width as needed */
+    height: 50px; /* Adjust height as needed */
+    overflow: auto; /* Enable overflow scrolling */
+  }
   
   .approve-dropdown{
     background: #50BA4E;

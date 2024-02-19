@@ -6,7 +6,13 @@
     border-radius: 20px;
     padding:12px;
     background-color:  #50BA4E;
+    /* transition: transform 0.3s ease; */
 }
+
+.operator_container1:hover {
+    cursor: pointer;
+    /* transform: scale(1); */
+} 
 
 .operator_line{
     display: inline-block;

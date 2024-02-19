@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./NewTask.css";
 import Navbar from "../Navbar/Navbar";
 import DashBoardAbove from "../DashboardR/DashBoardAbove";
@@ -14,18 +14,20 @@ export default function NewTask() {
   const [total, setTotal] = useState(0);
   const [quantities, setQuantities] = useState({});
   const [showPopup, setShowPopup] = useState(false);
+  const popupRef = useRef(null);
   const [alreadyRunningLines, setAlreadyRunningLines] = useState([]);
   // const taskdata=JSON.parse(localStorage.getItem("TaskData"))
-
 
   // const {lines}=useUser()
   const line = localStorage.getItem("lines");
   // Create an array with numbers from 1 to lines
-    // Define initial approval statuses for each line
-const initialApprovalStatuses = Array.from({ length: line }, () => "");
+  // Define initial approval statuses for each line
+  const initialApprovalStatuses = Array.from({ length: line }, () => "");
 
-// State for approval statuses
-const [approvalStatuses, setApprovalStatuses] = useState(initialApprovalStatuses);
+  // State for approval statuses
+  const [approvalStatuses, setApprovalStatuses] = useState(
+    initialApprovalStatuses
+  );
   const lineNumbers = Array.from({ length: line }, (_, index) => index + 1);
 
   const handleQuantity = (e, lineNumber) => {
@@ -103,7 +105,7 @@ const [approvalStatuses, setApprovalStatuses] = useState(initialApprovalStatuses
 
   useEffect(() => {
     fetchTaskData();
-  }, []);
+  }, [line]);
 
   const handleRefresh = () => {
     fetchTaskData();
@@ -212,6 +214,18 @@ const [approvalStatuses, setApprovalStatuses] = useState(initialApprovalStatuses
   const handlePopupClick = () => {
     setShowPopup(false);
   };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (popupRef.current && !popupRef.current.contains(event.target)) {
+        setShowPopup(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleSelectChange = (event) => {
     setSelectedShift(event.target.value);
@@ -243,7 +257,7 @@ const [approvalStatuses, setApprovalStatuses] = useState(initialApprovalStatuses
         // Update the approval status in the local state
         const updatedStatuses = [...approvalStatuses];
         updatedStatuses[index] = approvalStatus; // Assuming `index` is defined
-        // updatedStatuses[index] = ""; 
+        // updatedStatuses[index] = "";
         setApprovalStatuses(updatedStatuses); // Update the state with the new values
 
         // Save the updated approval statuses to localStorage
@@ -261,14 +275,12 @@ const [approvalStatuses, setApprovalStatuses] = useState(initialApprovalStatuses
   };
 
   // // Retrieve approval statuses from localStorage when component mounts
-  // useEffect(() => {
-  //   const storedStatuses = JSON.parse(localStorage.getItem("approvalStatuses"));
-  //   if (storedStatuses) {
-  //     setApprovalStatuses(storedStatuses);
-  //   }
-  // }, []);
-
-  
+  useEffect(() => {
+    const storedStatuses = JSON.parse(localStorage.getItem("approvalStatuses"));
+    if (storedStatuses) {
+      setApprovalStatuses(storedStatuses);
+    }
+  }, [line]);
 
   return (
     <>
@@ -302,7 +314,7 @@ const [approvalStatuses, setApprovalStatuses] = useState(initialApprovalStatuses
           </div>
         </div>
         {showPopup && (
-          <div className="popup" onClick={handlePopupClick}>
+          <div ref={popupRef} className="popup" onClick={handlePopupClick}>
             <p>Task added successfully!</p>
           </div>
         )}
@@ -417,17 +429,21 @@ const [approvalStatuses, setApprovalStatuses] = useState(initialApprovalStatuses
                       : parseInt(task.quantity)}
                   </td>
                   <td>
-                    <select
-                      className="approve-dropdown"
-                      value={approvalStatuses[index] || ""}
-                      onChange={(e) =>
-                        handle_approved(task.task_id, e.target.value, index)
-                      }
-                    >
-                      <option value="">Select</option>
-                      <option value="1">Approve</option>
-                      <option value="2">Not Approve</option>
-                    </select>
+                    {task.approved === "0" && ( // Render dropdown only if approved is 0
+                      <select
+                        className="approve-dropdown"
+                        value={approvalStatuses[index] || ""}
+                        onChange={(e) =>
+                          handle_approved(task.task_id, e.target.value, index)
+                        }
+                      >
+                        <option>Select</option>
+                        <option value="1">Approve</option>
+                        <option value="2">Not Approve</option>
+                      </select>
+                    )}
+                    {task.approved === "1" && <span>Approved</span>}
+                    {task.approved === "2" && <span>Not Approved</span>}
                   </td>
                 </tr>
               ))}

@@ -66,7 +66,7 @@ const linePage=()=>{
         <div className="update_linecontainer">
           <div className="update_dropdown">
             <select value={selectedLine} onChange={handleLineChange} >
-              {lines > 1 && <option value="">Select Line</option>}
+              {lines >= 1 && <option value="">Select Line</option>}
               {Array.from({ length: lines }, (_, index) => (
                 <option key={index + 1} value={`Line ${index + 1}`}>{`Line ${
                   index + 1
