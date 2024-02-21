@@ -1,83 +1,86 @@
-// import React from 'react'
-// import './Charts.css'
-// import Navbar from '../Navbar/Navbar'
+import React, { useEffect } from "react";
+import { Line } from "react-chartjs-2";
+import "./Charts.css";
+import { Chart, LinearScale } from "chart.js/auto";
 
+const WeeklyAverageGraph = () => {
+  useEffect(() => {
+    Chart.register(LinearScale);
+  }, []);
 
-// export default function Charts() {
-//   return (
-//     <>
-//     <div>
-//       <Navbar/>
-//     </div>
+  // Given data: readings for 7 days
+  const readings = [
+    [355, 360, 362, 363, 367],
+    [360, 365, 364, 367, 370],
+    [360, 365, 364, 367, 370],
+    [355, 365, 366, 362, 364],
+    [360, 365, 364, 367, 370],
+    [360, 365, 364, 367, 370],
+    [360, 365, 364, 367, 370],
+    [355, 365, 366, 362, 364],
+    [355, 360, 362, 363, 367],
+    [360, 365, 364, 367, 370],
+  ];
 
-//     <div className='charts_main'>
-//         <h2>charts</h2>
-//     </div>
-//     </>
-//   )
-// }
+  // Calculate the average reading for each day
+  // const averages = readings.map(dayReadings => {
+  //   const sum = dayReadings.reduce((acc, curr) => acc + curr, 0);
+  //   return sum / dayReadings.length;
+  // });
 
-
-import React from 'react';
-import { Line } from 'react-chartjs-2';
-import Chart from 'chart.js/auto';
-
-const LineChart = () => {
-  // Static data for x-axis and y-axis
-  const labels = ['January', 'February', 'March', 'April', 'May'];
-  const data = [65, 59, 80, 81, 56];
-
-  // Register the 'category' scale type for the x-axis
-  Chart.register({
-    id: 'category',
-    scales: {
-      x: {
-        type: 'category'
-      }
+  // Calculate the average reading for each day without using reduce
+  const averages = [];
+  for (let i = 0; i < readings.length; i++) {
+    let sum = 0;
+    for (let j = 0; j < readings[i].length; j++) {
+      sum += readings[i][j];
     }
-  });
+    averages.push(sum / readings[i].length);
+  }
 
-  // Constructing the chart data object
-  const chartData = {
-    labels: labels,
+   // Calculate the minimum and maximum values in the readings
+   let minReading = Infinity;
+   let maxReading = -Infinity;
+   readings.forEach(dayReadings => {
+     dayReadings.forEach(reading => {
+       minReading = Math.min(minReading, reading);
+       maxReading = Math.max(maxReading, reading);
+     });
+   });
+
+  // Data for the chart
+  const data = {
+    labels: ["Day 1", "Day 2", "Day 3", "Day 4", "Day 5", "Day 6", "Day 7", "Day 8","Day 9", "Day 10"],
     datasets: [
       {
-        label: 'Data',
-        data: data,
+        label: "X Bar",
+        data: averages,
         fill: false,
-        borderColor: 'rgb(75, 192, 192)',
-        tension: 0.1
-      }
-    ]
+        borderColor: "rgb(75, 192, 192)",
+        tension: 0.1,
+      },
+    ],
   };
 
-  // Custom options for the chart
-  const options = {
+   // Options for the chart
+   const options = {
     scales: {
-      x: {
-        type: 'category', // Ensure x-axis scale type is 'category'
-        title: {
-          display: true,
-          text: 'Months'
-        }
-      },
       y: {
-        title: {
-          display: true,
-          text: 'Values'
-        }
-      }
-    }
+        min: Math.floor(minReading / 10) * 10, // Round down to nearest 10
+        max: Math.ceil(maxReading / 10) * 10, // Round up to nearest 10
+      },
+    },
   };
+
 
   return (
-    <div>
-      <h2>Line Chart</h2>
-      <div style={{ height: '400px', width: '600px' }}>
-        <Line data={chartData} options={options} />
+    <div className="weekly-average-graph">
+      <h2>Weekly Average Graph</h2>
+      <div style={{ width: "500px", height: "300px" }}>
+        <Line data={data} options={options}/>
       </div>
     </div>
   );
 };
 
-export default LineChart;
+export default WeeklyAverageGraph;
