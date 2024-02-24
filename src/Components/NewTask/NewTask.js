@@ -214,6 +214,7 @@ export default function NewTask() {
   const handlePopupClick = () => {
     setShowPopup(false);
   };
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (popupRef.current && !popupRef.current.contains(event.target)) {
@@ -274,7 +275,7 @@ export default function NewTask() {
     }
   };
 
-  // // Retrieve approval statuses from localStorage when component mounts
+  // Retrieve approval statuses from localStorage when component mounts
   useEffect(() => {
     const storedStatuses = JSON.parse(localStorage.getItem("approvalStatuses"));
     if (storedStatuses) {
@@ -332,7 +333,7 @@ export default function NewTask() {
                 <th>Current</th>
                 <th>Total</th>
                 <th>Check</th>
-                <th>Completed</th>
+                {/* <th>Completed</th> */}
               </tr>
             </thead>
             <tbody>
@@ -367,7 +368,7 @@ export default function NewTask() {
                           data-part-name={part ? part.part_name : ""}
                         />
                       </td>
-                      <td>4/10</td>
+                      {/* <td>4/10</td> */}
                       <td></td>
                       <td>
                         {alreadyRunningLines.includes(lineNumber.toString()) ? (

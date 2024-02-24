@@ -1,11 +1,13 @@
 .operator_container1
 {
-    height: max-content;
+    /* height: max-content; */
+    height: 14rem;
     width:max-content;
     margin-right: 20px;
     border-radius: 20px;
     padding:12px;
     background-color:  #50BA4E;
+    overflow: auto;
     /* transition: transform 0.3s ease; */
 }
 

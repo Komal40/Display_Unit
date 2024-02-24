@@ -31,6 +31,7 @@ export default function Navbar() {
             <li><HashLink to='/app' className='dashboard_items'>DASHBOARD</HashLink></li>
             {/* <li><HashLink to='/update' className='dashboard_items'>UPDATE FLOOR</HashLink></li>
             <li><HashLink to='/assign' className='dashboard_items'> ASSIGN PARTS</HashLink></li> */}
+            <li><HashLink to='/prevdata' className='dashboard_items'>Previous Data</HashLink></li>
             <li><HashLink to='/update' className='dashboard_items'>LINES</HashLink></li>
             <li><HashLink to='/task' className='dashboard_items'>TASK</HashLink></li>
             <li><HashLink className='dashboard_items'>PART</HashLink></li>

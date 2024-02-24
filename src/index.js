@@ -12,6 +12,8 @@ import { UserProvider, useUser } from './UserContext';
 import UpFloor from './Components/UpFloor/UpFloor';
 import Task from './Components/Task/Task';
 import NewTask from './Components/NewTask/NewTask';
+import PrevData from './Components/PrevData/PrevData';
+import Navbar from './Components/Navbar/Navbar';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -23,10 +25,13 @@ root.render(
   // <React.StrictMode>
     <UserProvider>
     <Router>
+    <Navbar/>
+
       <Routes>
       <Route path='/' element={<Login/>}/>
         <Route path='/app' element={<App/>}/>
         <Route path='/update' element={<UpFloor/>}/>
+        <Route path='/prevdata' element={<PrevData/>}/>
         <Route path='/upFloor' element={<Update/>}/>
         <Route path='/task' element={<NewTask/>}/>
         <Route path='/timing' element={<Timings/>}/>

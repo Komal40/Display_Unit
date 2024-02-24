@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import "./Dashboard.css";
 import Line from "../Line/Line";
 import Operator from "../Operator/Operator";
 import DashboardR from "../DashboardR/DashboardR";
@@ -11,7 +10,8 @@ import { FaChartLine } from "react-icons/fa";
 import { io as socketIOClient } from "socket.io-client";
 import WebSocket from "websocket";
 
-export default function Dashboard() {
+
+export default function PrevData() {
   const navigate = useNavigate();
   //MY VARIABLES
 
@@ -21,11 +21,13 @@ export default function Dashboard() {
   const [workModalData, setWorkModalData] = useState({});
   const [stationid, setStationid] = useState("");
   const [modal1, setModal1] = useState(false);
+  const [secondEffectComplete, setSecondEffectComplete]=useState(false)
 
   //MY VARIABLES
 
   const [arr, setArr] = useState([]);
   const [processData, setProcessData] = useState([]);
+  const [workData, setWorkData]=useState([])
   const [line, setLine] = useState(0);
 
   const [stations, setStations] = useState(0);
@@ -35,7 +37,6 @@ export default function Dashboard() {
   const { setNumberOfLines } = useUser();
 
   const { loginData } = useUser();
-  console.log("loginData", loginData);
 
   const { setProcessDataFun } = useUser();
 
@@ -77,6 +78,7 @@ export default function Dashboard() {
         if (response.ok) {
           const data = await response.json();
           console.log("StationData", data.stationdata);
+          setSecondEffectComplete(true)
           setArr(data.stationdata);
           setNumberLineStations(data.stationdata);
           // console.log("length station",data.stationdata.length)
@@ -141,31 +143,71 @@ export default function Dashboard() {
     fetchData();
   }, []);
 
+//   useEffect(() => {
+//     const link = "http://localhost:5000";
+//     const month = "01";
+//     const date = "05";
+
+//     // Construct the WebSocket connection URL with query parameters
+//     const fullUrl = `${link}?month=${encodeURIComponent(
+//       month
+//     )}&date=${encodeURIComponent(date)}`;
+
+//     const socket = socketIOClient(fullUrl, {
+//       transports: ["websocket"],
+//       withCredentials: true,
+//     });
+
+//     socket.on("update_work_for_operator", (data) => {
+//       console.log("Received update from WebSocket:", data);
+//       setProcessData(data.data.processdata);
+//       console.log("processdata", processData);
+//     });
+
+//     return () => {
+//       socket.disconnect(); // Cleanup on component unmount
+//     };
+//   }, []);
+
+
   useEffect(() => {
-    const link = "http://localhost:5000";
-    const month = "01";
-    const date = "05";
 
-    // Construct the WebSocket connection URL with query parameters
-    const fullUrl = `${link}?month=${encodeURIComponent(
-      month
-    )}&date=${encodeURIComponent(date)}`;
+    const fetchData = async () => {
+      const link = process.env.REACT_APP_BASE_URL;
+      const endPoint = "/get/work_data/process_data/version_two";
+      const fullLink = link + endPoint;
 
-    const socket = socketIOClient(fullUrl, {
-      transports: ["websocket"],
-      withCredentials: true,
-    });
+      try {
+        const params = new URLSearchParams();
+        params.append("date","23");
+        params.append("month", "02");
 
-    socket.on("update_work_for_operator", (data) => {
-      console.log("Received update from WebSocket:", data);
-      setProcessData(data.data.processdata);
-      console.log("processdata", processData);
-    });
+        const response = await fetch(fullLink, {
+          method: "POST",
+          body: params,
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+          },
+        });
 
-    return () => {
-      socket.disconnect(); // Cleanup on component unmount
+        if (response.ok) {
+          const data = await response.json();
+          console.log("processdata previous data", data)
+          setProcessData(data.payload4.process_data);
+          setWorkData(data.payload4.work_f1_data)
+        } else {
+          const errorData = await response.json();
+          console.error("API Error:", errorData);
+        }
+      } catch (error) {
+        console.error("Error galt id:", error);
+      }
     };
+
+    fetchData();
   }, []);
+
+  console.log("processData",processData)
 
   const scrollLeft = () => {
     const container = document.querySelector(".dashboard_line_buttons");
@@ -187,31 +229,10 @@ export default function Dashboard() {
 
       setStationid(stationId);
 
-      const link = process.env.REACT_APP_BASE_URL;
-      const endPoint = "/get/work_f1/version_two";
-      const fullLink = link + endPoint;
-      const currentDate = new Date();
-      const currentDay = currentDate.getDate();
-      const currentMonth = currentDate.getMonth() + 1; // January is 0, so add 1 to get correct month
-
-      const params = new URLSearchParams();
-      params.append("station_id", stationId);
-      params.append("date", currentDay);
-      params.append("month", currentMonth);
-
-      const response = await fetch(fullLink, {
-        method: "POST",
-        body: params,
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log("work process data :", data);
+      if (true) {
+       
         setModalOpen(true);
-        setWorkModalData(data.payload);
+        setWorkModalData(workData);
         // If data is found, hide the "No data found" modal if it's visible
         setModal1(false);
       } else {
@@ -224,6 +245,8 @@ export default function Dashboard() {
       console.error("Error:", error);
     }
   };
+  
+
 
   console.log("workModalData", workModalData);
   function handlechartClick() {
@@ -272,6 +295,7 @@ export default function Dashboard() {
             />
           )}
 
+
           <div className="dashboard_stations">
             {arr
               .filter((item) => item.line_num === index + 1)
@@ -279,24 +303,22 @@ export default function Dashboard() {
                 const stationNum = item.station_num;
                 const stationId = item.station_id;
 
-                const passes = processData.filter(
+                const passes = workData.filter(
                   (data) => data.status == "1" && data.station_num == stationNum
                 ).length;
 
-                console.log(passes, "pass");
-
-                const fails = processData.filter(
+                const fails = workData.filter(
                   (data) => data.status == "0" && data.station_num == stationNum
                 ).length;
 
-                const added = processData.filter(
-                  (data) =>
-                    data.isfilled == "1" && data.stationNum == stationNum
-                ).length;
-                const added2 = processData.filter(
-                  (data) =>
-                    data.isfilled == "0" && data.stationNum == stationNum
-                ).length;
+                // const added = processData.work_f1_data.filter(
+                //   (data) =>
+                //     data.isfilled == "1" && data.stationNum == stationNum
+                // ).length;
+                // const added2 = processData.work_f1_data.filter(
+                //   (data) =>
+                //     data.isfilled == "0" && data.stationNum == stationNum
+                // ).length;
 
                 return (
                   <div

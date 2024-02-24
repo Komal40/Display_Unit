@@ -1,60 +1,70 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
-import "./Charts.css";
 import { Chart, LinearScale } from "chart.js/auto";
+import Navbar from "../Navbar/Navbar";
+import './Charts.css'
+import DashBoardAbove from "../DashboardR/DashBoardAbove";
 
 const WeeklyAverageGraph = () => {
+  const [readings, setReadings] = useState([]);
+  const [selectedDate, setSelectedDate] = useState("");
+  const [averageReadings, setAverageReadings] = useState([]);
+
   useEffect(() => {
     Chart.register(LinearScale);
   }, []);
 
-  // Given data: readings for 7 days
-  const readings = [
-    [355, 360, 362, 363, 367],
-    [360, 365, 364, 367, 370],
-    [360, 365, 364, 367, 370],
-    [355, 365, 366, 362, 364],
-    [360, 365, 364, 367, 370],
-    [360, 365, 364, 367, 370],
-    [360, 365, 364, 367, 370],
-    [355, 365, 366, 362, 364],
-    [355, 360, 362, 363, 367],
-    [360, 365, 364, 367, 370],
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      const link = process.env.REACT_APP_BASE_URL;
+      const endPoint = "/get/process_data_readings_timestamps/version_two";
+      const fullLink = link + endPoint;
 
-  // Calculate the average reading for each day
-  // const averages = readings.map(dayReadings => {
-  //   const sum = dayReadings.reduce((acc, curr) => acc + curr, 0);
-  //   return sum / dayReadings.length;
-  // });
+      try {
+        const params = new URLSearchParams();
+        params.append("process_id", "2");
 
-  // Calculate the average reading for each day without using reduce
-  const averages = [];
-  for (let i = 0; i < readings.length; i++) {
-    let sum = 0;
-    for (let j = 0; j < readings[i].length; j++) {
-      sum += readings[i][j];
+        const response = await fetch(fullLink, {
+          method: "POST",
+          body: params,
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setReadings(data.data_by_date);
+        } else {
+          throw new Error("API Error");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (selectedDate && readings[selectedDate]) {
+      const average = readings[selectedDate].reduce((acc, val) => acc + parseInt(val), 0) / readings[selectedDate].length;
+      setAverageReadings([average]);
+    } else {
+      setAverageReadings([]);
     }
-    averages.push(sum / readings[i].length);
-  }
+  }, [selectedDate, readings]);
 
-   // Calculate the minimum and maximum values in the readings
-   let minReading = Infinity;
-   let maxReading = -Infinity;
-   readings.forEach(dayReadings => {
-     dayReadings.forEach(reading => {
-       minReading = Math.min(minReading, reading);
-       maxReading = Math.max(maxReading, reading);
-     });
-   });
+  const handleChangeDate = (e) => {
+    setSelectedDate(e.target.value);
+  };
 
-  // Data for the chart
   const data = {
-    labels: ["Day 1", "Day 2", "Day 3", "Day 4", "Day 5", "Day 6", "Day 7", "Day 8","Day 9", "Day 10"],
+    labels: ["Average Reading"],
     datasets: [
       {
-        label: "X Bar",
-        data: averages,
+        label: selectedDate,
+        data: averageReadings,
         fill: false,
         borderColor: "rgb(75, 192, 192)",
         tension: 0.1,
@@ -62,24 +72,39 @@ const WeeklyAverageGraph = () => {
     ],
   };
 
-   // Options for the chart
-   const options = {
+  const options = {
     scales: {
       y: {
-        min: Math.floor(minReading / 10) * 10, // Round down to nearest 10
-        max: Math.ceil(maxReading / 10) * 10, // Round up to nearest 10
+        suggestedMin: 350,
+        suggestedMax: 370,
+        stepSize: 5,
       },
     },
   };
 
-
   return (
-    <div className="weekly-average-graph">
-      <h2>Weekly Average Graph</h2>
-      <div style={{ width: "500px", height: "300px" }}>
-        <Line data={data} options={options}/>
+    <>
+      <div>
+        <Navbar />
       </div>
-    </div>
+      <div>
+        <DashBoardAbove />
+      </div>
+      <div className="weekly-average-graph">
+        <h2>X-Bar Chart</h2>
+        <select onChange={handleChangeDate}>
+          <option value="">Select Date</option>
+          {Object.keys(readings).map((date) => (
+            <option key={date} value={date}>
+              {date}
+            </option>
+          ))}
+        </select>
+        <div style={{ width: "500px", height: "300px" }}>
+          <Line data={data} options={options} />
+        </div>
+      </div>
+    </>
   );
 };
 
