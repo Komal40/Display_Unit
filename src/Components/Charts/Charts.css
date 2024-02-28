@@ -8,3 +8,11 @@
     margin-left: 15rem;
 }
 
+.chart-container {
+    width: 600px; /* Decrease the width as needed */
+    height: 300px; /* Decrease the height as needed */
+  }
+  .chart-containers {
+    width: 600px; /* Decrease the width as needed */
+    height: 300px; /* Decrease the height as needed */
+  }

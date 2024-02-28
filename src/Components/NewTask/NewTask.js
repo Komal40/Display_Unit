@@ -260,7 +260,6 @@ export default function NewTask() {
         updatedStatuses[index] = approvalStatus; // Assuming `index` is defined
         // updatedStatuses[index] = "";
         setApprovalStatuses(updatedStatuses); // Update the state with the new values
-
         // Save the updated approval statuses to localStorage
         // localStorage.setItem(
         //   "approvalStatuses",

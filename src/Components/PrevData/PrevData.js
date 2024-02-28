@@ -9,7 +9,9 @@ import io from "socket.io-client";
 import { FaChartLine } from "react-icons/fa";
 import { io as socketIOClient } from "socket.io-client";
 import WebSocket from "websocket";
-
+import "./PrevData.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function PrevData() {
   const navigate = useNavigate();
@@ -21,13 +23,13 @@ export default function PrevData() {
   const [workModalData, setWorkModalData] = useState({});
   const [stationid, setStationid] = useState("");
   const [modal1, setModal1] = useState(false);
-  const [secondEffectComplete, setSecondEffectComplete]=useState(false)
+  const [secondEffectComplete, setSecondEffectComplete] = useState(false);
 
   //MY VARIABLES
 
   const [arr, setArr] = useState([]);
   const [processData, setProcessData] = useState([]);
-  const [workData, setWorkData]=useState([])
+  const [workData, setWorkData] = useState([]);
   const [line, setLine] = useState(0);
 
   const [stations, setStations] = useState(0);
@@ -46,6 +48,7 @@ export default function PrevData() {
   const month = currentDate.getMonth() + 1; // Months are zero-indexed
   const day = currentDate.getDate();
 
+  const dates = ["2024-02-21", "2024-02-22", "2024-02-23"];
   const [activeButton, setActiveButton] = useState(1);
 
   const handleButtonClick = (buttonNumber) => {
@@ -78,7 +81,7 @@ export default function PrevData() {
         if (response.ok) {
           const data = await response.json();
           console.log("StationData", data.stationdata);
-          setSecondEffectComplete(true)
+          setSecondEffectComplete(true);
           setArr(data.stationdata);
           setNumberLineStations(data.stationdata);
           // console.log("length station",data.stationdata.length)
@@ -143,44 +146,31 @@ export default function PrevData() {
     fetchData();
   }, []);
 
-//   useEffect(() => {
-//     const link = "http://localhost:5000";
-//     const month = "01";
-//     const date = "05";
+  const [selectedDate, setSelectedDate] = useState(null);
 
-//     // Construct the WebSocket connection URL with query parameters
-//     const fullUrl = `${link}?month=${encodeURIComponent(
-//       month
-//     )}&date=${encodeURIComponent(date)}`;
-
-//     const socket = socketIOClient(fullUrl, {
-//       transports: ["websocket"],
-//       withCredentials: true,
-//     });
-
-//     socket.on("update_work_for_operator", (data) => {
-//       console.log("Received update from WebSocket:", data);
-//       setProcessData(data.data.processdata);
-//       console.log("processdata", processData);
-//     });
-
-//     return () => {
-//       socket.disconnect(); // Cleanup on component unmount
-//     };
-//   }, []);
-
+  // Function to handle date selection
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
 
   useEffect(() => {
-
     const fetchData = async () => {
+      if (!selectedDate) return; // Skip if selectedDate is null
       const link = process.env.REACT_APP_BASE_URL;
       const endPoint = "/get/work_data/process_data/version_two";
       const fullLink = link + endPoint;
 
+      // Format date and month to match the required format
+      const selectedDay = selectedDate.getDate().toString().padStart(2, "0");
+      const selectedMonth = (selectedDate.getMonth() + 1)
+        .toString()
+        .padStart(2, "0");
+
       try {
         const params = new URLSearchParams();
-        params.append("date","23");
-        params.append("month", "02");
+        params.append("station_id", stationid);
+        params.append("date", selectedDay);
+        params.append("month", selectedMonth);
 
         const response = await fetch(fullLink, {
           method: "POST",
@@ -192,22 +182,21 @@ export default function PrevData() {
 
         if (response.ok) {
           const data = await response.json();
-          console.log("processdata previous data", data)
           setProcessData(data.payload4.process_data);
-          setWorkData(data.payload4.work_f1_data)
+          setWorkData(data.payload4.work_f1_data);
         } else {
           const errorData = await response.json();
           console.error("API Error:", errorData);
         }
       } catch (error) {
-        console.error("Error galt id:", error);
+        console.error("Error:", error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [selectedDate]);
 
-  console.log("processData",processData)
+  console.log("processData", processData);
 
   const scrollLeft = () => {
     const container = document.querySelector(".dashboard_line_buttons");
@@ -226,11 +215,8 @@ export default function PrevData() {
   const handleStationClick = async (stationNum, stationId) => {
     try {
       setSelectedStation(stationNum);
-
       setStationid(stationId);
-
       if (true) {
-       
         setModalOpen(true);
         setWorkModalData(workData);
         // If data is found, hide the "No data found" modal if it's visible
@@ -245,8 +231,6 @@ export default function PrevData() {
       console.error("Error:", error);
     }
   };
-  
-
 
   console.log("workModalData", workModalData);
   function handlechartClick() {
@@ -294,7 +278,23 @@ export default function PrevData() {
               // passMin={passMin} failTotal={failTotal} totalStations={totalStations}
             />
           )}
-
+          <div className="prevdaataa">
+            {/* <select onChange={handleDateChange}>
+              <option value="">Select Date</option>
+                      
+              {dates.map((date) => (
+                <option key={date} value={date}>
+                  {date}
+                </option>
+              ))}
+            </select> */}
+            <DatePicker
+              selected={selectedDate}
+              onChange={handleDateChange}
+              dateFormat="yyyy-MM-dd"
+              placeholderText="Select Date"
+            />
+          </div>
 
           <div className="dashboard_stations">
             {arr
@@ -350,16 +350,16 @@ export default function PrevData() {
                         Fail&nbsp;
                         {/* {added + added2} Added */}
                       </div>
-                      {item.is_chart_available == "1" ? (
+                      {/* {item.is_chart_available == "1" ? (
                         <button
                           className="chart_icon"
                           onClick={() => handlechartClick(stationNum)}
                         >
-                          Chart 
+                          Chart
                         </button>
                       ) : (
                         ""
-                      )}
+                      )} */}
                     </div>
                   </div>
                 );
@@ -369,7 +369,7 @@ export default function PrevData() {
       ))}
 
       {/* Modal */}
-      {modal1 && (
+      {/* {modal1 && (
         <div className="station_modal">
           <div className="station_modal-content">
             <span className="close" onClick={() => setModal1(false)}>
@@ -386,11 +386,11 @@ export default function PrevData() {
             <span className="close" onClick={() => setModalOpen(false)}>
               &times;
             </span>
-            {/* Content of your modal */}
+            
             <h1 style={{ margin: "auto" }}>
               Station {selectedStation} Details
             </h1>
-            {/* Check if workModalData is null or empty */}
+            
             {workModalData &&
             workModalData.work_f1_data &&
             workModalData.work_f1_data.length > 0 ? (
@@ -425,7 +425,7 @@ export default function PrevData() {
                           <td>{workModalData.process_data[index].p2}</td>
                         </div>
                       )} */}
-                      {workModalData.process_data[index] && (
+                      {/* {workModalData.process_data[index] && (
                         <div className="process_div">
                           <h4>
                             <u>Process Setting Value</u>
@@ -448,13 +448,13 @@ export default function PrevData() {
                     </div>
                   </div>
                 ))}
-              </div>
-            ) : (
+              </div> */}
+            {/* ) : (
               <p>No data found for Station {selectedStation}</p>
             )}
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

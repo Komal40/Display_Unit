@@ -36,7 +36,7 @@ const {setUserDataContext}=useUser()
   
     const link=process.env.REACT_APP_BASE_URL
     console.log('Base URL:', link);
-    const endPoint='/user/loginadmin'
+    const endPoint='/user/loginadmin/version_two'
     const fullLink=link+endPoint
 
     try {

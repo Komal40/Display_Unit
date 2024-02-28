@@ -103,7 +103,7 @@ export default function Dashboard() {
     const fetchData = async () => {
       const link = process.env.REACT_APP_BASE_URL;
       console.log("Base URL:", link);
-      const endPoint = "/floor/getfloor";
+      const endPoint = "/floor/getfloor/version_two";
       const fullLink = link + endPoint;
 
       try {
@@ -142,14 +142,26 @@ export default function Dashboard() {
   }, []);
 
   useEffect(() => {
-    const link = "http://localhost:5000";
-    const month = "01";
-    const date = "05";
+    const link = "ws://192.168.1.15:5000";
+    
+  // Get the current date
+  const currentDate = new Date();
+
+  // Get the current month (returns a number from 0 to 11, where 0 is January)
+  const currentMonth = currentDate.getMonth() + 1; // Adding 1 to match the human-readable format
+
+  // Get the current date of the month
+  const currentDay = currentDate.getDate();
+
+  // Convert the month and date to strings with leading zeros if necessary
+  const formattedMonth = currentMonth < 10 ? `0${currentMonth}` : `${currentMonth}`;
+  const formattedDay = currentDay < 10 ? `0${currentDay}` : `${currentDay}`;
 
     // Construct the WebSocket connection URL with query parameters
-    const fullUrl = `${link}?month=${encodeURIComponent(
-      month
-    )}&date=${encodeURIComponent(date)}`;
+    const fullUrl = `${link}?month=${encodeURIComponent(formattedMonth)}&date=${encodeURIComponent(formattedDay)}`;
+    // const fullUrl = `${link}?month=${encodeURIComponent(
+    //   month
+    // )}&date=${encodeURIComponent(date)}`;
 
     const socket = socketIOClient(fullUrl, {
       transports: ["websocket"],
@@ -301,11 +313,15 @@ export default function Dashboard() {
                 return (
                   <div
                     className="operator_line"
-                    // Step 3: Attach event handler to open modal
                     key={stationNum}
                   >
+{/* <div
+    className={`operator_line ${work.done === "0" ? "grey-background" : ""}`}
+    key={stationNum}
+  > */}
                     <div
                       className="operator_container1"
+                      style={{ backgroundColor: passes+fails == 0 ? "grey" : "" }}
                       onClick={() => handleStationClick(stationNum, stationId)}
                     >
                       <div>

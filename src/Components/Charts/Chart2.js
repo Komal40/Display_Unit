@@ -1,64 +1,73 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import { Chart, LinearScale } from "chart.js/auto";
+import './Charts.css';
 
-const Chart2 = () => {
-  Chart.register(LinearScale);
+const WeeklyAverageGraph = ({ readings }) => {
+  const [rangeReadings, setRangeReadings] = useState([]);
+  const [dates, setDates] = useState([]);
 
-  // Given data: readings for 10 days
-  const readings = [
-    [355, 360, 362, 363, 367],
-    [360, 365, 364, 367, 370],
-    [360, 365, 364, 367, 370],
-    [355, 365, 366, 362, 364],
-    [360, 365, 364, 367, 370],
-    [360, 365, 364, 367, 370],
-    [360, 365, 364, 367, 370],
-    [355, 365, 366, 362, 364],
-    [355, 360, 362, 363, 367],
-    [360, 365, 364, 367, 370],
-  ];
+  useEffect(() => {
+    Chart.register(LinearScale);
+  }, []);
 
-  // Calculate the range for each day
-  const ranges = readings.map(dayReadings => {
-    const max = Math.max(...dayReadings);
-    const min = Math.min(...dayReadings);
-    return max - min;
-  });
+  useEffect(() => {
+    if (readings && Object.keys(readings).length > 0) {
+      const dates = Object.keys(readings);
+      setDates(dates);
 
-  // Define UCL, LCL, and Rbar values for R
-  const UCL = 22.2; // Example value, replace with actual UCL for R
-  const LCL = 0; // Example value, replace with actual LCL for R
-  const Rbar = 10.5; // Example value, replace with actual Rbar for R
+      // Calculate the range for each day
+      const ranges = dates.map(date => {
+        const dayReadings = readings[date];
+        const max = Math.max(...dayReadings);
+        const min = Math.min(...dayReadings);
+        return max - min;
+      });
+      setRangeReadings(ranges);
+    }
+  }, [readings]);
 
-  // Data for the chart
+  const UCL = 22.2;
+  const LCL = 0;
+  const Rbar = 10.5;
+
+  const options = {
+    scales: {
+      y: {
+        suggestedMin: Math.min(0, ...rangeReadings, LCL, UCL, Rbar) ,
+        suggestedMax: Math.max(25, ...rangeReadings, LCL, UCL, Rbar) ,
+        stepSize: 2,
+      },
+    },
+  };
+
   const data = {
-    labels: ["Day 1", "Day 2", "Day 3", "Day 4", "Day 5", "Day 6", "Day 7", "Day 8", "Day 9", "Day 10"],
+    labels: dates,
     datasets: [
       {
         label: "R",
-        data: ranges,
+        data: rangeReadings,
         fill: false,
         borderColor: "rgb(255, 99, 132)",
         tension: 0.1,
       },
       {
         label: "UCL",
-        data: Array(ranges.length).fill(UCL),
+        data: Array(dates.length).fill(UCL),
         fill: false,
         borderColor: "orange",
         tension: 0.1,
       },
       {
         label: "LCL",
-        data: Array(ranges.length).fill(LCL),
+        data: Array(dates.length).fill(LCL),
         fill: false,
         borderColor: "grey",
         tension: 0.1,
       },
       {
         label: "Rbar",
-        data: Array(ranges.length).fill(Rbar),
+        data: Array(dates.length).fill(Rbar),
         fill: false,
         borderColor: "green",
         tension: 0.1,
@@ -66,25 +75,14 @@ const Chart2 = () => {
     ],
   };
 
-  // Options for the chart
-  const options = {
-    scales: {
-      y: {
-        suggestedMin: 0,
-        suggestedMax: 25,
-        stepSize: 5,
-      },
-    },
-  };
-
   return (
     <div className="weekly-average-graph">
-      <h2>R Chart</h2>
-      <div style={{ width: "500px", height: "300px" }}>
+      <h2>R-Chart</h2>
+      <div className="chart-container">
         <Line data={data} options={options} />
       </div>
     </div>
   );
 };
 
-export default Chart2;
+export default WeeklyAverageGraph;

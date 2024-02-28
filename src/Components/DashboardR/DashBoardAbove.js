@@ -46,11 +46,11 @@ export default function DashBoardAbove() {
               Name: <h4>{storedUserData?.logindata.first_name + " " +storedUserData?.logindata.last_name}</h4>
             </p>
           </div>
-          <div>
+          {/* <div>
             <p className="dashboard_content">
               Device Id: <h4>{}</h4>
             </p>
-          </div>
+          </div> */}
           <div>
             <p className="dashboard_content">
               User Id:<h4>{storedUserData?.logindata.employee_code}</h4>

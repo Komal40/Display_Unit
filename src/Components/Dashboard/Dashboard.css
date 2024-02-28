@@ -5,6 +5,10 @@
     margin-left: 10.5rem;
 }
 
+.grey-background {
+  background-color: grey;
+}
+
 .operator_cont{
     display: flex;
     margin-left: 15rem;
@@ -12,7 +16,6 @@
 
 .dashboard_stations{
     margin-left: 15rem;
-
 }
 .dashboard_navbar{
     display: flex;
@@ -121,6 +124,10 @@
     background-color: red;
   }
   
+  .grey-color{
+    background-color: grey;
+  }
+
   .green-color {
     background-color: green;
   }
@@ -179,11 +186,11 @@
   .chart_icon{
     /* border:2px solid black; */
     border-radius: 10px;
+    background: none;
     padding: 4px;
     cursor: pointer;
     border: none;
     width: 4rem;
-    background-color: var(--color-green);
     color: white;
     margin-top: 5px;
   }

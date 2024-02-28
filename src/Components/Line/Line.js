@@ -136,14 +136,14 @@ function Line({ no ,processData, arr}) {
         </div>
 
         <div className="dasboard_container_rightside">
-          <div>
+          {/* <div>
             <div>
               <p className="dashboard_content">
                 PARTS: <h4> 899/67</h4>
               </p>
             </div>
             <div className="dashboard_content_rightline"></div>
-          </div>
+          </div> */}
           <div>
             <p className="dashboard_content">
               <h4>{passMin} passed</h4>
@@ -154,11 +154,11 @@ function Line({ no ,processData, arr}) {
               <h4>{failTotal} failed</h4>
             </p>
           </div>
-          {/* <div>
+          <div>
           <p className="dashboard_content">
-            <h4>15 filled</h4>
+            <h4>{passMin+failTotal} Done</h4>
           </p>
-        </div> */}
+        </div>
         </div>
       </div>
 
