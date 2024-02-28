@@ -8,6 +8,9 @@ function Line({ no ,processData, arr}) {
   const [passMin, setPassMin] = useState(Number.MAX_SAFE_INTEGER);
   const [failTotal, setFailTotal] = useState(0);
   const [totalStations, setTotalStations]=useState(0)
+  const {getTotalStations}=useUser()
+  const {getPassVal}=useUser()
+  const {getFailVal}=useUser()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,8 +49,6 @@ function Line({ no ,processData, arr}) {
 
 
   useEffect(() => {
-    
-  
     const calculateLineStats = () => {
       let minPasses = Number.MAX_SAFE_INTEGER;    
       let totalFails = 0;
@@ -70,14 +71,16 @@ function Line({ no ,processData, arr}) {
         totalFails += fails;
         minPasses = Math.min(minPasses, passes);
         totalStation++;
-        console.log(fails,"fail number")
-        
+        console.log(fails,"fail number")        
       });
   
       // Set the state with the calculated values
       setTotalStations(totalStation);
+      getTotalStations(totalStation)
       setPassMin(minPasses);
+      getPassVal(minPasses)
       setFailTotal(totalFails);
+      getFailVal(totalFails)
       console.log("object passMin,failTotal",passMin,failTotal)
     };
   

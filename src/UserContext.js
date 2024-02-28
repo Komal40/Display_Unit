@@ -16,6 +16,25 @@ export const UserProvider = ({ children }) => {
 
   const [LoginProcess, setLoginProcess]=useState([])
 
+  // pass ,fail, totalstations
+  const [passVal, setPassVal]=useState(0)
+  const [failVal, setFailVal]=useState(0)
+  const [totalStations, setTotalStations]=useState(0)
+  const [activeStations, setActiveStations]=useState(0)
+
+  const getTotalStations=(data)=>{
+    setTotalStations(data)
+  }
+  const getFailVal=(data)=>{
+    setFailVal(data)
+  }
+  const getPassVal=(data)=>{
+    setPassVal(data)
+  }
+  const getActiveStations=(data)=>{
+    setActiveStations(data)
+  }
+
 
   const particularStationId=(data)=>{
     setStationId(data)
@@ -65,6 +84,7 @@ const getLoginProcessFunction=(data)=>{
     <UserContext.Provider value={{ userData, setUserDataContext, lines, setNumberOfLines, lineStation, setNumberLineStations,
     lineNum, setLineNumber , portNum, setPortNumber, portLength, setPortNumLength, setProcessDataFun, processData,
     stationLine, stationOnLine, particularStationId, stationId, LoginProcess, getLoginProcessFunction,
+    getTotalStations, totalStations, getFailVal, failVal, getPassVal, passVal, getActiveStations, activeStations
     }}>
       {children}
     </UserContext.Provider>

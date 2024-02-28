@@ -94,6 +94,7 @@ export default function NewTask() {
         const taskData = await response.json();
         console.log("Task Data approved", taskData);
         settaskdata(taskData.payload);
+        localStorage.setItem("qty",JSON.stringify(taskData.payload.quantity))
       } else {
         const errorData = await response.json();
         console.error("API Error task component:", errorData);

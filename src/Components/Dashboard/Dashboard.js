@@ -14,6 +14,8 @@ import WebSocket from "websocket";
 export default function Dashboard() {
   const navigate = useNavigate();
   //MY VARIABLES
+  let x = 0;
+  const {getActiveStations}=useUser()
 
   const [firstEffectCompleted, setFirstEffectCompleted] = useState(false);
   const [modalOpen, setModalOpen] = useState(false); // Step 1: State variable for modal visibility
@@ -23,7 +25,6 @@ export default function Dashboard() {
   const [modal1, setModal1] = useState(false);
 
   //MY VARIABLES
-
   const [arr, setArr] = useState([]);
   const [processData, setProcessData] = useState([]);
   const [line, setLine] = useState(0);
@@ -247,7 +248,7 @@ export default function Dashboard() {
       {/* <div className={`${isNavbarClose ? 'dashboard_container':'shifted'}`}> */}
       {/* <div style={dashboardStyle}> */}
 
-      <DashboardR />
+      <DashboardR/>
       <div className="arrow_btn">
         {/* <div className="dashboard_arrows">
           <button className="arrow-button left" onClick={scrollLeft}>
@@ -309,6 +310,12 @@ export default function Dashboard() {
                   (data) =>
                     data.isfilled == "0" && data.stationNum == stationNum
                 ).length;
+
+                const total=passes+fails;
+                if (total > 0) {
+                  x++; // Increment x if the total value is greater than 0
+                }
+                getActiveStations(x)
 
                 return (
                   <div
